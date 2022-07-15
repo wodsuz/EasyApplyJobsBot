@@ -1,6 +1,6 @@
 # LinkedinEasyApplyJobsBot
 A python bot to easy apply sinlge,double,triple and up to 5 pages long Linkedin Easy Apply jobs
-To modify, use, get documentation or for you inquires you can email, ongun.demirag@gmail.com
+To modify, use, get documentation or for you inquires 
 
 Features:
 - Ability to filter jobs, by easy apply, by location (Worldwide, Europe, Poland, etc.), by keyword (python, react, node), by experience and position
