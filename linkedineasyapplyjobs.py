@@ -1,37 +1,47 @@
+import time,math
+import config,utils,constants
+ 
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-import time
-import math
-
+from selenium.webdriver.firefox.options import Options
 
 class Linkedin:
     def __init__(self):
-        linkprofile = webdriver.FirefoxProfile('')
-        self.driver = webdriver.Firefox(linkprofile)
-        #self.driver.get('https://www.linkedin.com/mynetwork/')
-        time.sleep(10)
+        firefoxAccountPath = constants.firefoxAccountPath
+
+        options = Options()
+        options.add_argument("-profile")
+        options.add_argument(firefoxAccountPath)
+        self.driver = webdriver.Firefox(options=options)
+
+        time.sleep(3)
 
     def Link_job_apply(self):
-        count_application = 0
-        count_job = 0
-        jobs_per_page = 25
-        easy_apply = "?f_AL=true"
-        location = "Poland"  # "Worldwide"
-        keywords = ["node", "react", "angular",
-                    "javascript", "python", "java", "programming"]
+        countApplied = 0
+        countJobs = 0
+
+        location = config.location
+        keywords = config.keywords
+
         for indexpag in range(len(keywords)):
-            self.driver.get(
-                'https://www.linkedin.com/jobs/search/' + easy_apply + '&keywords=' + keywords[indexpag] + "&" + location)
-            numofjobs = self.driver.find_element_by_xpath(
-                '//small').text  # get number of results
-            space_ind = numofjobs.index(' ')
-            total_jobs = (numofjobs[0:space_ind])
-            total_jobs_int = int(total_jobs.replace(',', ''))
-            number_of_pages = math.ceil(total_jobs_int/jobs_per_page)
+            url =  constants.linkedinLink + constants.easy_apply + '&keywords=' + keywords[indexpag] + "&" + location
+            
+            self.driver.get(url)
+            
+            totalJobs = self.driver.find_element("xpath",'//small').text  # get number of results
+            
+            number_of_pages = utils.jobsToPages(totalJobs)
+            deneme = utils.jobsToPages("")
+            deneme2 = utils.jobsToPages("123")
+
+            print(url)
+            print(deneme)
+            print(deneme2)
+
             print(number_of_pages)
+
             for i in range(number_of_pages):
                 cons_page_mult = 25 * i
-                url = 'https://www.linkedin.com/jobs/search/' + easy_apply + \
+                url = constants.linkedinLink + constants.easy_apply + \
                     '&keywords=' + keywords[indexpag] + \
                     "&" + location + "&start=" + str(cons_page_mult)
                 self.driver.get(url)
@@ -49,7 +59,7 @@ class Linkedin:
                     job_page = 'https://www.linkedin.com/jobs/view/' + \
                         str(jobID)
                     self.driver.get(job_page)
-                    count_job += 1
+                    countJobs += 1
                     time.sleep(5)
                     try:
                         button = self.driver.find_elements_by_xpath(
@@ -67,7 +77,7 @@ class Linkedin:
                             self.driver.find_element_by_css_selector(
                                 "button[aria-label='Submit application']").click()
                             time.sleep(3)
-                            count_application += 1
+                            countApplied += 1
                             print("* Just Applied to this job!")
                         except:
                             try:
@@ -92,7 +102,7 @@ class Linkedin:
                                         time.sleep(3)
                                         self.driver.find_element_by_css_selector(
                                         "button[aria-label='Submit application']").click()
-                                        count_application += 1
+                                        countApplied += 1
                                         print("* Just Applied to this job!")
                                     except:
                                         print(
@@ -107,7 +117,7 @@ class Linkedin:
                                         time.sleep(3)
                                         self.driver.find_element_by_css_selector(
                                         "button[aria-label='Submit application']").click()
-                                        count_application += 1
+                                        countApplied += 1
                                         print("* Just Applied to this job!")
                                     except:
                                         print(
@@ -119,7 +129,7 @@ class Linkedin:
                                         time.sleep(3)
                                         self.driver.find_element_by_css_selector(
                                         "button[aria-label='Submit application']").click()
-                                        count_application += 1
+                                        countApplied += 1
                                         print("* Just Applied to this job!")
                                     except:
                                         print(
@@ -129,8 +139,8 @@ class Linkedin:
                     else:
                         print("* Already applied!")
                     time.sleep(2)
-            print("Category: " + keywords + " ,applied: " + str(count_application) +
-                  " jobs out of " + str(count_job) + ".")
+            print("Category: " + keywords + " ,applied: " + str(countApplied) +
+                  " jobs out of " + str(countJobs) + ".")
 
 
 start_time = time.time()
