@@ -1,12 +1,15 @@
-import time,math
-import config,utils,constants
+import time,os
+import jobPreferances.config as config,utils,constants
  
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+from dotenv import load_dotenv
 
 class Linkedin:
     def __init__(self):
-        firefoxAccountPath = constants.firefoxAccountPath
+        load_dotenv()
+
+        firefoxAccountPath = os.getenv('firefoxAccountPath')
 
         options = Options()
         options.add_argument("-profile")
@@ -22,28 +25,21 @@ class Linkedin:
         location = config.location
         keywords = config.keywords
 
-        for indexpag in range(len(keywords)):
-            url =  constants.linkedinLink + constants.easy_apply + '&keywords=' + keywords[indexpag] + "&" + location
-            
+        file = open('jobPreferances/urlData.txt', 'r')
+        lines = file.readlines()
+
+        for url in lines:        
             self.driver.get(url)
-            
-            totalJobs = self.driver.find_element("xpath",'//small').text  # get number of results
-            
-            number_of_pages = utils.jobsToPages(totalJobs)
-            deneme = utils.jobsToPages("")
-            deneme2 = utils.jobsToPages("123")
-
             print(url)
-            print(deneme)
-            print(deneme2)
 
-            print(number_of_pages)
+            totalJobs = self.driver.find_element("xpath",'//small').text  # get number of results
+            totalPages = utils.jobsToPages(totalJobs)
 
-            for i in range(number_of_pages):
-                cons_page_mult = 25 * i
-                url = constants.linkedinLink + constants.easy_apply + \
-                    '&keywords=' + keywords[indexpag] + \
-                    "&" + location + "&start=" + str(cons_page_mult)
+            print(totalPages)
+
+            for page in range(totalPages):
+                cons_page_mult = constants.jobsPerPage * page
+                url = url + str(cons_page_mult)
                 self.driver.get(url)
                 time.sleep(10)
                 links = self.driver.find_elements_by_xpath(
