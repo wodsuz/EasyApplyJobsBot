@@ -1,4 +1,4 @@
-import time,os,math
+import time,os,math,warnings
 import jobPreferances.config as config,utils,constants
  
 from selenium import webdriver
@@ -17,7 +17,7 @@ class Linkedin:
 
     def browser_options(self):
         options = Options()
-        firefoxAccountPath = os.getenv('firefoxAccountPath')
+        firefoxProfilePath = os.getenv('firefoxProfilePath')
    
         options.add_argument("--start-maximized")
         options.add_argument("--ignore-certificate-errors")
@@ -29,7 +29,7 @@ class Linkedin:
         options.add_argument("--disable-blink-features=AutomationControlled")
         # add profile 
         options.add_argument("-profile")
-        options.add_argument(firefoxAccountPath)
+        options.add_argument(firefoxProfilePath)
 
         return options
 
@@ -37,8 +37,7 @@ class Linkedin:
         countApplied = 0
         countJobs = 0
 
-        file = open('jobPreferances/urlData.txt', 'r')
-        urlData = file.readlines()
+        urlData = utils.getUrlDataFile()
 
         for url in urlData:        
             self.driver.get(url)
@@ -90,8 +89,8 @@ class Linkedin:
                         print("* Already applied!")
                     time.sleep(2)
 
-            keyword, location = self.urlTokeywords(url)
-            print("Category: " + keyword + "," +location+ " applied: " + str(countApplied) +
+            urlWords =  utils.urlToKeywords(url)
+            print("Category: " + urlWords[0] + "," +urlWords[1]+ " applied: " + str(countApplied) +
                   " jobs out of " + str(countJobs) + ".")
 
     def easyApplyButton(self):
@@ -116,17 +115,13 @@ class Linkedin:
             time.sleep(3)
             print("* Just Applied to this job: " +str(offerPage))
         except:
-            print("*" +str(applyPages)+ "Pages, couldn't apply to this job! Extra info needed. Link: " +str(offerPage))
+            print("* " +str(applyPages)+ "Pages, couldn't apply to this job! Extra info needed. Link: " +str(offerPage))
 
         
         return applyPages
     
-    def urlTokeywords(self,url):
-        keyword = url[url.index("keywords=")+9:url.index("&location") ] 
-        location = url[url.index("location=")+9:url.index("&f_E") ] 
-        return (keyword,location)
 
-start_time = time.time()
+start = time.time()
 Linkedin().Link_job_apply()
 end = time.time()
-print("---Took: " + str(round((time.time() - start_time)/60)) + " minute(s).")
+print("---Took: " + str(round((time.time() - start)/60)) + " minute(s).")

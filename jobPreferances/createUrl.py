@@ -27,8 +27,6 @@ def keywordLocationJoin():
                 path.append(url)
     return path
 
-
-
 def datePosted():
     datePosted = ""
     match config.datePosted[0]:
