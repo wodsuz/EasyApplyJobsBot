@@ -1,146 +1,132 @@
-import time,os
+import time,os,math
 import jobPreferances.config as config,utils,constants
  
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.common.by import By
+
 from dotenv import load_dotenv
 
 class Linkedin:
     def __init__(self):
         load_dotenv()
 
-        firefoxAccountPath = os.getenv('firefoxAccountPath')
-
-        options = Options()
-        options.add_argument("-profile")
-        options.add_argument(firefoxAccountPath)
-        self.driver = webdriver.Firefox(options=options)
+        self.driver = webdriver.Firefox(options=self.browser_options())
 
         time.sleep(3)
+
+    def browser_options(self):
+        options = Options()
+        firefoxAccountPath = os.getenv('firefoxAccountPath')
+   
+        options.add_argument("--start-maximized")
+        options.add_argument("--ignore-certificate-errors")
+        options.add_argument('--no-sandbox')
+        options.add_argument("--disable-extensions")
+
+        # Disable webdriver flags or you will be easily detectable
+        options.add_argument("--disable-blink-features")
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        # add profile 
+        options.add_argument("-profile")
+        options.add_argument(firefoxAccountPath)
+
+        return options
 
     def Link_job_apply(self):
         countApplied = 0
         countJobs = 0
 
-        location = config.location
-        keywords = config.keywords
-
         file = open('jobPreferances/urlData.txt', 'r')
-        lines = file.readlines()
+        urlData = file.readlines()
 
-        for url in lines:        
+        for url in urlData:        
             self.driver.get(url)
-            print(url)
 
-            totalJobs = self.driver.find_element("xpath",'//small').text  # get number of results
+            totalJobs = self.driver.find_element(By.XPATH,'//small').text 
             totalPages = utils.jobsToPages(totalJobs)
 
-            print(totalPages)
-
             for page in range(totalPages):
-                cons_page_mult = constants.jobsPerPage * page
-                url = url + str(cons_page_mult)
+                currentPageJobs = constants.jobsPerPage * page
+                url = url +"&start="+ str(currentPageJobs)
                 self.driver.get(url)
-                time.sleep(10)
-                links = self.driver.find_elements_by_xpath(
-                    '//div[@data-job-id]')  # needs to be scrolled down
-                IDs = []
-                for link in links:
-                    temp = link.get_attribute("data-job-id")
-                    jobID = temp.split(":")[-1]
-                    IDs.append(int(jobID))
-                IDs = set(IDs)
-                jobIDs = [x for x in IDs]
-                for jobID in jobIDs:
-                    job_page = 'https://www.linkedin.com/jobs/view/' + \
-                        str(jobID)
-                    self.driver.get(job_page)
+                time.sleep(5)
+
+                offersPerPage = self.driver.find_elements(By.XPATH,'//li[@data-occludable-job-id]')
+
+                offerIds = []
+                for offer in offersPerPage:
+                    offerId = offer.get_attribute("data-occludable-job-id")
+                    offerIds.append(int(offerId.split(":")[-1]))
+
+                for jobID in offerIds:
+                    offerPage = 'https://www.linkedin.com/jobs/view/' + str(jobID)
+                    self.driver.get(offerPage)
                     countJobs += 1
                     time.sleep(5)
-                    try:
-                        button = self.driver.find_elements_by_xpath(
-                            '//button[contains(@class, "jobs-apply")]/span[1]')
-                        # if button[0].text in "Easy Apply" :
-                        EasyApplyButton = button[0]
-                    except:
-                        EasyApplyButton = False
-                    button = EasyApplyButton
+                    
+                    button = self.easyApplyButton()
+
                     if button is not False:
-                        string_easy = "* has Easy Apply Button"
                         button.click()
                         time.sleep(2)
+                        countApplied += 1
                         try:
-                            self.driver.find_element_by_css_selector(
-                                "button[aria-label='Submit application']").click()
+                            self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
                             time.sleep(3)
-                            countApplied += 1
-                            print("* Just Applied to this job!")
+                            print("* Just Applied to this job: " +str(offerPage))
                         except:
                             try:
-                                button = self.driver.find_element_by_css_selector(
-                                    "button[aria-label='Continue to next step']").click()
+                                self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
                                 time.sleep(3)
-                                percen = self.driver.find_element_by_xpath("/html/body/div[3]/div/div/div[2]/div/div/span").text
-                                percen_numer = int(percen[0:percen.index("%")])
-                                if int(percen_numer) < 25:
-                                    print(
-                                        "*More than 5 pages,wont apply to this job! Link: " +job_page)
-                                elif int(percen_numer) < 30:
-                                    try:
-                                        self.driver.find_element_by_css_selector(
-                                        "button[aria-label='Continue to next step']").click()
-                                        time.sleep(3)
-                                        self.driver.find_element_by_css_selector(
-                                        "button[aria-label='Continue to next step']").click()
-                                        time.sleep(3)
-                                        self.driver.find_element_by_css_selector(
-                                        "button[aria-label='Review your application']").click()
-                                        time.sleep(3)
-                                        self.driver.find_element_by_css_selector(
-                                        "button[aria-label='Submit application']").click()
-                                        countApplied += 1
-                                        print("* Just Applied to this job!")
-                                    except:
-                                        print(
-                                            "*4 Pages,wont apply to this job! Extra info needed. Link: " +job_page)
-                                elif int(percen_numer) < 40:
-                                    try: 
-                                        self.driver.find_element_by_css_selector(
-                                        "button[aria-label='Continue to next step']").click()
-                                        time.sleep(3)
-                                        self.driver.find_element_by_css_selector(
-                                        "button[aria-label='Review your application']").click()
-                                        time.sleep(3)
-                                        self.driver.find_element_by_css_selector(
-                                        "button[aria-label='Submit application']").click()
-                                        countApplied += 1
-                                        print("* Just Applied to this job!")
-                                    except:
-                                        print(
-                                            "*3 Pages,wont apply to this job! Extra info needed. Link: " +job_page)
-                                elif int(percen_numer) < 60:
-                                    try:
-                                        self.driver.find_element_by_css_selector(
-                                        "button[aria-label='Review your application']").click()
-                                        time.sleep(3)
-                                        self.driver.find_element_by_css_selector(
-                                        "button[aria-label='Submit application']").click()
-                                        countApplied += 1
-                                        print("* Just Applied to this job!")
-                                    except:
-                                        print(
-                                            "* 2 Pages,wont apply to this job! Unknown.  Link: " +job_page)
-                            except:
-                                print("* Cannot apply to this job!!")
+                                comPercentage = self.driver.find_element(By.XPATH,'html/body/div[3]/div/div/div[2]/div/div/span').text
+                                percenNumber = int(comPercentage[0:comPercentage.index("%")])
+
+                                self.applyProcess(percenNumber,offerPage)
+                            
+                            except Exception as e: 
+                                print("* Cannot apply to this job!")
                     else:
                         print("* Already applied!")
                     time.sleep(2)
-            print("Category: " + keywords + " ,applied: " + str(countApplied) +
+
+            keyword, location = self.urlTokeywords(url)
+            print("Category: " + keyword + "," +location+ " applied: " + str(countApplied) +
                   " jobs out of " + str(countJobs) + ".")
 
+    def easyApplyButton(self):
+        try:
+            button = self.driver.find_element(By.XPATH,
+                '//button[contains(@class, "jobs-apply-button")]')
+            EasyApplyButton = button
+        except: 
+            EasyApplyButton = False
+
+        return EasyApplyButton
+
+    def applyProcess(self, percentage,offerPage):
+        applyPages = math.floor(100 / percentage)   
+        try:
+            for pages in range(applyPages-2):
+                self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
+                time.sleep(3)
+            self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Review your application']").click()
+            time.sleep(3)
+            self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Submit application']").click()
+            time.sleep(3)
+            print("* Just Applied to this job: " +str(offerPage))
+        except:
+            print("*" +str(applyPages)+ "Pages, couldn't apply to this job! Extra info needed. Link: " +str(offerPage))
+
+        
+        return applyPages
+    
+    def urlTokeywords(self,url):
+        keyword = url[url.index("keywords=")+9:url.index("&location") ] 
+        location = url[url.index("location=")+9:url.index("&f_E") ] 
+        return (keyword,location)
 
 start_time = time.time()
-ed = Linkedin()
-ed.Link_job_apply()
+Linkedin().Link_job_apply()
 end = time.time()
 print("---Took: " + str(round((time.time() - start_time)/60)) + " minute(s).")
