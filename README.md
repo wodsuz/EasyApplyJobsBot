@@ -8,7 +8,7 @@ To modify, use, get documentation or for you inquires kinldy contact me via: <br
 
 With your support I build, update and work on this project. You can also purchase additional packages, tutorials and materials explaining how this bot is working. <br>
 
-<a href="https://commerce.coinbase.com/checkout/923b8005-792f-4874-9a14-2992d0b30685" target="\_blank" rel="noopener"><b>Donate & support!</b></a>
+<a href="https://commerce.coinbase.com/checkout/923b8005-792f-4874-9a14-2992d0b30685" target="_blank" rel="noreferrer noopener"><b>Donate & support!</b></a>
 
 ## Purchase additional materials and guides
 
