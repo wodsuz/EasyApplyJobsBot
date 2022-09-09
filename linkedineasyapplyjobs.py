@@ -116,8 +116,6 @@ class Linkedin:
             print("* Just Applied to this job: " +str(offerPage))
         except:
             print("* " +str(applyPages)+ "Pages, couldn't apply to this job! Extra info needed. Link: " +str(offerPage))
-
-        
         return applyPages
     
 
