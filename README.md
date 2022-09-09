@@ -8,14 +8,14 @@ To modify, use, get documentation or for you inquires kinldy contact me via: <br
 
 With your support I build, update and work on this project. You can also purchase additional packages, tutorials and materials explaining how this bot is working. <br>
 
-[**Donate & support!**](https://commerce.coinbase.com/checkout/923b8005-792f-4874-9a14-2992d0b30685)
+[**Donate & support!**](https://commerce.coinbase.com/checkout/923b8005-792f-4874-9a14-2992d0b30685){:target="\_blank" rel="noopener"}
 
 ## Purchase additional materials and guides
 
 You can currently, purchase full in dept detailed tutorial explaining how this bot is working, one hour booking session where i step by step build and run the bot on your machine or 5 videos
 showing how this can be used. To buy, support this project and help me add more features,
 
-[**Purchase materials and guides**](https://commerce.coinbase.com/point-of-sale)
+[**Purchase materials and guides**](https://commerce.coinbase.com/point-of-sale){:target="\_blank" rel="noopener"}
 
 ## Features:
 
