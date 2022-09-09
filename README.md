@@ -4,20 +4,20 @@ A python bot to easy apply all Linkedin Easy Apply jobs based on your preferance
 To modify, use, get documentation or for you inquires kinldy contact me via: <br>
 **ongun.demirag@gmail.com**
 
-## Donation and Support
+## Donation and Support:
 
 With your support I build, update and work on this project. You can also purchase additional packages, tutorials and materials explaining how this bot is working. <br>
 
-<a href="https://commerce.coinbase.com/checkout/923b8005-792f-4874-9a14-2992d0b30685" target="_blank" rel="noreferrer noopener"><b>Donate & support!</b></a>
+[**Donate & support!**](https://commerce.coinbase.com/checkout/923b8005-792f-4874-9a14-2992d0b30685)
 
 ## Purchase additional materials and guides
 
 You can currently, purchase full in dept detailed tutorial explaining how this bot is working, one hour booking session where i step by step build and run the bot on your machine or 5 videos
-showing how this can be used. To buy, support this project and help me add more features,
+showing how this can be used. To buy, support this project and help me add more features. <br>
 
-[**Purchase materials and guides**](https://commerce.coinbase.com/point-of-sale){:target="\_blank" rel="noopener"}
+[**Purchase materials and guides**](https://commerce.coinbase.com/point-of-sale)
 
-## Features
+## Features:
 
 - Ability to filter jobs, by easy apply, by location (Worldwide, Europe, Poland, etc.), by keyword (python, react, node), by experience and position
 - Automatically apply single page jobs in which you need to send your up-to-date CV and contact
@@ -30,7 +30,7 @@ showing how this can be used. To buy, support this project and help me add more 
 - Runs based on your criteria’s
 - Much more!
 
-## How to setup (long way)
+## How to setup (long way):
 
 This tutorial briefly explains how to setup LinkedIn Easy Apply jobs bot. With few modifications you can make your own bot or try my other bots for other platforms.
 
