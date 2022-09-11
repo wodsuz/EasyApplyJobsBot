@@ -161,4 +161,4 @@ cython_debug/
 
 # user files
 geckodriver.log
-.txt
+*.txt
