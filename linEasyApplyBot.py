@@ -17,7 +17,7 @@ class Linkedin:
 
     def browser_options(self):
         options = Options()
-        firefoxProfilePath = os.getenv('firefoxProfilePath')
+        firefoxProfileRootDir = os.getenv('firefoxProfileRootDir')
    
         options.add_argument("--start-maximized")
         options.add_argument("--ignore-certificate-errors")
@@ -27,7 +27,7 @@ class Linkedin:
         options.add_argument("--disable-blink-features")
         options.add_argument("--disable-blink-features=AutomationControlled")
         options.add_argument("-profile")
-        options.add_argument(firefoxProfilePath)
+        options.add_argument(firefoxProfileRootDir)
 
         return options
 

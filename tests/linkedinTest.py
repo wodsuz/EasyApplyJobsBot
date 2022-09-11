@@ -10,7 +10,7 @@ print('This script will check if the bot can automatically log in Linkedin for y
 load_dotenv()
 
 options = Options()
-firefoxProfilePath = os.getenv('firefoxProfilePath')
+firefoxProfileRootDir = os.getenv('firefoxProfileRootDir')
 
 options.add_argument("--start-maximized")
 options.add_argument("--ignore-certificate-errors")
@@ -22,7 +22,7 @@ options.add_argument("--disable-blink-features")
 options.add_argument("--disable-blink-features=AutomationControlled")
 # add profile 
 options.add_argument("-profile")
-options.add_argument(firefoxProfilePath)
+options.add_argument(firefoxProfileRootDir)
 
 browser = webdriver.Firefox(options=options)
 

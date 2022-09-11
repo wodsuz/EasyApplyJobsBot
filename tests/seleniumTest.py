@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 options = Options()
-firefoxProfilePath = os.getenv('firefoxProfilePath')
+firefoxProfileRootDir = os.getenv('firefoxProfileRootDir')
 
 options.add_argument("--start-maximized")
 options.add_argument("--ignore-certificate-errors")
@@ -18,7 +18,7 @@ options.add_argument("--disable-extensions")
 options.add_argument("--disable-blink-features")
 options.add_argument("--disable-blink-features=AutomationControlled")
 options.add_argument("-profile")
-options.add_argument(firefoxProfilePath)
+options.add_argument(firefoxProfileRootDir)
 
 browser = webdriver.Firefox(options=options)
 
