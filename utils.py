@@ -8,10 +8,10 @@ def colored(r, g, b, text):
 def getUrlDataFile():
     urlData = ""
     try:
-        file = open('jobPreferances/urlData.txt', 'r')
+        file = open('data/urlData.txt', 'r')
         urlData = file.readlines()
     except FileNotFoundError:
-        text = "FileNotFound:urlData.txt file is not found. Please run ./jobPreferances/createUrl.py first and make sure you have urlData.txt generated."
+        text = "FileNotFound:urlData.txt file is not found. Please run ./jobPreferances/createUrl.py first and make sure you have urlData.txt in /data folder generated."
         colored_text = colored(255, 0, 0, text) 
         print(colored_text)
     return urlData
@@ -40,16 +40,22 @@ def writeResults(text: str):
     timeStr = time.strftime("%Y%m%d")
     fileName = "Applied Jobs DATA - " +timeStr + ".txt"
     try:
-        with open("results/" +fileName) as file:
+        with open("data/" +fileName) as file:
             lines = []
             for line in file:
-                lines.append(line)
+                if "----" not in line:
+                    lines.append(line)
                 
-        with open("results/" +fileName, 'w') as f:
+        with open("data/" +fileName, 'w') as f:
+            f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )
+            f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
             for line in lines: 
                 f.write(line)
             f.write(text+ "\n")
     except:
-        with open("results/" +fileName, 'w') as f:
+        with open("data/" +fileName, 'w') as f:
+            f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )
+            f.write("---- Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
+
             f.write(text+ "\n")
 

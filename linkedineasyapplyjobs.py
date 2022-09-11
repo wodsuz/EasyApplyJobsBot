@@ -45,6 +45,10 @@ class Linkedin:
             totalJobs = self.driver.find_element(By.XPATH,'//small').text 
             totalPages = utils.jobsToPages(totalJobs)
 
+            urlWords =  utils.urlToKeywords(url)
+            lineToWrite = "\n Category: " + urlWords[0] + ", Location " +urlWords[1] + " Applying " +str(totalJobs)+ " jobs."
+            self.displayWriteResults(lineToWrite)
+
             for page in range(totalPages):
                 currentPageJobs = constants.jobsPerPage * page
                 url = url +"&start="+ str(currentPageJobs)
@@ -88,7 +92,9 @@ class Linkedin:
 
                                 comPercentage = self.driver.find_element(By.XPATH,'html/body/div[3]/div/div/div[2]/div/div/span').text
                                 percenNumber = int(comPercentage[0:comPercentage.index("%")])
-                                self.applyProcess(percenNumber,offerPage)
+                                result = self.applyProcess(percenNumber,offerPage)
+                                lineToWrite = jobProperties + " | " + result
+                                self.displayWriteResults(lineToWrite)
                             
                             except Exception as e: 
                                 lineToWrite = jobProperties + " | " + "* Cannot apply to this Job! " +str(offerPage)
@@ -99,7 +105,6 @@ class Linkedin:
 
                     time.sleep(2)
 
-            urlWords =  utils.urlToKeywords(url)
             print("Category: " + urlWords[0] + "," +urlWords[1]+ " applied: " + str(countApplied) +
                   " jobs out of " + str(countJobs) + ".")
         
@@ -107,16 +112,45 @@ class Linkedin:
 
     def getJobProperties(self, count):
         textToWrite = ""
-        try: 
+        jobTitle = ""
+        jobCompany = ""
+        jobLocation = ""
+        jobWOrkPlace = ""
+        jobPostedDate = ""
+        jobApplications = ""
+
+        try:
             jobTitle = self.driver.find_element(By.XPATH,"//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
+        except Exception as e:
+            print("Error in getting jobTitle: " +str(e))
+            jobTitle = ""
+        try:
             jobCompany = self.driver.find_element(By.XPATH,"//a[contains(@class, 'ember-view t-black t-normal')]").get_attribute("innerHTML").strip()
+        except Exception as e:
+            print("Error in getting jobCompany: " +str(e))
+            jobCompany = ""
+        try:
             jobLocation = self.driver.find_element(By.XPATH,"//span[contains(@class, 'bullet')]").get_attribute("innerHTML").strip()
+        except Exception as e:
+            print("Error in getting jobLocation: " +str(e))
+            jobLocation = ""
+        try:
             jobWOrkPlace = self.driver.find_element(By.XPATH,"//span[contains(@class, 'workplace-type')]").get_attribute("innerHTML").strip()
+        except Exception as e:
+            print("Error in getting jobWOrkPlace: " +str(e))
+            jobWOrkPlace = ""
+        try:
             jobPostedDate = self.driver.find_element(By.XPATH,"//span[contains(@class, 'posted-date')]").get_attribute("innerHTML").strip()
+        except Exception as e:
+            print("Error in getting jobPostedDate: " +str(e))
+            jobPostedDate = ""
+        try:
             jobApplications= self.driver.find_element(By.XPATH,"//span[contains(@class, 'applicant-count')]").get_attribute("innerHTML").strip()
-            textToWrite = str(count)+ " | " +jobTitle+  " | " +jobCompany+  " | "  +jobLocation+ " | "  +jobWOrkPlace+ " | " +jobPostedDate+ " | " +jobApplications
-        except:
-            textToWrite = " |  |  |  |  | " 
+        except Exception as e:
+            print("Error in getting jobApplications: " +str(e))
+            jobApplications = ""
+
+        textToWrite = str(count)+ " | " +jobTitle+  " | " +jobCompany+  " | "  +jobLocation+ " | "  +jobWOrkPlace+ " | " +jobPostedDate+ " | " +jobApplications
         return textToWrite
 
     def easyApplyButton(self):
@@ -129,8 +163,9 @@ class Linkedin:
 
         return EasyApplyButton
 
-    def applyProcess(self, percentage,offerPage):
-        applyPages = math.floor(100 / percentage)   
+    def applyProcess(self, percentage, offerPage):
+        applyPages = math.floor(100 / percentage) 
+        result = ""  
         try:
             for pages in range(applyPages-2):
                 self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
@@ -139,17 +174,17 @@ class Linkedin:
             time.sleep(3)
             self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Submit application']").click()
             time.sleep(3)
-            print("* Just Applied to this job: " +str(offerPage))
+            result = "* Just Applied to this job: " +str(offerPage)
         except:
-            print("* " +str(applyPages)+ " Pages, couldn't apply to this job! Extra info needed. Link: " +str(offerPage))
-        return applyPages
+            result = "* " +str(applyPages)+ " Pages, couldn't apply to this job! Extra info needed. Link: " +str(offerPage)
+        return result
     
     def donate(self):
         print('If you like the project, please support me so that i can make more such projects, thanks!')
         try:
             self.driver.get('https://commerce.coinbase.com/checkout/923b8005-792f-4874-9a14-2992d0b30685')
         except Exception as e:
-            print(e)
+            print("Error in donate: " +e)
 
     def displayWriteResults(self,lineToWrite: str):
         try:
