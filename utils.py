@@ -1,5 +1,6 @@
 import math,constants
 from typing import List
+import time
 
 def colored(r, g, b, text):
     return "\033[38;2;{};{};{}m{} \033[38;2;255;255;255m".format(r, g, b, text)
@@ -34,4 +35,21 @@ def urlToKeywords(url: str) -> List[str]:
     keyword = url[url.index("keywords=")+9:url.index("&location") ] 
     location = url[url.index("location=")+9:url.index("&f_E") ] 
     return [keyword,location]
+
+def writeResults(text: str):
+    timeStr = time.strftime("%Y%m%d")
+    fileName = "Applied Jobs DATA - " +timeStr + ".txt"
+    try:
+        with open("results/" +fileName) as file:
+            lines = []
+            for line in file:
+                lines.append(line)
+                
+        with open("results/" +fileName, 'w') as f:
+            for line in lines: 
+                f.write(line)
+            f.write(text+ "\n")
+    except:
+        with open("results/" +fileName, 'w') as f:
+            f.write(text+ "\n")
 

@@ -27,9 +27,9 @@ browser = webdriver.Firefox(options=options)
 try:
     browser.get('https://www.ongundemirag.com')
     if(browser.title.index("Ongun")>-1):
-        print("✅ Selenium is working succesfully!")
+        print("✅ Selenium and geckodriver is working succesfully!")
     else:
-        print("❌ Please check if Selenium is installed")
+        print("❌ Please check if Selenium and geckodriver is installed")
 except Exception as e:
     print(e)
 finally:
