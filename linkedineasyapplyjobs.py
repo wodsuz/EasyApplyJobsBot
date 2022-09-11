@@ -24,10 +24,8 @@ class Linkedin:
         options.add_argument('--no-sandbox')
         options.add_argument("--disable-extensions")
 
-        # Disable webdriver flags or you will be easily detectable
         options.add_argument("--disable-blink-features")
         options.add_argument("--disable-blink-features=AutomationControlled")
-        # add profile 
         options.add_argument("-profile")
         options.add_argument(firefoxProfilePath)
 
