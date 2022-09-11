@@ -24,9 +24,9 @@ There are several features and simplifications I'd like to add to this project. 
 You can currently, purchase full in depth detailed tutorial explaining how this bot is working, one hour booking session where i step by step build and run the bot on your machine or 5 videos
 showing how this can be used. To buy, support this project and help me add more features. <br>
 
-[**Purchase 10 working videos of this bot**](https://commerce.coinbase.com/checkout/40715b26-f80f-4335-bc35-8edf295bc913)
-[**Purchase 1 hour long tech support to install the bot**](https://commerce.coinbase.com/checkout/bfc45949-3719-4cac-8fc9-f9111b47a009)
-[**Purchase documentation of this bot**](https://commerce.coinbase.com/checkout/03546cb2-8691-4837-91ec-a86cae1cb25d)
+[**Purchase 10 working videos of this bot**](https://commerce.coinbase.com/checkout/40715b26-f80f-4335-bc35-8edf295bc913) <br>
+[**Purchase 1 hour long tech support to install the bot**](https://commerce.coinbase.com/checkout/bfc45949-3719-4cac-8fc9-f9111b47a009) <br>
+[**Purchase documentation of this bot**](https://commerce.coinbase.com/checkout/03546cb2-8691-4837-91ec-a86cae1cb25d) <br>
 
 ## Installation
 
@@ -65,8 +65,6 @@ running below codes,
    Here is the result you should get after running test files,
    ![test1](https://user-images.githubusercontent.com/34207598/189535308-c2c546de-caec-4460-823d-dd5ca208c480.png)
 
-   
-
 ## How to Set up (long old way):
 
 This tutorial briefly explains how to set up LinkedIn Easy Apply jobs bot. With few modifications you can make your own bot or try my other bots for other platforms.
@@ -93,4 +91,3 @@ This tutorial briefly explains how to set up LinkedIn Easy Apply jobs bot. With 
 ![2](https://user-images.githubusercontent.com/34207598/128695725-5250cc6d-72e7-4a79-b060-8decfb9be54a.png)
 ![2022-09-11_18-08](https://user-images.githubusercontent.com/34207598/189535397-2673d603-9489-4104-a066-dd66aca624fd.png)
 ![2022-09-11_18-09](https://user-images.githubusercontent.com/34207598/189535410-2131a9d0-fd63-419f-a5ea-c663103877d2.png)
-
