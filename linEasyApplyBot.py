@@ -1,5 +1,5 @@
 import time,os,math
-import jobPreferances.config as config,utils,constants
+import data.config as config,utils,constants
  
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options

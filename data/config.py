@@ -1,5 +1,5 @@
 # location you want to search the jobs - ex : ["Poland"]
-location = ["Poland" , "Europe" , "United_Kingdom", "Asia", "Brazil"]
+location = ["Europe" , "United_Kingdom", "Asia"]
 
 # keywords related with your job search
 keywords = ["typescript", "react", "frontend","javascript", "vue", "python", "programming", "blockchain"]

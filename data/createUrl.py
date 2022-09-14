@@ -40,7 +40,7 @@ def datePosted():
             datePosted = "&f_TPR=r86400&"
     return datePosted
 
-with open('./data/urlData.txt', 'w') as f:
+with open('data/urlData.txt', 'w') as f:
     linkedinJobLinks = keywordLocationJoin()
     for url in linkedinJobLinks:
         f.write(url+ "\n")
