@@ -52,6 +52,7 @@ def writeResults(text: str):
             for line in lines: 
                 f.write(line)
             f.write(text+ "\n")
+            
     except:
         with open("data/" +fileName, 'w') as f:
             f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )

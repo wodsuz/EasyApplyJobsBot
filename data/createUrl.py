@@ -2,6 +2,7 @@ import config
 
 linkedinPath = "https://www.linkedin.com/jobs/search/"
 
+#TODO - Optimize this
 def keywordLocationJoin():
     path = []
     for location in config.location:

@@ -1,5 +1,5 @@
-import time,os,math
-import data.config as config,utils,constants
+import time,os,math,random
+import utils,constants
  
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
@@ -12,8 +12,6 @@ class Linkedin:
         load_dotenv()
 
         self.driver = webdriver.Firefox(options=self.browser_options())
-
-        time.sleep(3)
 
     def browser_options(self):
         options = Options()
@@ -51,7 +49,7 @@ class Linkedin:
                 currentPageJobs = constants.jobsPerPage * page
                 url = url +"&start="+ str(currentPageJobs)
                 self.driver.get(url)
-                time.sleep(5)
+                time.sleep(random.uniform(1, constants.botSpeed))
 
                 offersPerPage = self.driver.find_elements(By.XPATH,'//li[@data-occludable-job-id]')
 
@@ -63,30 +61,29 @@ class Linkedin:
                 for jobID in offerIds:
                     offerPage = 'https://www.linkedin.com/jobs/view/' + str(jobID)
                     self.driver.get(offerPage)
-                    time.sleep(5)
+                    time.sleep(random.uniform(1, constants.botSpeed))
 
                     countJobs += 1
 
                     jobProperties = self.getJobProperties(countJobs) 
-                    time.sleep(5)
                     
                     button = self.easyApplyButton()
 
                     if button is not False:
                         button.click()
-                        time.sleep(2)
+                        time.sleep(random.uniform(1, constants.botSpeed))
                         countApplied += 1
                         try:
                             self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
-                            time.sleep(3)
-                            
+                            time.sleep(random.uniform(1, constants.botSpeed))
+
                             lineToWrite = jobProperties + " | " + "* Just Applied to this job: "  +str(offerPage)
                             self.displayWriteResults(lineToWrite)
 
                         except:
                             try:
                                 self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
-                                time.sleep(3)
+                                time.sleep(random.uniform(1, constants.botSpeed))
 
                                 comPercentage = self.driver.find_element(By.XPATH,'html/body/div[3]/div/div/div[2]/div/div/span').text
                                 percenNumber = int(comPercentage[0:comPercentage.index("%")])
@@ -101,7 +98,6 @@ class Linkedin:
                         lineToWrite = jobProperties + " | " + "* Already applied! Job: " +str(offerPage)
                         self.displayWriteResults(lineToWrite)
 
-                    time.sleep(2)
 
             print("Category: " + urlWords[0] + "," +urlWords[1]+ " applied: " + str(countApplied) +
                   " jobs out of " + str(countJobs) + ".")
@@ -167,11 +163,14 @@ class Linkedin:
         try:
             for pages in range(applyPages-2):
                 self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
-                time.sleep(3)
-            self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Review your application']").click()
-            time.sleep(3)
+                time.sleep(random.uniform(1, constants.botSpeed))
+
+            self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Review your application']").click() 
+            time.sleep(random.uniform(1, constants.botSpeed))
+
             self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Submit application']").click()
-            time.sleep(3)
+            time.sleep(random.uniform(1, constants.botSpeed))
+
             result = "* Just Applied to this job: " +str(offerPage)
         except:
             result = "* " +str(applyPages)+ " Pages, couldn't apply to this job! Extra info needed. Link: " +str(offerPage)
