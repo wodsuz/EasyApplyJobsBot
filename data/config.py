@@ -1,8 +1,8 @@
 # location you want to search the jobs - ex : ["Poland"]
-location = ["Łódź" , "İstanbul"]
+location = ["Europe" , "Asia"]
 
 # keywords related with your job search
-keywords = ["typescript", "react", "frontend","javascript", "vue", "python", "programming", "blockchain"]
+keywords = ["frontend", "react", "typescript","javascript", "vue", "python", "programming", "blockchain"]
 
 #job experience Level - ex:  ["Internship", "Entry level" , "Associate" , "Mid-Senior level" , "Director" , "Executive"]
 experienceLevels = [ "Entry level" , "Mid-Senior level" ]

@@ -2,8 +2,14 @@ import math,constants
 from typing import List
 import time
 
-def colored(r, g, b, text):
-    return "\033[38;2;{};{};{}m{} \033[38;2;255;255;255m".format(r, g, b, text)
+def prRed(prt):
+    print(f"\033[91m{prt}\033[00m")
+
+def prGreen(prt):
+    print(f"\033[92m{prt}\033[00m")
+
+def prYellow(prt):
+    print(f"\033[93m{prt}\033[00m")
 
 def getUrlDataFile():
     urlData = ""
@@ -12,8 +18,7 @@ def getUrlDataFile():
         urlData = file.readlines()
     except FileNotFoundError:
         text = "FileNotFound:urlData.txt file is not found. Please run ./jobPreferances/createUrl.py first and make sure you have urlData.txt in /data folder generated."
-        colored_text = colored(255, 0, 0, text) 
-        print(colored_text)
+        prRed(text)
     return urlData
 
 def jobsToPages(numOfJobs: str) -> int:
