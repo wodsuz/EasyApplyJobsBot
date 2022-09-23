@@ -4,6 +4,7 @@ import utils,constants
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
+from utils import prGreen,prRed,prYellow
 
 from dotenv import load_dotenv
 
@@ -42,7 +43,7 @@ class Linkedin:
             totalPages = utils.jobsToPages(totalJobs)
 
             urlWords =  utils.urlToKeywords(url)
-            lineToWrite = "\n Category: " + urlWords[0] + ", Location " +urlWords[1] + " Applying " +str(totalJobs)+ " jobs."
+            lineToWrite = "\n Category: " + urlWords[0] + ", Location: " +urlWords[1] + ", Applying " +str(totalJobs)+ " jobs."
             self.displayWriteResults(lineToWrite)
 
             for page in range(totalPages):
@@ -77,7 +78,7 @@ class Linkedin:
                             self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
                             time.sleep(random.uniform(1, constants.botSpeed))
 
-                            lineToWrite = jobProperties + " | " + "* Just Applied to this job: "  +str(offerPage)
+                            lineToWrite = jobProperties + " | " + "* 🥳 Just Applied to this job: "  +str(offerPage)
                             self.displayWriteResults(lineToWrite)
 
                         except:
@@ -92,14 +93,14 @@ class Linkedin:
                                 self.displayWriteResults(lineToWrite)
                             
                             except Exception as e: 
-                                lineToWrite = jobProperties + " | " + "* Cannot apply to this Job! " +str(offerPage)
+                                lineToWrite = jobProperties + " | " + "* 🥵 Cannot apply to this Job! " +str(offerPage)
                                 self.displayWriteResults(lineToWrite)
                     else:
-                        lineToWrite = jobProperties + " | " + "* Already applied! Job: " +str(offerPage)
+                        lineToWrite = jobProperties + " | " + "* 🥳 Already applied! Job: " +str(offerPage)
                         self.displayWriteResults(lineToWrite)
 
 
-            print("Category: " + urlWords[0] + "," +urlWords[1]+ " applied: " + str(countApplied) +
+            prYellow("Category: " + urlWords[0] + "," +urlWords[1]+ " applied: " + str(countApplied) +
                   " jobs out of " + str(countJobs) + ".")
         
         self.donate()
@@ -116,32 +117,32 @@ class Linkedin:
         try:
             jobTitle = self.driver.find_element(By.XPATH,"//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            print("Error in getting jobTitle: " +str(e))
+            prRed("Error in getting jobTitle: " +str(e))
             jobTitle = ""
         try:
             jobCompany = self.driver.find_element(By.XPATH,"//a[contains(@class, 'ember-view t-black t-normal')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            print("Error in getting jobCompany: " +str(e))
+            prRed("Error in getting jobCompany: " +str(e))
             jobCompany = ""
         try:
             jobLocation = self.driver.find_element(By.XPATH,"//span[contains(@class, 'bullet')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            print("Error in getting jobLocation: " +str(e))
+            prRed("Error in getting jobLocation: " +str(e))
             jobLocation = ""
         try:
             jobWOrkPlace = self.driver.find_element(By.XPATH,"//span[contains(@class, 'workplace-type')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            print("Error in getting jobWOrkPlace: " +str(e))
+            prRed("Error in getting jobWOrkPlace: " +str(e))
             jobWOrkPlace = ""
         try:
             jobPostedDate = self.driver.find_element(By.XPATH,"//span[contains(@class, 'posted-date')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            print("Error in getting jobPostedDate: " +str(e))
+            prRed("Error in getting jobPostedDate: " +str(e))
             jobPostedDate = ""
         try:
             jobApplications= self.driver.find_element(By.XPATH,"//span[contains(@class, 'applicant-count')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            print("Error in getting jobApplications: " +str(e))
+            prRed("Error in getting jobApplications: " +str(e))
             jobApplications = ""
 
         textToWrite = str(count)+ " | " +jobTitle+  " | " +jobCompany+  " | "  +jobLocation+ " | "  +jobWOrkPlace+ " | " +jobPostedDate+ " | " +jobApplications
@@ -171,27 +172,27 @@ class Linkedin:
             self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Submit application']").click()
             time.sleep(random.uniform(1, constants.botSpeed))
 
-            result = "* Just Applied to this job: " +str(offerPage)
+            result = "* 🥳 Just Applied to this job: " +str(offerPage)
         except:
-            result = "* " +str(applyPages)+ " Pages, couldn't apply to this job! Extra info needed. Link: " +str(offerPage)
+            result = "* 🥵 " +str(applyPages)+ " Pages, couldn't apply to this job! Extra info needed. Link: " +str(offerPage)
         return result
     
     def donate(self):
-        print('If you like the project, please support me so that i can make more such projects, thanks!')
+        prYellow('If you like the project, please support me so that i can make more such projects, thanks!')
         try:
             self.driver.get('https://commerce.coinbase.com/checkout/923b8005-792f-4874-9a14-2992d0b30685')
         except Exception as e:
-            print("Error in donate: " +e)
+            prRed("Error in donate: " +e)
 
     def displayWriteResults(self,lineToWrite: str):
         try:
             print(lineToWrite)
             utils.writeResults(lineToWrite)
         except Exception as e:
-            print("Error in DisplayWriteResults: " +e)
+            prRed("Error in DisplayWriteResults: " +e)
 
 
 start = time.time()
 Linkedin().Link_job_apply()
 end = time.time()
-print("---Took: " + str(round((time.time() - start)/60)) + " minute(s).")
+prYellow("---Took: " + str(round((time.time() - start)/60)) + " minute(s).")
