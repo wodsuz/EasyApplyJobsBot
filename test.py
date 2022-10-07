@@ -65,6 +65,7 @@ def checkSeleniumLinkedin():
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument("-profile")
     options.add_argument(firefoxProfileRootDir)
+    options.headless = True
 
     browser = webdriver.Firefox(options=options)
 
@@ -82,7 +83,7 @@ def checkSeleniumLinkedin():
         browser.get('https://www.linkedin.com/feed/')
         time.sleep(3)
         if "Feed" in browser.title:
-            prGreen('✅ Successfully you are logged in, you can now run main bot script!')
+            prGreen('✅ Successfully you are logged in to Linkedin, you can now run main bot script!')
         else:
             prRed('❌ You are not automatically logged in, please set up your Firefox Account correctly.')
     except Exception as e:

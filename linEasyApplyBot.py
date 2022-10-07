@@ -11,7 +11,6 @@ from dotenv import load_dotenv
 class Linkedin:
     def __init__(self):
         load_dotenv()
-
         self.driver = webdriver.Firefox(options=self.browser_options())
 
     def browser_options(self):
