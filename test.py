@@ -65,7 +65,7 @@ def checkSeleniumLinkedin():
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument("-profile")
     options.add_argument(firefoxProfileRootDir)
-    options.headless = True
+    #options.headless = True
 
     browser = webdriver.Firefox(options=options)
 
@@ -77,7 +77,6 @@ def checkSeleniumLinkedin():
             prRed("❌ Please check if Selenium and geckodriver is installed")
     except Exception as e:
         prRed(e)
-
 
     try:
         browser.get('https://www.linkedin.com/feed/')

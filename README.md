@@ -92,5 +92,7 @@ This tutorial briefly explains how to set up LinkedIn Easy Apply jobs bot. With 
 ![2022-09-11_18-09](https://user-images.githubusercontent.com/34207598/189535410-2131a9d0-fd63-419f-a5ea-c663103877d2.png)
 
 ## Future Implementations
+
 - Headless browser experience (run the bot without launching the browser)
 - Add support to other major job seeking websites (Personio, Workable, Greenhouse)
+- Add preferance for job type (remote/hybrid) and sale option
