@@ -93,8 +93,8 @@ def checkSeleniumLinkedin():
 
 
 checkPython()
-checkFirefox()
 checkPip()
 checkSelenium()
+checkFirefox()
 checkDotenv()
 checkSeleniumLinkedin()
