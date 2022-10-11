@@ -17,3 +17,5 @@ jobType = ["Full-time", "Part-time" , "Contract"]
 #remote  - ex: ["On-site" , "Remote" , "Hybrid"]
 remote = ["On-site" , "Remote" , "Hybrid"]
 
+#salary - ex:["$40,000+", "$60,000+", "$80,000+", "$100,000+", "$120,000+", "$140,000+", "$160,000+", "$180,000+", "$200,000+" ] - select only one
+salary = [ "$80,000+"]

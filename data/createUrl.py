@@ -6,7 +6,7 @@ def generateUrlLinks():
     path = []
     for location in config.location:
         for keyword in config.keywords:
-                url = linkJobUrl + "?f_AL=true&keywords=" +keyword+jobType()+remote()+checkJobLocation(location)+jobExp()+datePosted() 
+                url = linkJobUrl + "?f_AL=true&keywords=" +keyword+jobType()+remote()+checkJobLocation(location)+jobExp()+datePosted()+salary()
                 path.append(url)
     return path
 
@@ -134,6 +134,29 @@ def remote():
                 jobRemote += "%2C3"
 
     return jobRemote
+
+def salary():
+    salary = ""
+    match config.salary[0]:
+        case "$40,000+":
+            salary = "f_SB2=1&"
+        case "$60,000+":
+            salary = "f_SB2=2&"
+        case "$80,000+":
+            salary = "f_SB2=3&"
+        case "$100,000+":
+            salary = "f_SB2=4&"
+        case "$120,000+":
+            salary = "f_SB2=5&"
+        case "$140,000+":
+            salary = "f_SB2=6&"
+        case "$160,000+":
+            salary = "f_SB2=7&"    
+        case "$180,000+":
+            salary = "f_SB2=8&"    
+        case "$200,000+":
+            salary = "f_SB2=9&"                  
+    return salary
 
 with open('urlData.txt', 'w') as f:
     linkedinJobLinks = generateUrlLinks()

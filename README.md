@@ -42,6 +42,7 @@ showing how this can be used. To buy, support this project and help me add more 
 ## Features 💡
 
 - Ability to filter jobs, by easy apply, by location (Worldwide, Europe, Poland, etc.), by keyword (python, react, node), by experience, position, job type and date posted.
+- Apply based on your salary preferance (works best for job offers from States)
 - Automatically apply single page jobs in which you need to send your up-to-date CV and contact.
 - Automatically apply more than one page long offers with the requirements saved in LinkedIn like experience, legal rights, resume etc.
 - Output the results in a data txt file where you can later work on.
@@ -95,4 +96,4 @@ This tutorial briefly explains how to set up LinkedIn Easy Apply jobs bot. With 
 
 - Headless browser experience (run the bot without launching the browser)
 - Add support to other major job seeking websites (Personio, Workable, Greenhouse)
-- Add preferance for job type (remote/hybrid) and sale option
+- Add preferance for sale option
