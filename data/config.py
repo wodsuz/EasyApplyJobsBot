@@ -1,4 +1,5 @@
 # location you want to search the jobs - ex : ["Poland"]
+# continent locations:["Europe", "Asia", "Australia", "NorthAmerica", "SouthAmerica", "Africa", "Australia"]
 location = ["Europe" , "Asia", "NorthAmerica"]
 
 # keywords related with your job search
