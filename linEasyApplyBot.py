@@ -4,7 +4,7 @@ import utils,constants
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
-from utils import prGreen,prRed,prYellow
+from utils import prRed,prYellow
 
 from dotenv import load_dotenv
 
