@@ -41,7 +41,7 @@ showing how this can be used. To buy, support this project and help me add more 
 
 ## Features 💡
 
-- Ability to filter jobs, by easy apply, by location (Worldwide, Europe, Poland, etc.), by keyword (python, react, node), by experience and position.
+- Ability to filter jobs, by easy apply, by location (Worldwide, Europe, Poland, etc.), by keyword (python, react, node), by experience, position, job type and date posted.
 - Automatically apply single page jobs in which you need to send your up-to-date CV and contact.
 - Automatically apply more than one page long offers with the requirements saved in LinkedIn like experience, legal rights, resume etc.
 - Output the results in a data txt file where you can later work on.
