@@ -160,5 +160,5 @@ cython_debug/
 #.idea/
 
 # user files
-geckodriver.log
+geckodriver
 *.txt
