@@ -6,7 +6,7 @@ def generateUrlLinks():
     path = []
     for location in config.location:
         for keyword in config.keywords:
-                url = linkJobUrl + "?f_AL=true&keywords=" +keyword+ "&" + jobType()+ "&" +remote()  +checkJobLocation(location) + jobExp() + datePosted() 
+                url = linkJobUrl + "?f_AL=true&keywords=" +keyword+jobType()+remote()+checkJobLocation(location)+jobExp()+datePosted() 
                 path.append(url)
     return path
 
@@ -24,7 +24,7 @@ def checkJobLocation(job):
         case "australia":
             jobLoc +=  "&geoId=101452733"
         case "africa":
-            jobLoc += "geoId=103537801"
+            jobLoc += "&geoId=103537801"
 
     return jobLoc
 
@@ -81,19 +81,19 @@ def jobType():
     jobType = ""
     match firstjobType:
         case "Full-time":
-            jobType = "f_JT=F"
+            jobType = "&f_JT=F"
         case "Part-time":
-            jobType = "f_JT=P"
+            jobType = "&f_JT=P"
         case "Contract":
-            jobType = "f_JT=C"
+            jobType = "&f_JT=C"
         case "Temporary":
-            jobType = "f_JT=T"
+            jobType = "&f_JT=T"
         case "Volunteer":
-            jobType = "f_JT=V"
+            jobType = "&f_JT=V"
         case "Intership":
-            jobType = "f_JT=I"
+            jobType = "&f_JT=I"
         case "Other":
-            jobType = "f_JT=O"
+            jobType = "&f_JT=O"
     for index in range (1,len(jobTypeArray)):
         match jobTypeArray[index]:
             case "Full-time":
@@ -110,7 +110,7 @@ def jobType():
                 jobType  +="%2CI"
             case "Other":
                 jobType  +="%2CO"
-
+    jobType += "&"
     return jobType
 
 def remote():
