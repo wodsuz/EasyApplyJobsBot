@@ -4,6 +4,6 @@ fast = 2
 medium = 3
 slow = 5 
 
-botSpeed = medium
+botSpeed = slow
 
 # TO DO ADD OTHER PRINT CONSTANTS
