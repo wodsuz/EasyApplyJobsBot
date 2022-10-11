@@ -1,23 +1,17 @@
 import config
 
-linkedinPath = "https://www.linkedin.com/jobs/search/"
+linkJobUrl = "https://www.linkedin.com/jobs/search/"
 
-def keywordLocationJoin():
+def generateUrlLinks():
     path = []
     for location in config.location:
         for keyword in config.keywords:
-                location = checkJobLocation(location)
-                jobTyp = jobType()
-                jobRemote = remote()
-                url = linkedinPath + "?f_AL=true&keywords=" +keyword+ "&" +jobTyp+ "&" +jobRemote +"&location=" +location
-                expUrl = jobExp()
-                date = datePosted()
-                url = url + expUrl + date 
+                url = linkJobUrl + "?f_AL=true&keywords=" +keyword+ "&" + jobType()+ "&" +remote()  +checkJobLocation(location) + jobExp() + datePosted() 
                 path.append(url)
     return path
 
 def checkJobLocation(job):
-    jobLoc = job
+    jobLoc = "&location=" +job
     match job.casefold():
         case "asia":
             jobLoc += "&geoId=102393603"
@@ -142,7 +136,7 @@ def remote():
     return jobRemote
 
 with open('urlData.txt', 'w') as f:
-    linkedinJobLinks = keywordLocationJoin()
+    linkedinJobLinks = generateUrlLinks()
     for url in linkedinJobLinks:
         f.write(url+ "\n")
 
