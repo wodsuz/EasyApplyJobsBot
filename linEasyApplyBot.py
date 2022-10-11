@@ -15,17 +15,16 @@ class Linkedin:
 
     def browser_options(self):
         options = Options()
-        firefoxProfileRootDir = os.getenv('firefoxProfileRootDir')
-   
-        options.add_argument("--start-maximized")
-        options.add_argument("--ignore-certificate-errors")
-        options.add_argument('--no-sandbox')
-        options.add_argument("--disable-extensions")
+        firefoxProfileRootDirr = os.getenv('firefoxProfileRootDir')
+        #options.add_argument("--start-maximized")
+        #options.add_argument("--ignore-certificate-errors")
+        #options.add_argument('--no-sandbox')
+        #options.add_argument("--disable-extensions")
 
-        options.add_argument("--disable-blink-features")
-        options.add_argument("--disable-blink-features=AutomationControlled")
+        #options.add_argument("--disable-blink-features")
+        #options.add_argument("--disable-blink-features=AutomationControlled")
         options.add_argument("-profile")
-        options.add_argument(firefoxProfileRootDir)
+        options.add_argument(firefoxProfileRootDirr)
 
         return options
 
@@ -181,14 +180,14 @@ class Linkedin:
         try:
             self.driver.get('https://commerce.coinbase.com/checkout/923b8005-792f-4874-9a14-2992d0b30685')
         except Exception as e:
-            prRed("Error in donate: " +e)
+            prRed("Error in donate: " +str(e))
 
     def displayWriteResults(self,lineToWrite: str):
         try:
             print(lineToWrite)
             utils.writeResults(lineToWrite)
         except Exception as e:
-            prRed("Error in DisplayWriteResults: " +e)
+            prRed("Error in DisplayWriteResults: " +str(e))
 
 
 start = time.time()

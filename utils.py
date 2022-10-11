@@ -45,13 +45,13 @@ def writeResults(text: str):
     timeStr = time.strftime("%Y%m%d")
     fileName = "Applied Jobs DATA - " +timeStr + ".txt"
     try:
-        with open("data/" +fileName) as file:
+        with open("data/" +fileName, encoding="utf-8" ) as file:
             lines = []
             for line in file:
                 if "----" not in line:
                     lines.append(line)
                 
-        with open("data/" +fileName, 'w') as f:
+        with open("data/" +fileName, 'w' ,encoding="utf-8") as f:
             f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )
             f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
             for line in lines: 
@@ -59,7 +59,7 @@ def writeResults(text: str):
             f.write(text+ "\n")
             
     except:
-        with open("data/" +fileName, 'w') as f:
+        with open("data/" +fileName, 'w', encoding="utf-8") as f:
             f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )
             f.write("---- Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
 
