@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  selenium:
+    image: seleniarm/standalone-chromium
+    ports:
+      - 4444:4444
+    restart: always
+
+  app:
+    build:
+      context: .
+    volumes:
+      - ./app:/app
+    command: sh -c "python3 bot.py"
+    depends_on:
+      - selenium
+    shm_size: "2dgb"

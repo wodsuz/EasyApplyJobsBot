@@ -23,7 +23,7 @@ There are several features and simplifications I'd like to add to this project. 
 You can currently, purchase full in depth detailed tutorial explaining how this bot is working, one hour booking session where i step by step build and run the bot on your machine or 5 videos
 showing how this can be used. To buy, support this project and help me add more features. <br>
 
-- [**Purchase 10 working videos of this bot**](https://commerce.coinbase.com/checkout/40715b26-f80f-4335-bc35-8edf295bc913)
+- [**Purchase working videos for this bot**](https://commerce.coinbase.com/checkout/40715b26-f80f-4335-bc35-8edf295bc913)
 - [**Purchase 1 hour long tech support to install the bot**](https://commerce.coinbase.com/checkout/bfc45949-3719-4cac-8fc9-f9111b47a009)
 - [**Purchase documentation of this bot**](https://commerce.coinbase.com/checkout/03546cb2-8691-4837-91ec-a86cae1cb25d)
 
