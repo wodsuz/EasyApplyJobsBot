@@ -65,3 +65,5 @@ def writeResults(text: str):
 
             f.write(text+ "\n")
 
+def printInfoMes(bot:str):
+    prYellow("ℹ️ " +bot+ " is starting soon... ")
