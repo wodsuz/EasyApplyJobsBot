@@ -25,8 +25,8 @@ showing how this can be used. To buy, support this project and help me add more 
 
 - [**Purchase working videos for this bot**](https://commerce.coinbase.com/checkout/40715b26-f80f-4335-bc35-8edf295bc913)
 - [**Purchase online call tech support to install the bot for Windows**](https://commerce.coinbase.com/checkout/bfc45949-3719-4cac-8fc9-f9111b47a009)
-- [**Purchase online call tech support to install the bot for Linux**](hhttps://commerce.coinbase.com/checkout/c27538b8-ddee-4c68-a0eb-da43e6014043)
-- [**Purchase online call tech support to install the bot for Mac OS**](hhttps://commerce.coinbase.com/checkout/52472ffa-1653-4f56-b92b-60983e627e7c)
+- [**Purchase online call tech support to install the bot for Linux**](https://commerce.coinbase.com/checkout/c27538b8-ddee-4c68-a0eb-da43e6014043)
+- [**Purchase online call tech support to install the bot for Mac OS**](https://commerce.coinbase.com/checkout/52472ffa-1653-4f56-b92b-60983e627e7c)
 - [**Purchase documentation of this bot for Windows**](https://commerce.coinbase.com/checkout/03546cb2-8691-4837-91ec-a86cae1cb25d)
 - [**Purchase documentation of this bot for Linux**](https://commerce.coinbase.com/checkout/b6ec4e61-cded-4845-a9b8-f87079482e7f)
 - [**Purchase documentation of this bot for Mac OS**](https://commerce.coinbase.com/checkout/effe4a67-895f-4862-ad77-954217d752e6)
