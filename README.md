@@ -38,9 +38,8 @@ showing how this can be used. To buy, support this project and help me add more 
 - Install dependencies with `pip install -r requirements.txt`
 - Make sure GeckoDriver is installed
 - Make sure Firefox profile is created and its root directory is listed inside the .env file you created.
-- Modify jobPreferances/config.py according to your demands.
-- Run jobPreferances/createUrl.py with `python3 createUrl.py` and check if you can see urlData.txt file under data folder
-- Run `python3 linEasyApplyBot.py`
+- Modify config.py according to your demands.
+- Run `python3 linkedin.py`
 - Check Applied Jobs DATA .txt file is generate under /data folder
 
 ## Features 💡

@@ -3,13 +3,24 @@ import utils,constants
  
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from utils import prRed,prYellow
+from utils import prRed,prYellow,prGreen
 
 class Linkedin:
     def __init__(self):
         self.driver = webdriver.Firefox(options=utils.browserOptions())
+    
+    def generateUrls(self):
+        try: 
+            with open('data/urlData.txt', 'w') as file:
+                linkedinJobLinks = utils.LinkedinUrlGenerate().generateUrlLinks()
+                for url in linkedinJobLinks:
+                    file.write(url+ "\n")
+            prGreen("Urls are created successfully, now the bot will visit those urls.")
+        except:
+            prRed("Couldnt generate url, make sure you have /data folder and modified config.py file for your preferances.")
 
     def linkJobApply(self):
+        self.generateUrls()
         countApplied = 0
         countJobs = 0
 
