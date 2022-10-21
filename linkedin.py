@@ -1,4 +1,4 @@
-import time,math,random
+import time,math,random,os
 import utils,constants
  
 from selenium import webdriver
@@ -10,6 +10,8 @@ class Linkedin:
         self.driver = webdriver.Firefox(options=utils.browserOptions())
     
     def generateUrls(self):
+        if not os.path.exists('data'):
+            os.makedirs('data')
         try: 
             with open('data/urlData.txt', 'w') as file:
                 linkedinJobLinks = utils.LinkedinUrlGenerate().generateUrlLinks()
