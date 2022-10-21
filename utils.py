@@ -1,6 +1,24 @@
-import math,constants
+import math,constants,config
 from typing import List
 import time
+
+from selenium.webdriver.firefox.options import Options
+
+def browserOptions():
+    options = Options()
+    firefoxProfileRootDir = config.firefoxProfileRootDir
+    options.add_argument("--start-maximized")
+    options.add_argument("--ignore-certificate-errors")
+    options.add_argument('--no-sandbox')
+    options.add_argument("--disable-extensions")
+    if(config.headless):
+        options.add_argument("--headless")
+    options.add_argument("--disable-blink-features")
+    #options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_argument("-profile")
+    options.add_argument(firefoxProfileRootDir)
+
+    return options
 
 def prRed(prt):
     print(f"\033[91m{prt}\033[00m")
@@ -67,3 +85,10 @@ def writeResults(text: str):
 
 def printInfoMes(bot:str):
     prYellow("ℹ️ " +bot+ " is starting soon... ")
+
+def donate(self):
+    prYellow('If you like the project, please support me so that i can make more such projects, thanks!')
+    try:
+        self.driver.get('https://commerce.coinbase.com/checkout/923b8005-792f-4874-9a14-2992d0b30685')
+    except Exception as e:
+        prRed("Error in donate: " +str(e))

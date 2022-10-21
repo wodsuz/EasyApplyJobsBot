@@ -1,34 +1,15 @@
-import time,os,math,random
+import time,math,random
 import utils,constants
  
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from utils import prRed,prYellow
 
-from dotenv import load_dotenv
-
 class Linkedin:
     def __init__(self):
-        load_dotenv()
-        self.driver = webdriver.Firefox(options=self.browser_options())
+        self.driver = webdriver.Firefox(options=utils.browserOptions())
 
-    def browser_options(self):
-        options = Options()
-        firefoxProfileRootDir = os.getenv('firefoxProfileRootDir')
-        options.add_argument("--start-maximized")
-        options.add_argument("--ignore-certificate-errors")
-        options.add_argument('--no-sandbox')
-        options.add_argument("--disable-extensions")
-
-        options.add_argument("--disable-blink-features")
-        #options.add_argument("--disable-blink-features=AutomationControlled")
-        options.add_argument("-profile")
-        options.add_argument(firefoxProfileRootDir)
-
-        return options
-
-    def Link_job_apply(self):
+    def linkJobApply(self):
         countApplied = 0
         countJobs = 0
 
@@ -101,7 +82,7 @@ class Linkedin:
             prYellow("Category: " + urlWords[0] + "," +urlWords[1]+ " applied: " + str(countApplied) +
                   " jobs out of " + str(countJobs) + ".")
         
-        self.donate()
+        utils.donate(self)
 
     def getJobProperties(self, count):
         textToWrite = ""
@@ -174,13 +155,6 @@ class Linkedin:
         except:
             result = "* 🥵 " +str(applyPages)+ " Pages, couldn't apply to this job! Extra info needed. Link: " +str(offerPage)
         return result
-    
-    def donate(self):
-        prYellow('If you like the project, please support me so that i can make more such projects, thanks!')
-        try:
-            self.driver.get('https://commerce.coinbase.com/checkout/923b8005-792f-4874-9a14-2992d0b30685')
-        except Exception as e:
-            prRed("Error in donate: " +str(e))
 
     def displayWriteResults(self,lineToWrite: str):
         try:
@@ -191,6 +165,6 @@ class Linkedin:
 
 
 start = time.time()
-Linkedin().Link_job_apply()
+Linkedin().linkJobApply()
 end = time.time()
 prYellow("---Took: " + str(round((time.time() - start)/60)) + " minute(s).")
