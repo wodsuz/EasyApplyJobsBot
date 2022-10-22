@@ -13,7 +13,7 @@ class Linkedin:
         if not os.path.exists('data'):
             os.makedirs('data')
         try: 
-            with open('data/urlData.txt', 'w') as file:
+            with open('data/urlData.txt', 'w',encoding="utf-8" ) as file:
                 linkedinJobLinks = utils.LinkedinUrlGenerate().generateUrlLinks()
                 for url in linkedinJobLinks:
                     file.write(url+ "\n")
@@ -109,32 +109,32 @@ class Linkedin:
         try:
             jobTitle = self.driver.find_element(By.XPATH,"//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            prRed("Error in getting jobTitle: " +str(e))
+            prYellow("Warning in getting jobTitle: " +str(e)[0:50])
             jobTitle = ""
         try:
             jobCompany = self.driver.find_element(By.XPATH,"//a[contains(@class, 'ember-view t-black t-normal')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            prRed("Error in getting jobCompany: " +str(e))
+            prYellow("Warning in getting jobCompany: " +str(e)[0:50])
             jobCompany = ""
         try:
             jobLocation = self.driver.find_element(By.XPATH,"//span[contains(@class, 'bullet')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            prRed("Error in getting jobLocation: " +str(e))
+            prYellow("Warning in getting jobLocation: " +str(e)[0:50])
             jobLocation = ""
         try:
             jobWOrkPlace = self.driver.find_element(By.XPATH,"//span[contains(@class, 'workplace-type')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            prRed("Error in getting jobWOrkPlace: " +str(e))
+            prYellow("Warning in getting jobWorkPlace: " +str(e)[0:50])
             jobWOrkPlace = ""
         try:
             jobPostedDate = self.driver.find_element(By.XPATH,"//span[contains(@class, 'posted-date')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            prRed("Error in getting jobPostedDate: " +str(e))
+            prYellow("Warning in getting jobPostedDate: " +str(e)[0:50])
             jobPostedDate = ""
         try:
             jobApplications= self.driver.find_element(By.XPATH,"//span[contains(@class, 'applicant-count')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            prRed("Error in getting jobApplications: " +str(e))
+            prYellow("Warning in getting jobApplications: " +str(e)[0:50])
             jobApplications = ""
 
         textToWrite = str(count)+ " | " +jobTitle+  " | " +jobCompany+  " | "  +jobLocation+ " | "  +jobWOrkPlace+ " | " +jobPostedDate+ " | " +jobApplications

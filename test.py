@@ -3,7 +3,6 @@ import os,time,sys
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
-from dotenv import load_dotenv
 from utils import prGreen,prRed,prYellow
 
 
@@ -32,13 +31,6 @@ def checkSelenium():
     except ImportError:
         prRed("❌ Selenium not present. Install Selenium: https://pypi.org/project/selenium/")
 
-def checkDotenv():
-    try:
-        import dotenv
-        prGreen("✅ Dotenv is succesfully installed!")
-    except ImportError:
-        prRed("❌ Dotenv not present. Install Dotenv: https://pypi.org/project/python-dotenv/")
-
 def checkFirefox():
     try:
         import subprocess
@@ -52,10 +44,9 @@ def checkFirefox():
         prRed(e)
 
 def checkSeleniumLinkedin():
-    load_dotenv()
 
     options = Options()
-    firefoxProfileRootDir = os.getenv('firefoxProfileRootDir')
+    #firefoxProfileRootDir = os.getenv('firefoxProfileRootDir')
 
     options.add_argument("--start-maximized")
     options.add_argument("--ignore-certificate-errors")
@@ -63,8 +54,8 @@ def checkSeleniumLinkedin():
     options.add_argument("--disable-extensions")
     options.add_argument("--disable-blink-features")
     options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_argument("-profile")
-    options.add_argument(firefoxProfileRootDir)
+    #options.add_argument("-profile")
+    #options.add_argument(firefoxProfileRootDir)
     #options.headless = True
 
     browser = webdriver.Firefox(options=options)
@@ -96,5 +87,4 @@ checkPython()
 checkPip()
 checkSelenium()
 checkFirefox()
-checkDotenv()
 checkSeleniumLinkedin()
