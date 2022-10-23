@@ -166,3 +166,7 @@ config.py
 geckodriver.log
 *.txt
 *.exe
+
+# premium files
+angelco.py
+globalLogic.py
