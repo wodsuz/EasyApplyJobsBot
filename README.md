@@ -100,6 +100,5 @@ This tutorial briefly explains how to set up LinkedIn Easy Apply jobs bot. With 
 - Headless browser experience (run the bot without launching the browser)
 - Blacklist offers in Linkedin
 - Output not completed fields in Linkedin
-- Add support to other major job seeking websites (Glassdoor, AngelCo, Greenhouse, Monster)
+- Add support to other major job seeking websites (Glassdoor, AngelCo, Greenhouse, Monster, GLobalLogic)
 - AngelCo - https://angel.co/l/2xRADV
-- https://www.globallogic.com/pl/career-search-page/?keywords=react&experience=&locations=poland&c=&remote=yes
