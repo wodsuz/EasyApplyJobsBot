@@ -15,7 +15,6 @@ def browserOptions():
     if(config.headless):
         options.add_argument("--headless")
 
-    options.add_argument('proxy-server=106.122.8.54:3128')
     options.add_argument("--disable-blink-features")
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument("--incognito")
