@@ -1,11 +1,12 @@
-# Linkedin Easy Apply Jobs Bot 🤖
+# Easy Apply Jobs Bot 🤖
 
 ![linkedineasyapplygif](https://user-images.githubusercontent.com/34207598/128695728-6efcb457-0f75-42e2-987a-f7a0c239a235.gif)
 A python bot to apply all Linkedin Easy Apply jobs based on your preferences.
 
-- No password or credit is needed for this bot, fully secure no credentials are given
+- Two options are avalible to use this bot, either with entering password or without, fully secure no credentials are stored.
 - Export all results and offers as txt file
 - Fully customizable job preferences
+- Can be used for many job search websites such as Linkedin, Glassdoor, AngelCo, Greenhouse, Monster, GLobalLogic and Djinni.
 
 To modify, use, get documentation or for you enquiries kindly contact me via: <br>
 **ongun.demirag@gmail.com**
@@ -33,11 +34,11 @@ showing how this can be used. To buy, support this project and help me add more 
 
 ## Installation 🔌
 
-- clone the repo `git clone https://github.com/wodsuz/LinkedinEasyApplyJobsBot`
+- clone the repo `git clone https://github.com/wodsuz/EasyApplyJobsBot`
 - Make sure Python and pip is installed
-- Install dependencies with `pip install -r requirements.txt`
+- Install selenium with `pip install selenium`
 - Make sure GeckoDriver is installed
-- Make sure Firefox profile is created and its root directory is listed inside the .env file you created.
+- Either create firefox Profile and put its path on line 8 of config.py or enter your linkedin credentials line 11 and 12 of config.py.
 - Modify config.py according to your demands.
 - Run `python3 linkedin.py`
 - Check Applied Jobs DATA .txt file is generate under /data folder
