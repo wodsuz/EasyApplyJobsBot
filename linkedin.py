@@ -1,13 +1,55 @@
 import time,math,random,os
-import utils,constants
- 
+import utils,constants,config
+import platform
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from utils import prRed,prYellow,prGreen
 
+from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.firefox.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+
 class Linkedin:
     def __init__(self):
-        self.driver = webdriver.Firefox(options=utils.browserOptions())
+        browser = config.browser[0].lower()
+        linkedinEmail = config.email
+        if (browser == "firefox"):
+            if (len(linkedinEmail)>0):
+                print(platform.system())
+                if (platform.system == "Linux"):
+                    prYellow("On Linux you need to define profile path to run the bot with Firefox. Go about:profiles find root directory of your profile paste in line 8 of config file next to firefoxProfileRootDir ")
+                    exit()
+                else: 
+                    self.driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
+                    self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
+                    prYellow("Trying to log in linkedin.")
+                    try:    
+                        self.driver.find_element("id","username").send_keys(linkedinEmail)
+                        self.driver.find_element("id","password").send_keys(config.password)
+                        time.sleep(5)
+                        self.driver.find_element("xpath",'//*[@id="organic-div"]/form/div[3]/button').click()
+                    except Exception as e: 
+                        prRed(e)
+            else:
+                self.driver = webdriver.Firefox(options=utils.browserOptions(),service=Service(executable_path=GeckoDriverManager().install()))
+        elif (browser == "chrome"):
+            self.driver = webdriver.Chrome(ChromeDriverManager().install())
+            self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
+            prYellow("Trying to log in linkedin.")
+            try:    
+                self.driver.find_element("id","username").send_keys(linkedinEmail)
+                time.sleep(5)
+                self.driver.find_element("id","password").send_keys(config.password)
+                time.sleep(5)
+                self.driver.find_element("xpath",'//*[@id="organic-div"]/form/div[3]/button').click()
+            except:
+                prRed("Couldnt log in Linkedin by using chrome please try again for Firefox by creating a firefox profile.")
+
+        # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        # webdriver.Chrome(ChromeDriverManager().install())
+        # webdriver.Firefox(options=utils.browserOptions())
     
     def generateUrls(self):
         if not os.path.exists('data'):
