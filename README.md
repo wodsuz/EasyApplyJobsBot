@@ -55,6 +55,7 @@ showing how this can be used. To buy, support this project and help me add more 
 - Automatically run in the background.
 - Compatible with Firefox and Chrome.
 - Runs based on your preferences.
+- Optional follow or not follow company upon successful application.
 - Much more!
 
 ## Tests 🔦
@@ -102,4 +103,3 @@ This tutorial briefly explains how to set up LinkedIn Easy Apply jobs bot. With 
 - Output not completed fields in Linkedin
 - Add support to other major job seeking websites (Glassdoor, AngelCo, Greenhouse, Monster, GLobalLogic, djinni)
 - AngelCo - https://angel.co/l/2xRADV
-- Optional follow or not follow company upon succesfull application.
