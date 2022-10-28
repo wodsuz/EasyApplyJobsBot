@@ -163,7 +163,7 @@ cython_debug/
 pytransform/
 
 #config file
-config.py
+mainConfig.py
 
 # user files
 geckodriver.log
