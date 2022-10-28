@@ -36,8 +36,7 @@ showing how this can be used. To buy, support this project and help me add more 
 
 - clone the repo `git clone https://github.com/wodsuz/EasyApplyJobsBot`
 - Make sure Python and pip is installed
-- Install selenium with `pip install selenium`
-- Make sure GeckoDriver is installed
+- Install dependencies with `pip3 install -r requirements.yaml`
 - Either create firefox Profile and put its path on line 8 of config.py or enter your linkedin credentials line 11 and 12 of config.py.
 - Modify config.py according to your demands.
 - Run `python3 linkedin.py`
