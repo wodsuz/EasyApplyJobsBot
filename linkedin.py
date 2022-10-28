@@ -203,6 +203,10 @@ class Linkedin:
             self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Review your application']").click() 
             time.sleep(random.uniform(1, constants.botSpeed))
 
+            if config.followCompanies is False:
+                self.driver.find_element(By.CSS_SELECTOR,"label[for='follow-company-checkbox']").click() 
+                time.sleep(random.uniform(1, constants.botSpeed))
+
             self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Submit application']").click()
             time.sleep(random.uniform(1, constants.botSpeed))
 

@@ -30,6 +30,17 @@ remote = ["On-site" , "Remote" , "Hybrid"]
 salary = [ "$80,000+"]
 #sort - ex:["Recent"] or ["Relevent"] - select only one
 sort = ["Recent"]
+#Blacklist companies you dont want to apply - ex: ["Apple","Google"]
+blacklist = [""]
+#Blaclist keywords in title - ex:["manager", ".Net"]
+blackListTitles = [""]
+#Only Apply these companies -  ex: ["Apple","Google"] -  leave empty for all companies 
+onlyApply = [""]
+#Only Apply titles having these keywords -  ex:["web", "remote"] - leave empty for all companies 
+onlyApplyTitles = [""] 
+#Follow companies after sucessfull application True - yes, False - no
+followCompanies = False
+
 
 # These settings are for running AngelCO job apply bot
 AngelCoBotPassword = ""
