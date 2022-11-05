@@ -1,7 +1,7 @@
 # General bot settings
 
 # browser you want the bot to run ex: ["Firefox"], ["Chrome"] choose one only
-browser = ["Firefox"]
+browser = ["Chrome"]
 # Optional! run browser in headless mode, no browser screen will be shown it will work in background.
 headless = False
 # Optional! for Firefox enter profile dir to run the bot without logging in your account each time
@@ -15,25 +15,25 @@ password = ""
 LinkedinBotProPasswrod = ""
 # location you want to search the jobs - ex : ["Poland", "Singapore", "New York City Metropolitan Area", "Monroe County"]
 # continent locations:["Europe", "Asia", "Australia", "NorthAmerica", "SouthAmerica", "Africa", "Australia"]
-location = ["Poland"]
+location = ["United States"]
 # keywords related with your job search
-keywords = ["frontend", "react", "typescript","javascript", "vue", "python", "programming", "blockchain"]
+keywords = ["frontend developer", "react developer", "javascript", "html"]
 #job experience Level - ex:  ["Internship", "Entry level" , "Associate" , "Mid-Senior level" , "Director" , "Executive"]
-experienceLevels = [ "Entry level" ]
+experienceLevels = [ "Entry level", "Internship", ]
 #job posted date - ex: ["Any Time", "Past Month" , "Past Week" , "Past 24 hours"] - select only one
 datePosted = ["Past Week"]
 #job type - ex:  ["Full-time", "Part-time" , "Contract" , "Temporary", "Volunteer", "Intership", "Other"]
-jobType = ["Full-time", "Part-time" , "Contract"]
+jobType = ["Full-time", "Part-time" , "Contract", "Internship"]
 #remote  - ex: ["On-site" , "Remote" , "Hybrid"]
-remote = ["On-site" , "Remote" , "Hybrid"]
+remote = ["Remote"]
 #salary - ex:["$40,000+", "$60,000+", "$80,000+", "$100,000+", "$120,000+", "$140,000+", "$160,000+", "$180,000+", "$200,000+" ] - select only one
-salary = [ "$80,000+"]
+salary = [ "$70,000+"]
 #sort - ex:["Recent"] or ["Relevent"] - select only one
 sort = ["Recent"]
 #Blacklist companies you dont want to apply - ex: ["Apple","Google"]
-blacklist = [""]
+blacklist = ["Cybercoders"]
 #Blaclist keywords in title - ex:["manager", ".Net"]
-blackListTitles = [""]
+blackListTitles = [".net", "full", "engineer", "stack", "php", "fullstack", "vue", "angular" ,"full-stack", "lead", "java", "backend"]
 #Only Apply these companies -  ex: ["Apple","Google"] -  leave empty for all companies 
 onlyApply = [""]
 #Only Apply titles having these keywords -  ex:["web", "remote"] - leave empty for all companies 

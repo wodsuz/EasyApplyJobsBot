@@ -101,8 +101,12 @@ class Linkedin:
                     countJobs += 1
 
                     jobProperties = self.getJobProperties(countJobs) 
-                    
-                    button = self.easyApplyButton()
+                    if(jobProperties is False):
+                        prRed("Job has blacklisted title, moving on to next job")
+                        button = False
+                    else:
+                        button = self.easyApplyButton()
+
 
                     if button is not False:
                         button.click()
@@ -130,7 +134,7 @@ class Linkedin:
                                 lineToWrite = jobProperties + " | " + "* 🥵 Cannot apply to this Job! " +str(offerPage)
                                 self.displayWriteResults(lineToWrite)
                     else:
-                        lineToWrite = jobProperties + " | " + "* 🥳 Already applied! Job: " +str(offerPage)
+                        lineToWrite = "* 🥳 Already applied! or Either has a blacklisted title 🥵 Job: " +str(offerPage)
                         self.displayWriteResults(lineToWrite)
 
 
@@ -147,9 +151,13 @@ class Linkedin:
         jobWOrkPlace = ""
         jobPostedDate = ""
         jobApplications = ""
+        nextJob = False
 
         try:
             jobTitle = self.driver.find_element(By.XPATH,"//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
+            checkTitle = jobTitle.lower().split()
+            if bool(set(checkTitle) & set(config.blackListTitles)):
+                nextJob = True;
         except Exception as e:
             prYellow("Warning in getting jobTitle: " +str(e)[0:50])
             jobTitle = ""
@@ -180,7 +188,10 @@ class Linkedin:
             jobApplications = ""
 
         textToWrite = str(count)+ " | " +jobTitle+  " | " +jobCompany+  " | "  +jobLocation+ " | "  +jobWOrkPlace+ " | " +jobPostedDate+ " | " +jobApplications
-        return textToWrite
+        if nextJob is True:
+            return False
+        else:
+            return textToWrite
 
     def easyApplyButton(self):
         try:
