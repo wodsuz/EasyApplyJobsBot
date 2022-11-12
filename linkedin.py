@@ -1,55 +1,29 @@
 import time,math,random,os
 import utils,constants,config
-import platform
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from utils import prRed,prYellow,prGreen
 
-from selenium.webdriver.firefox.service import Service
-from selenium.webdriver.firefox.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.firefox import GeckoDriverManager
 
 class Linkedin:
     def __init__(self):
-        browser = config.browser[0].lower()
-        linkedinEmail = config.email
-        if (browser == "firefox"):
-            if (len(linkedinEmail)>0):
-                print(platform.system())
-                if (platform.system == "Linux"):
-                    prYellow("On Linux you need to define profile path to run the bot with Firefox. Go about:profiles find root directory of your profile paste in line 8 of config file next to firefoxProfileRootDir ")
-                    exit()
-                else: 
-                    self.driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
-                    self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
-                    prYellow("Trying to log in linkedin.")
-                    try:    
-                        self.driver.find_element("id","username").send_keys(linkedinEmail)
-                        self.driver.find_element("id","password").send_keys(config.password)
-                        time.sleep(5)
-                        self.driver.find_element("xpath",'//*[@id="organic-div"]/form/div[3]/button').click()
-                    except Exception as e: 
-                        prRed(e)
-            else:
-                self.driver = webdriver.Firefox(options=utils.browserOptions(),service=Service(executable_path=GeckoDriverManager().install()))
-        elif (browser == "chrome"):
+        try:
             self.driver = webdriver.Chrome(ChromeDriverManager().install())
             self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
             prYellow("Trying to log in linkedin.")
-            try:    
-                self.driver.find_element("id","username").send_keys(linkedinEmail)
-                time.sleep(5)
-                self.driver.find_element("id","password").send_keys(config.password)
-                time.sleep(5)
-                self.driver.find_element("xpath",'//*[@id="organic-div"]/form/div[3]/button').click()
-            except:
-                prRed("Couldnt log in Linkedin by using chrome please try again for Firefox by creating a firefox profile.")
+        except Exception as e:
+            prRed("Warning ChromeDriver"+ str(e))
+        try:    
+            self.driver.find_element("id","username").send_keys(config.email)
+            time.sleep(5)
+            self.driver.find_element("id","password").send_keys(config.password)
+            time.sleep(5)
+            self.driver.find_element("xpath",'//*[@id="organic-div"]/form/div[3]/button').click()
+        except:
+            prRed("Couldnt log in Linkedin.")
 
-        # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-        # webdriver.Chrome(ChromeDriverManager().install())
-        # webdriver.Firefox(options=utils.browserOptions())
     
     def generateUrls(self):
         if not os.path.exists('data'):
@@ -100,38 +74,41 @@ class Linkedin:
 
                     countJobs += 1
 
-                    jobProperties = self.getJobProperties(countJobs) 
-                    
-                    button = self.easyApplyButton()
+                    jobProperties = self.getJobProperties(countJobs)
+                    if "blacklisted" in jobProperties: 
+                        lineToWrite = jobProperties + " | " + "* 🤬 Blacklisted Job, skipped!: " +str(offerPage)
+                        self.displayWriteResults(lineToWrite)
+                    else :                    
+                        button = self.easyApplyButton()
 
-                    if button is not False:
-                        button.click()
-                        time.sleep(random.uniform(1, constants.botSpeed))
-                        countApplied += 1
-                        try:
-                            self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
+                        if button is not False:
+                            button.click()
                             time.sleep(random.uniform(1, constants.botSpeed))
-
-                            lineToWrite = jobProperties + " | " + "* 🥳 Just Applied to this job: "  +str(offerPage)
-                            self.displayWriteResults(lineToWrite)
-
-                        except:
+                            countApplied += 1
                             try:
-                                self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
+                                self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
                                 time.sleep(random.uniform(1, constants.botSpeed))
 
-                                comPercentage = self.driver.find_element(By.XPATH,'html/body/div[3]/div/div/div[2]/div/div/span').text
-                                percenNumber = int(comPercentage[0:comPercentage.index("%")])
-                                result = self.applyProcess(percenNumber,offerPage)
-                                lineToWrite = jobProperties + " | " + result
+                                lineToWrite = jobProperties + " | " + "* 🥳 Just Applied to this job: "  +str(offerPage)
                                 self.displayWriteResults(lineToWrite)
-                            
-                            except Exception as e: 
-                                lineToWrite = jobProperties + " | " + "* 🥵 Cannot apply to this Job! " +str(offerPage)
-                                self.displayWriteResults(lineToWrite)
-                    else:
-                        lineToWrite = jobProperties + " | " + "* 🥳 Already applied! Job: " +str(offerPage)
-                        self.displayWriteResults(lineToWrite)
+
+                            except:
+                                try:
+                                    self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
+                                    time.sleep(random.uniform(1, constants.botSpeed))
+
+                                    comPercentage = self.driver.find_element(By.XPATH,'html/body/div[3]/div/div/div[2]/div/div/span').text
+                                    percenNumber = int(comPercentage[0:comPercentage.index("%")])
+                                    result = self.applyProcess(percenNumber,offerPage)
+                                    lineToWrite = jobProperties + " | " + result
+                                    self.displayWriteResults(lineToWrite)
+                                
+                                except Exception as e: 
+                                    lineToWrite = jobProperties + " | " + "* 🥵 Cannot apply to this Job! " +str(offerPage)
+                                    self.displayWriteResults(lineToWrite)
+                        else:
+                            lineToWrite = jobProperties + " | " + "* 🥳 Already applied! Job: " +str(offerPage)
+                            self.displayWriteResults(lineToWrite)
 
 
             prYellow("Category: " + urlWords[0] + "," +urlWords[1]+ " applied: " + str(countApplied) +
@@ -150,14 +127,22 @@ class Linkedin:
 
         try:
             jobTitle = self.driver.find_element(By.XPATH,"//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
+            res = [blItem for blItem in config.blackListTitles if(blItem.lower() in jobTitle.lower())]
+            if (len(res)>0):
+                jobTitle += "(blaclisted title: "+ ' '.join(res)+ ")"
         except Exception as e:
             prYellow("Warning in getting jobTitle: " +str(e)[0:50])
             jobTitle = ""
+
         try:
             jobCompany = self.driver.find_element(By.XPATH,"//a[contains(@class, 'ember-view t-black t-normal')]").get_attribute("innerHTML").strip()
+            res = [blItem for blItem in config.blacklistCompanies if(blItem.lower() in jobTitle.lower())]
+            if (len(res)>0):
+                jobCompany += "(blaclisted company: "+ ' '.join(res)+ ")"
         except Exception as e:
             prYellow("Warning in getting jobCompany: " +str(e)[0:50])
             jobCompany = ""
+
         try:
             jobLocation = self.driver.find_element(By.XPATH,"//span[contains(@class, 'bullet')]").get_attribute("innerHTML").strip()
         except Exception as e:
@@ -184,6 +169,7 @@ class Linkedin:
 
     def easyApplyButton(self):
         try:
+            time.sleep(3)
             button = self.driver.find_element(By.XPATH,
                 '//button[contains(@class, "jobs-apply-button")]')
             EasyApplyButton = button
@@ -212,6 +198,7 @@ class Linkedin:
 
             result = "* 🥳 Just Applied to this job: " +str(offerPage)
         except:
+            # PRO FEATURE! OUTPUT UNANSWERED QUESTIONS, APPLY THEM VIA OPENAI, output them.
             result = "* 🥵 " +str(applyPages)+ " Pages, couldn't apply to this job! Extra info needed. Link: " +str(offerPage)
         return result
 

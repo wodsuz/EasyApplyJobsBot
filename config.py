@@ -1,15 +1,19 @@
 # General bot settings
 
-# browser you want the bot to run ex: ["Firefox"], ["Chrome"] choose one only
-browser = ["Firefox"]
-# Optional! run browser in headless mode, no browser screen will be shown it will work in background.
-headless = False
-# Optional! for Firefox enter profile dir to run the bot without logging in your account each time
-firefoxProfileRootDir = r""
-# If you left above field empty enter your Linkedin password and username below
-# Linkedin credits
+#PRO FEATURE - browser you want the bot to run ex: ["Chrome"] or ["Firefox"]. Firefox is only supported in Pro feature
+browser = ["Chrome"]
+# Enter your Linkedin password and username below. Do not commit this file after entering these credentials.
+# Linkedin credentials
 email = ""
 password = ""
+
+#PRO FEATURE - Optional! run browser in headless mode, no browser screen will be shown it will work in background.
+headless = False
+#PRO FEATURE - Optional! If you left above credentials fields empty. For Firefox or Chrome enter profile dir to run the bot without logging in your account each time
+# get Firefox profile path by typing following url: about:profiles
+firefoxProfileRootDir = r""
+# get Chrome profile path by typing following url: chrome://version/
+chromeProfilePath = r""
 
 # These settings are for running Linkedin job apply bot
 LinkedinBotProPasswrod = ""
@@ -31,16 +35,40 @@ salary = [ "$80,000+"]
 #sort - ex:["Recent"] or ["Relevent"] - select only one
 sort = ["Recent"]
 #Blacklist companies you dont want to apply - ex: ["Apple","Google"]
-blacklist = [""]
+blacklistCompanies = [""]
 #Blaclist keywords in title - ex:["manager", ".Net"]
-blackListTitles = [""]
-#Only Apply these companies -  ex: ["Apple","Google"] -  leave empty for all companies 
-onlyApply = [""]
-#Only Apply titles having these keywords -  ex:["web", "remote"] - leave empty for all companies 
-onlyApplyTitles = [""] 
+blackListTitles = ["PHP","a"]
 #Follow companies after sucessfull application True - yes, False - no
 followCompanies = False
-
+#Below settings are for linkedin bot Pro, you can purchase monthly or yearly subscription to use them from me.
+#PRO FEAUTRE! - Output unaswered questions into a seperate text file
+outputSkippedQuestions = True
+#PRO FEATURE! - Use OpenAI to fill and answer skipped questions
+useOpenaiAutocomplete = False
+#PRO FEATURE! - Only Apply these companies -  ex: ["Apple","Google"] -  leave empty for all companies 
+onlyApplyCompanies = [""]
+#PRO FEATURE! - Only Apply titles having these keywords -  ex:["web", "remote"] - leave empty for all companies 
+onlyApplyTitles = [""] 
+#PRO FEATURE! - Dont apply the job posted by the Hiring member contains this in his/her name - ex: ["adam","Sarah"]
+blockHiringMember = [""] 
+#PRO FEATURE! - Only apply the job sposted by the Hiring member contains this in his/her name - ex: ["adam","Sarah"]
+onlyApplyHiringMember = [""] 
+#PRO FEATURE! - Only apply jobs having less than applications - ex:["100"] will apply jobs having upto 100 applications 
+onlyApplyMaxApplications = [""]
+#PRO FEATURE! - Only apply jobs having more than applications - ex:["10"] will apply jobs having more than 10 applications 
+onlyApplyMinApplications = [""]
+#PRO FEATURE! - Only apply jobs having these keywords in the job description
+onlyApplyJobDescription = [""]
+#PRO FEATURE! - Do not apply the jobs having these keywords in the job description
+blockJobDescription = [""]
+#PRO FEATURE! - Apply companies having equal or more than employes - ex: ["100"]
+onlyAppyMimEmployee = [""]
+#PRO FEATURE - Apply the ones linkedin is saying "you may be a goodfit"
+onlyApplyLinkedinRecommending = False
+#PRO FEATURE - Only apply the ones you have skilled badge
+onlyApplySkilledBages = False
+#PRO FEATURE! - Save the jobs by pressing SAVE button before apply  True - yes, False - no
+saveBeforeApply = False
 
 # These settings are for running AngelCO job apply bot
 AngelCoBotPassword = ""
