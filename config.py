@@ -11,7 +11,7 @@ password = ""
 headless = False
 #PRO FEATURE - Optional! If you left above credentials fields empty. For Firefox or Chrome enter profile dir to run the bot without logging in your account each time
 # get Firefox profile path by typing following url: about:profiles
-firefoxProfileRootDir = r""
+firefoxProfileRootDir = r"/home/ongun/snap/firefox/common/.mozilla/firefox/pz0eh58h.Linkedin_bot"
 # get Chrome profile path by typing following url: chrome://version/
 chromeProfilePath = r""
 
@@ -35,42 +35,50 @@ salary = [ "$80,000+"]
 #sort - ex:["Recent"] or ["Relevent"] - select only one
 sort = ["Recent"]
 #Blacklist companies you dont want to apply - ex: ["Apple","Google"]
-blacklistCompanies = [""]
+blacklistCompanies = []
 #Blaclist keywords in title - ex:["manager", ".Net"]
-blackListTitles = ["PHP","a"]
+blackListTitles = []
 #Follow companies after sucessfull application True - yes, False - no
 followCompanies = False
 #Below settings are for linkedin bot Pro, you can purchase monthly or yearly subscription to use them from me.
 #PRO FEAUTRE! - Output unaswered questions into a seperate text file
 outputSkippedQuestions = True
-#PRO FEATURE! - Use OpenAI to fill and answer skipped questions
-useOpenaiAutocomplete = False
+#PRO FEATURE! - Use AI to fill and answer skipped questions
+useAiAutocomplete = False
 #PRO FEATURE! - Only Apply these companies -  ex: ["Apple","Google"] -  leave empty for all companies 
-onlyApplyCompanies = [""]
+onlyApplyCompanies = []
 #PRO FEATURE! - Only Apply titles having these keywords -  ex:["web", "remote"] - leave empty for all companies 
-onlyApplyTitles = [""] 
+onlyApplyTitles = [] 
 #PRO FEATURE! - Dont apply the job posted by the Hiring member contains this in his/her name - ex: ["adam","Sarah"]
-blockHiringMember = [""] 
+blockHiringMember = [] 
 #PRO FEATURE! - Only apply the job sposted by the Hiring member contains this in his/her name - ex: ["adam","Sarah"]
-onlyApplyHiringMember = [""] 
+onlyApplyHiringMember = [] 
 #PRO FEATURE! - Only apply jobs having less than applications - ex:["100"] will apply jobs having upto 100 applications 
-onlyApplyMaxApplications = [""]
+onlyApplyMaxApplications = []
 #PRO FEATURE! - Only apply jobs having more than applications - ex:["10"] will apply jobs having more than 10 applications 
-onlyApplyMinApplications = [""]
+onlyApplyMinApplications = []
 #PRO FEATURE! - Only apply jobs having these keywords in the job description
-onlyApplyJobDescription = [""]
+onlyApplyJobDescription = []
 #PRO FEATURE! - Do not apply the jobs having these keywords in the job description
-blockJobDescription = [""]
+blockJobDescription = []
 #PRO FEATURE! - Apply companies having equal or more than employes - ex: ["100"]
-onlyAppyMimEmployee = [""]
+onlyAppyMimEmployee = []
 #PRO FEATURE - Apply the ones linkedin is saying "you may be a goodfit"
 onlyApplyLinkedinRecommending = False
 #PRO FEATURE - Only apply the ones you have skilled badge
 onlyApplySkilledBages = False
 #PRO FEATURE! - Save the jobs by pressing SAVE button before apply  True - yes, False - no
 saveBeforeApply = False
+#PRO FEATURE! - Sent a message to the hiring manager once you apply for the role
+messageToHiringManager = ""
+#PRO FEATURE! - List and output non Easy Apply jobs links
+listNonEasyApplyJobsUrl = False
+#PRO FEATURE! - Check yes or no to all checkbox questions (True - yes, False - no), leave empty if you dont want this option
+answerAllCheckboxes = ""
+#PRO FEAUTRE! - Output file type. Can be .txt or .csv (excel) 
+outputFileType = [".txt"]
 
-# These settings are for running AngelCO job apply bot
+# These settings are for running AngelCO job apply bot you need to purchase AngelCo bot obtain bot password, paste below and then run the bot.
 AngelCoBotPassword = ""
 # AngelCO credits
 AngelCoEmail = ""
@@ -80,7 +88,7 @@ angelCoJobTitle = ["Frontend Engineer"]
 # location ex: ["Poland"]
 angelCoLocation = ["Poland"]
 
-# These settings are for running GlobalLogic job apply bot
+# These settings are for running GlobalLogic job apply bot you need to purchase GlobalLogic bot obtain bot password, paste below and then run the bot.
 GlobalLogicBotPassword = ""
 # AngelCO credits
 GlobalLogicEmail = ""
@@ -109,3 +117,6 @@ Phone = "" #OPTIONAL
 Location = "" #OPTIONAL
 HowDidYouHeard = "" #OPTIONAL
 ConsiderMeForFutureOffers = True #true = yes, false = no
+
+ # Testing features
+displayWarnings = False
