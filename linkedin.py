@@ -35,7 +35,7 @@ class Linkedin:
                     file.write(url+ "\n")
             prGreen("Urls are created successfully, now the bot will visit those urls.")
         except:
-            prRed("Couldnt generate url, make sure you have /data folder and modified config.py file for your preferances.")
+            prRed("Couldnt generate url, make sure you have /data folder and modified config.py file for your preferences.")
 
     def linkJobApply(self):
         self.generateUrls()
@@ -129,7 +129,7 @@ class Linkedin:
             jobTitle = self.driver.find_element(By.XPATH,"//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
             res = [blItem for blItem in config.blackListTitles if(blItem.lower() in jobTitle.lower())]
             if (len(res)>0):
-                jobTitle += "(blaclisted title: "+ ' '.join(res)+ ")"
+                jobTitle += "(blacklisted title: "+ ' '.join(res)+ ")"
         except Exception as e:
             prYellow("Warning in getting jobTitle: " +str(e)[0:50])
             jobTitle = ""
@@ -138,7 +138,7 @@ class Linkedin:
             jobCompany = self.driver.find_element(By.XPATH,"//a[contains(@class, 'ember-view t-black t-normal')]").get_attribute("innerHTML").strip()
             res = [blItem for blItem in config.blacklistCompanies if(blItem.lower() in jobTitle.lower())]
             if (len(res)>0):
-                jobCompany += "(blaclisted company: "+ ' '.join(res)+ ")"
+                jobCompany += "(blacklisted company: "+ ' '.join(res)+ ")"
         except Exception as e:
             prYellow("Warning in getting jobCompany: " +str(e)[0:50])
             jobCompany = ""
