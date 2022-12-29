@@ -16,7 +16,7 @@ firefoxProfileRootDir = r"/home/ongun/snap/firefox/common/.mozilla/firefox/pz0eh
 chromeProfilePath = r""
 
 # These settings are for running Linkedin job apply bot
-LinkedinBotProPasswrod = ""
+LinkedinBotProPassword = ""
 # location you want to search the jobs - ex : ["Poland", "Singapore", "New York City Metropolitan Area", "Monroe County"]
 # continent locations:["Europe", "Asia", "Australia", "NorthAmerica", "SouthAmerica", "Africa", "Australia"]
 location = ["Poland"]
