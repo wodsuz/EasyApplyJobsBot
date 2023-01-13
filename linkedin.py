@@ -185,7 +185,7 @@ class Linkedin:
             for pages in range(applyPages-2):
                 self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
                 time.sleep(random.uniform(1, constants.botSpeed))
-
+self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Submit application']").click()
             self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Review your application']").click() 
             time.sleep(random.uniform(1, constants.botSpeed))
 
