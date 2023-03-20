@@ -1,26 +1,36 @@
-import time,math,random,os
-import utils,constants,config
+import time
+import math
+import random
+import os
+import utils
+import constants
+import config
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from utils import prRed,prYellow,prGreen
-
+from utils import prRed, prYellow, prGreen
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class Linkedin:
     def __init__(self):
         try:
-            self.driver = webdriver.Chrome(ChromeDriverManager().install())
+            service = Service(ChromeDriverManager().install())
+            self.driver = webdriver.Chrome(service=service)
             self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
             prYellow("Trying to log in linkedin.")
         except Exception as e:
-            prRed("Warning ChromeDriver"+ str(e))
+            prRed("Warning ChromeDriver" + str(e))
+        
         try:    
-            self.driver.find_element("id","username").send_keys(config.email)
+            self.driver.find_element(By.ID, "username").send_keys(config.email)
             time.sleep(5)
-            self.driver.find_element("id","password").send_keys(config.password)
+            self.driver.find_element(By.ID, "password").send_keys(config.password)
             time.sleep(5)
-            self.driver.find_element("xpath",'//*[@id="organic-div"]/form/div[3]/button').click()
+            self.driver.find_element(By.XPATH,'//button[contains(@class,"btn__primary--large from__button--floating")]'\
+                                       ).click()
         except:
             prRed("Couldnt log in Linkedin.")
 
@@ -46,8 +56,9 @@ class Linkedin:
 
         for url in urlData:        
             self.driver.get(url)
-
-            totalJobs = self.driver.find_element(By.XPATH,'//small').text 
+            wait = WebDriverWait(self.driver, 10)
+            totalJobs = wait.until(EC.visibility_of_element_located((By.XPATH, '//small'))).text
+            totalJobs = self.driver.find_element(By.XPATH,'//small').text
             totalPages = utils.jobsToPages(totalJobs)
 
             urlWords =  utils.urlToKeywords(url)
