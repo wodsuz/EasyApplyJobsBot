@@ -10,33 +10,9 @@ A python bot to apply all Linkedin Easy Apply jobs based on your preferences.
 - Fully customizable job preferences (advanced filters, search filters)
 - Can be used for many job search websites such as Linkedin, Glassdoor, AngelCo, Greenhouse, Monster, GLobalLogic and Djinni.
 
-To modify, use, get documentation or for you enquiries kindly contact me via: <br>
-**ongun.demirag@gmail.com**
-
-## Donation and Support 🥳
-
-With your support I build, update and work on this project. You can also purchase additional packages, tutorials and materials explaining how this bot is working. <br>
-
-There are several features and simplifications I'd like to add to this project. For that I need your support to cover costs. Your support is keeping this project alive.
-
-[**Donate & support!**](https://commerce.coinbase.com/checkout/923b8005-792f-4874-9a14-2992d0b30685)
-
-## Purchase additional materials and guides 😍
-
-You can currently, purchase full in depth detailed tutorial explaining how this bot is working, one hour booking session where i step by step build and run the bot on your machine or 5 videos
-showing how this can be used. To buy, support this project and help me add more features. <br>
-
-- [**Purchase working videos for this bot**](https://commerce.coinbase.com/checkout/40715b26-f80f-4335-bc35-8edf295bc913)
-- [**Purchase online call tech support to install the bot for Windows**](https://commerce.coinbase.com/checkout/bfc45949-3719-4cac-8fc9-f9111b47a009)
-- [**Purchase online call tech support to install the bot for Linux**](https://commerce.coinbase.com/checkout/c27538b8-ddee-4c68-a0eb-da43e6014043)
-- [**Purchase online call tech support to install the bot for Mac OS**](https://commerce.coinbase.com/checkout/52472ffa-1653-4f56-b92b-60983e627e7c)
-- [**Purchase documentation of this bot for Windows**](https://commerce.coinbase.com/checkout/03546cb2-8691-4837-91ec-a86cae1cb25d)
-- [**Purchase documentation of this bot for Linux**](https://commerce.coinbase.com/checkout/b6ec4e61-cded-4845-a9b8-f87079482e7f)
-- [**Purchase documentation of this bot for Mac OS**](https://commerce.coinbase.com/checkout/effe4a67-895f-4862-ad77-954217d752e6)
-
 ## Installation 🔌
 
-- clone the repo `git clone https://github.com/wodsuz/EasyApplyJobsBot`
+- clone the repo `git clone https://github.com/petrenko0806/EasyApplyJobsBot`
 - Make sure Python and pip is installed
 - Install dependencies with `pip3 install -r requirements.yaml`
 - Enter your linkedin credentials on line 8 and 9 of config.py file
