@@ -4,22 +4,24 @@
 browser = ["Chrome"]
 # Enter your Linkedin password and username below. Do not commit this file after entering these credentials.
 # Linkedin credentials
-email = ""
-password = ""
+email = " "
+password = " "
 
 #PRO FEATURE - Optional! run browser in headless mode, no browser screen will be shown it will work in background.
 headless = False
-#PRO FEATURE - Optional! If you left above credentials fields empty. For Firefox or Chrome enter profile dir to run the bot without logging in your account each time
+#PRO FEATURE - Optional! If you left above credentials fields empty. For Firefox or Chrome enter profile dir to run the bot to prevent logging in your account each time
 # get Firefox profile path by typing following url: about:profiles
 firefoxProfileRootDir = r"/home/ongun/snap/firefox/common/.mozilla/firefox/pz0eh58h.Linkedin_bot"
 # get Chrome profile path by typing following url: chrome://version/
-chromeProfilePath = r""
+chromeProfilePath = r"/home/ongun/.config/google-chrome/Profile 3"
 
 # These settings are for running Linkedin job apply bot
-LinkedinBotProPasswrod = ""
+# Paaste your easyApply email and key below
+easyApplyEmail = ""
+easyApplyKey = ""
 # location you want to search the jobs - ex : ["Poland", "Singapore", "New York City Metropolitan Area", "Monroe County"]
 # continent locations:["Europe", "Asia", "Australia", "NorthAmerica", "SouthAmerica", "Africa", "Australia"]
-location = ["Poland"]
+location = ["NorthAmerica"]
 # keywords related with your job search
 keywords = ["frontend", "react", "typescript","javascript", "vue", "python", "programming", "blockchain"]
 #job experience Level - ex:  ["Internship", "Entry level" , "Associate" , "Mid-Senior level" , "Director" , "Executive"]
@@ -41,9 +43,11 @@ blackListTitles = []
 #Follow companies after sucessfull application True - yes, False - no
 followCompanies = False
 #Below settings are for linkedin bot Pro, you can purchase monthly or yearly subscription to use them from me.
-#PRO FEAUTRE! - Output unaswered questions into a seperate text file
+#PRO FEATURE! - If you have multiple CV's you can choose which one you want the bot to use. (1- the first one on the list, 2 - second , etc)
+preferredCv = 1
+#PRO FEAUTRE! - Output unaswered questions into a seperate text file, will output radio box, dropdown and input field questions into seperate .yaml file
 outputSkippedQuestions = True
-#PRO FEATURE! - Use AI to fill and answer skipped questions
+#PRO FEATURE! - Use AI to fill and answer skipped questions. Will cost 5 credits per answer cause of computational power.
 useAiAutocomplete = False
 #PRO FEATURE! - Only Apply these companies -  ex: ["Apple","Google"] -  leave empty for all companies 
 onlyApplyCompanies = []
@@ -73,6 +77,8 @@ saveBeforeApply = False
 messageToHiringManager = ""
 #PRO FEATURE! - List and output non Easy Apply jobs links
 listNonEasyApplyJobsUrl = False
+#PRO FEATURE! - Select radio button for unsawered questions. If the bot cannot find an answer for a radio button, it will automatically select first or second option. Default radio button answer, 1 for Yes, 2 for No. Leave empty if you dont want this option.
+selectRadioOptionForUnasweredQuestions = 1
 #PRO FEATURE! - Check yes or no to all checkbox questions (True - yes, False - no), leave empty if you dont want this option
 answerAllCheckboxes = ""
 #PRO FEAUTRE! - Output file type. Can be .txt or .csv (excel) 
@@ -118,5 +124,5 @@ Location = "" #OPTIONAL
 HowDidYouHeard = "" #OPTIONAL
 ConsiderMeForFutureOffers = True #true = yes, false = no
 
- # Testing features
+ # Testing & Debugging features
 displayWarnings = False

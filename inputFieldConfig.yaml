@@ -1,14 +1,15 @@
-personalInfo:
-  First Name: FirstName
-  Last Name: LastName
-  Phone Country Code: Canada (+1) # See linkedin for your country code, must be exact
-  Mobile Phone Number: 1234567890
-  Street address: 123 Fake Street
-  City: Śląskie, Poland # Include the state/province as well!
-  State: YourState
-  Zip: YourZip/Postal
-  Linkedin: https://www.linkedin.com/in/my-linkedin-profile
-  Website: https://www.my-website.com # github/website is interchangable here
+First Name: FirstName
+Last Name: LastName
+# See linkedin for your country code, must be exact
+Phone Country Code: Canada (+1)
+Mobile Phone Number: 1234567890
+Street address: 123 Fake Street
+# Include the state/province as well!
+City: Śląskie, Poland
+State: Katowice
+Zip: 41-214
+Linkedin: https://www.linkedin.com/in/ongun-demirag
+Website: https://www.ongundemirag.com/ # github/website is interchangable here
 
 # How many years of "TECHNOLOGY" experience do you currently have? (whole numbers only)
 experience do you currently have:
@@ -94,14 +95,17 @@ level of proficiency:
   polski: Conversational # None, Conversational, Professional, Native or bilingual
 
 # Other queations, you can add custom ones below and bot will also add the unrecognized ones at the end
-# Can you provide a ballpark salary range you'd be looking for? Required / # Desired salary Required / Salary expectations for
-Salary: 15000 usd - 18000 usd net monthly.
+# Can you provide a ballpark salary range you'd be looking for? Required / # Desired salary Required / Salary expectations for / # what is your salary expectation? / # cuál es su expectativa salarial en usd?
+Salary range: 15000 usd - 18000 usd net monthly.
+Desired salary: 15000 usd - 18000 usd net monthly.
+Salary expectation: 15000
+salarial: 15000
 # If you selected Word of mouth, Referral or Other from the question above, please specify in the box below.
 Word of mouth, Referral or Other: None
 # College or University
 College or University: ABC University
 # Have you ever applied at ... before? Required
-Have you ever applied: No
+Have you ever applied: "No"
 #  Please provide 3 references with their name, phone number, and email address. Required
 References: A, 045,abc@gmail.com | B,234,abc@gmail.com | C,2134,abc@gmail.com
 #  How many hours are you available every week? Required
@@ -112,3 +116,75 @@ Hourly pay rate: 30
 Notice period: 2 weeks
 #  Please evaluate on a scale from 1 to 10 you ability to manage technical issues on different social media platforms? Required
 Manage Technical Issues: 8
+# What are your salary requirements in gross monthly PLN?
+gross monthly PLN: 32269
+# Unanswered questions from the bot will go below you can write your answer after ":" For example How many years of x experience you have:5
+# how many years of work experience do you have with programming languages?
+programming languages: 5
+# how many years of work experience do you have with internet of things (iot)?
+internet of things (iot): 1
+# how many years of work experience do you have with opencv?
+opencv: 0
+# how many years of work experience do you have with numpy?
+numpy: 3
+# please specify ... based questions
+Please specify: --
+# ile lat posługujesz się zawodowo narzędziem prestashop? - how many years have you been using the prestashop tool professionally?
+prestashop: 0
+# how many years of work experience do you have with web 2.0?
+web 2.0: 5
+# how many years of work experience do you have with wpf development?
+wpf: 0
+# how many years of work experience do you have with microsoft sql server?
+sql: 0
+# how many years of work experience do you have with web testing?
+web testing: 2
+# ile lat posługujesz się zawodowo narzędziem routery cisco? - how many years have you been using cisco routers professionally?
+cisco: 0
+# ile lat posługujesz się zawodowo narzędziem sieć lokalna (lan)? - how many years have you been using the local network (LAN) tool professionally?
+lan: 0
+# what is your university grade point average (4.0 gpa scale)?
+gpa: 3
+# how many years of work experience do you have with dashboard building?
+dashboard building: 2
+# how many years of work experience do you have with database-driven web applications?
+database-driven web applications: 2
+# how many years of work experience do you have with data science?
+data science: 1
+# let us know which specific channel/event/medium/etc you heard about us: # how did you hear about this job?
+heard about us: Linkedin
+hear: Linkedin
+# how many years of work experience do you have with amazon sqs?
+amazon sqs: 0
+# experience with sre?
+sre: 0
+# experience with nodejs?
+nodejs: 3
+# experience as developer (full stack)?
+developer: 3
+# location
+
+# when would you be available to start a new role?
+
+# do you have 3-5 years of experience in graphic design
+3-5 years of experience in graphic design: "No"
+# how many years of experience do you have?
+how many years of experience do you have?: 5
+# how many years of work experience do you have with snowflake?
+snowflake: 0
+# do you have with azure databricks?
+azure databricks: 0
+# How many years of experience as a web developer do you have?
+web developer: 5
+# how many years of work experience do you have with figma (software)?
+Figma: 2
+# how many years of work experience do you have with responsive web design?
+Responsive web design: 3
+# how many years of work experience do you have with extract, transform, load (etl)?
+extract, transform, load: 0
+# how many years of work experience do you have with data modeling?
+data modeling: 0
+# how many years of work experience do you have with sitecore?
+sitecore: 0
+# how many years of work experience do you have with servlets?
+servlets: 0

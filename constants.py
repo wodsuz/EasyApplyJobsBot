@@ -1,3 +1,6 @@
+websiteUrl = "www.automated-bots.com"
+contactUrl = "https://www.automated-bots.com/contact"
+
 linkJobUrl = "https://www.linkedin.com/jobs/search/"
 angelCoUrl = "https://angel.co/login"
 globalLogicUrl = "https://www.globallogic.com/career-search-page/"

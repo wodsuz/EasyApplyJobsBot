@@ -1,26 +1,28 @@
-import math,constants,config
+import math,constants,config,time
 from typing import List
-import time
 
-from selenium.webdriver.firefox.options import Options
+from selenium import webdriver
 
-def browserOptions():
-    options = Options()
-    firefoxProfileRootDir = config.firefoxProfileRootDir
-    options.add_argument("--start-maximized")
+def chromeBrowserOptions():
+    options = webdriver.ChromeOptions()
     options.add_argument("--ignore-certificate-errors")
     options.add_argument('--no-sandbox')
     options.add_argument("--disable-extensions")
     options.add_argument('--disable-gpu')
     if(config.headless):
         options.add_argument("--headless")
-
+    # options.add_argument("--start-maximized")
     options.add_argument("--disable-blink-features")
     options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_argument("--incognito")
-    options.add_argument("-profile")
-    options.add_argument(firefoxProfileRootDir)
-
+    options.add_experimental_option('useAutomationExtension', False)
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    if(len(config.chromeProfilePath)>0):
+        initialPath = config.chromeProfilePath[0:config.chromeProfilePath.rfind("/")]
+        profileDir = config.chromeProfilePath[config.chromeProfilePath.rfind("/")+1:]
+        options.add_argument('--user-data-dir=' +initialPath)
+        options.add_argument("--profile-directory=" +profileDir)
+    else:
+        options.add_argument("--incognito")
     return options
 
 def prRed(prt):

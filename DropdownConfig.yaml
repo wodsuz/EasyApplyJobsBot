@@ -1,0 +1,66 @@
+# How did you hear about us?
+hear: LinkedIn
+#  Are you willing to relocate?
+Relocate: "Yes"
+Relocation: "Yes"
+# Will you, now or in the future, require an employment visa or sponsorship of any kind in the country where this job is located? # do you now or in the future require immigration sponsorship?
+Visa: "Yes"
+sponsorship:"Yes"
+# Are you legally authorised
+Authorised: "Yes"
+# jaki jest twój poziom biegłości języka: angielski?
+angielski: Ojczysty czy dwujęzyczny
+# what is your level of proficiency in english?
+english: Native or bilingual
+# all applicants are invited to complete this section. the information you provide will allow us to monitor the effectiveness of our policies and procedures, and enable us to conform to equal opportunities legislation. in providing this information, you consent to the information given below to be used for monitoring the effectiveness of equal opportunities policies. this information is confidential and only used for internal statistical purposes.
+equal opportunities: I do not wish to answer
+# have you worked in a professional game studio before?
+professional game studio: "No"
+#  do you have knowledge of sw versioningtools (e.g. git)?
+Git: "Yes"
+# czy lubisz tworzyć rysunki i ilustracje? - do you like to create drawings and illustrations?
+rysunki i ilustracje: "Yes"
+create drawings and illustrations: "Yes"
+# czy jesteś gotowa/wy na wykonanie zadania rekrutacyjnego? - are you ready to complete the recruitment task?
+rekrutacyjnego: "Yes"
+recruitment task: "Yes"
+# do you want to start your own business someday? if you know what it will be, what problem will it solve?
+own business someday: "Yes, removing the human factor in job hiring process"
+# have you accomplished something truly exceptional in your career? you'll be asked to describe it.
+truly exceptional: "Yes"
+# have you ever developed a game?
+Game: "No"
+# are you open to completing an at-home test for the position?
+at-home test: "Yes"
+# are you authorized to work lawfully in the united states for flexport?
+authorized: "Yes"
+# application consent for flexport
+consent: "Yes"
+# are you currently a paper employee? please apply to the role with your paper email.
+paper employee: "No"
+# do you have 2+ years of experience working with vue.js?
+vue.js: "Yes"
+# this position requires us citizenship, are you comfortable sharing that information?
+us citizenship: "No"
+# do you have excellent knowledge of back-end programming language such as javax and excellent knowledge on developing the applications with angularjs?
+javax: "No"
+# you must have at least 5-6 years of professional work, not projects, as a engineer/developer, in order to qualify for this position. do you have that?
+5-6 years of professional work: "No"
+# do you have at least 2 years at each job on your resume?
+at least 2 years at each job: "No"
+# are you a us citizen eligible for a security clearance with the dod?
+eligible: "Yes"
+# do you have an active top secret clearance?
+active top secret clearance: "No"
+# are you open to working on w2?, # are you willing to work on w2 ?, # are you comfortable working on w2?, # are you working on w2?
+w2: "Yes"
+# how would you describe your gender identity? (mark all that apply) (Female/Male/Declare to self Identify)
+Gender: "Decline to self Identify"
+# how would you describe your racial/ethnic background? (mark all that apply)
+ethnic: "Declare to self Identify"
+veteran: "I don't wish to answer"
+disability:  "I don't wish to answer"
+# are you located within 25 miles from frisco, tx 75035?
+located within 25 miles from frisco,tx: "No"
+# Are you Mexican? 
+Mexican: "No"

@@ -1,0 +1,55 @@
+# These parameters will only work in Pro mode. You can follow the tutorial and purchase pro credits to use them.
+
+# Do you have a valid driver's license? (yes/no checkbox)
+Driver: "yes"
+# Will you now, or in the future, require sponsorship for employment visa status (e.g. H-1B visa status)? (yes/no checkbox)
+# This is relative to the location and your citizenship applying above, and same with legallyAuthorized.
+Sponsor: "no"
+# Are you legally authorized to work in COUNTRY? (yes/no checkbox)
+Legally authorized: "yes"
+# We must fill this position urgently. Can you start immediately? (yes/no checkbox)
+Urgent: "yes"
+# Are you comfortable commuting to this job's location? (yes/no checkbox)
+Commuting: "yes"
+# Have you completed the following level of education: DEGREE TYPE? (yes/no checkbox)
+High School Diploma: "yes"
+Bachelor's Degree: "yes"
+Associate's Degree: "no"
+Master's Degree: "yes"
+Master of Business Administration: "no"
+Doctor of Philosophy: "no"
+Doctor of Medicine: "no"
+Doctor of Law: "no"
+# Are you willing to undergo a background check, in accordance with local law/regulations?
+Background Check: "yes"
+# Are you comfortable working in a remote setting?
+Remote: "yes"
+# Are you willing to relocate?
+Relocate: "yes"
+# Are you a US Citizen?
+US Citizen: "yes"
+# Are you willing to travel 25% of the time?
+Travel 25%: "yes"
+# Are you willing to take a drug test, in accordance with local law/regulations?
+Drug Test: "yes"
+# Are you comfortable working in a hybrid setting?
+Hybrid: "yes"
+# Are you comfortable working in an onsite setting?
+Onsite: "yes"
+# Questions related with North korea
+North Korea: "no"
+# Data retention policy
+Data retention: "no"
+
+# Gender (Male - 0 / Female - 1 / Decline to Answer - 2)
+Gender: "Decline to Answer"
+#  Veteran status  ( I identify as one or more listed above - 0 /  I am not a protected veteran - 1 /  I don't wish to answer - 2  ))
+Veteran: "I don't wish to answer "
+#  Disability status  ( Yes, I Have A Disability - 0 /  No, I Don't Have A Disability - 1 /  I don't wish to answer - 2  ))
+Disability: "I don't wish to answer "
+# Race/Ethnicity  (Hispanic or Latino - 0 /  American Indian or Alaska Native (Not Hispanic or Latino) - 1 / Asian (Not Hispanic or Latino) - 2 /  Black or African American (Not Hispanic or Latino)  - 4 /  Native Hawaiian or Other Pacific Islander (Not Hispanic or Latino) - 5 /  Two or More Races (Not Hispanic or Latino) - 6 /  White (Not Hispanic or Latino - 7 /  I prefer not to specify - 8  )
+Race: "I prefer not to specify"
+#  What's your citizenship / employment eligibility?
+Citizenship: "Other"
+# Add a custom question keyword and answer "yes" - yes , "no" - no based on /data/additionalQuestions.txt file so that once the bot reruns it will fill the answer from here.
+# For example question is: Do you want to live in Spain? You should write Spain:"yes" for yes or Spain:"no" for no radio button click. you can also write spain the text is case insensitive.
