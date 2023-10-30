@@ -108,12 +108,12 @@ class LinkedinUrlGenerate:
         path = []
         for location in config.location:
             for keyword in config.keywords:
-                    url = constants.linkJobUrl + "?f_AL=true&keywords=" +keyword+self.jobType()+self.remote()+self.checkJobLocation(location)+self.jobExp()+self.datePosted()+self.salary()+self.sortBy()
+                    url = constants.linkJobUrl + "?f_AL=true&keywords=" + keyword + self.jobType() + self.remote() + self.checkJobLocation(location) + self.jobExp() + self.datePosted() + self.jobTitle() + self.salary() + self.sortBy()
                     path.append(url)
         return path
 
-    def checkJobLocation(self,job):
-        jobLoc = "&location=" +job
+    def checkJobLocation(self, job):
+        jobLoc = "&location=" + job
         match job.casefold():
             case "asia":
                 jobLoc += "&geoId=102393603"
@@ -236,7 +236,30 @@ class LinkedinUrlGenerate:
                     jobRemote += "%2C3"
 
         return jobRemote
+    
+    def jobTitle(self):
+        jobTitleArray = config.jobTitles
+        
+        # Ensure we have at least one job title to process
+        if not jobTitleArray:
+            return ""
 
+        # Use the first job title for the initial job title parameter
+        initial_code = constants.job_title_codes.get(jobTitleArray[0])
+        if initial_code:
+            jobTitle = f"f_T={initial_code}"
+        else:
+            return ""  # If the first job title isn't recognized, return an empty string or handle error appropriately
+        
+        # Process subsequent job titles
+        for title in jobTitleArray[1:]:
+            code = constants.job_title_codes.get(title)
+            if code:
+                jobTitle += f"%2C{code}"
+
+        jobTitle += "&"
+        return jobTitle
+        
     def salary(self):
         salary = ""
         match config.salary[0]:

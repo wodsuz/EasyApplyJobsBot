@@ -15,3 +15,12 @@ botSleepInBetweenActionsBottom = 3
 botSleepInBetweenActionsTop = 10
 
 # TO DO ADD OTHER PRINT CONSTANTS
+
+# Linkedin Constants
+## Job Title Constants
+job_title_codes = {
+    'Android Developer': "25166",
+    'Mobile Engineer': "7110",
+    'Mobile Application Developer': "18930",
+    'Scrum Master': "7586"
+}
