@@ -22,3 +22,13 @@ totalJobs = "//small"
 testPageUrl = testJobUrl +"&start="+ str(2)
 offersPerPage = "//li[@data-occludable-job-id]"
 easyApplyButton = '//button[contains(@class, "jobs-apply-button")]'
+# TO DO ADD OTHER PRINT CONSTANTS
+
+# Linkedin Constants
+## Job Title Constants
+job_title_codes = {
+    'Android Developer': "25166",
+    'Mobile Engineer': "7110",
+    'Mobile Application Developer': "18930",
+    'Scrum Master': "7586"
+}
