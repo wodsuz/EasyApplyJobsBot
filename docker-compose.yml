@@ -15,4 +15,4 @@ services:
     command: sh -c "python3 bot.py"
     depends_on:
       - selenium
-    shm_size: "2dgb"
+    shm_size: "2g"

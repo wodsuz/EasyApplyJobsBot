@@ -11,6 +11,7 @@ fast = 2
 medium = 3
 slow = 5 
 
-botSpeed = slow
+botSleepInBetweenActionsBottom = 3
+botSleepInBetweenActionsTop = 10
 
 # TO DO ADD OTHER PRINT CONSTANTS

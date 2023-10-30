@@ -1,4 +1,4 @@
-import time,math,random,os
+import time,math,os
 import utils,constants,config
 
 from selenium import webdriver
@@ -62,12 +62,12 @@ class Linkedin:
                 currentPageJobs = constants.jobsPerPage * page
                 url = url +"&start="+ str(currentPageJobs)
                 self.driver.get(url)
-                time.sleep(random.uniform(1, constants.botSpeed))
+                utils.sleepInBetweenActions()
 
                 offersPerPage = self.driver.find_elements(By.XPATH,'//li[@data-occludable-job-id]')
                 offerIds = []
 
-                time.sleep(random.uniform(1, constants.botSpeed))
+                utils.sleepInBetweenActions()
 
                 for offer in offersPerPage:
                     offerId = offer.get_attribute("data-occludable-job-id")
@@ -76,7 +76,7 @@ class Linkedin:
                 for jobID in offerIds:
                     offerPage = 'https://www.linkedin.com/jobs/view/' + str(jobID)
                     self.driver.get(offerPage)
-                    time.sleep(random.uniform(1, constants.botSpeed))
+                    utils.sleepInBetweenActions()
 
                     countJobs += 1
 
@@ -89,13 +89,17 @@ class Linkedin:
                         button = self.easyApplyButton()
 
                         if button is not False:
-                            button.click()
-                            time.sleep(random.uniform(1, constants.botSpeed))
+                            try:
+                                button.click()
+                            except:
+                                self.driver.execute_script("arguments[0].click();", button)
+                            utils.sleepInBetweenActions()
                             countApplied += 1
+                            
                             try:
                                 self.chooseResume()
                                 self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
-                                time.sleep(random.uniform(1, constants.botSpeed))
+                                utils.sleepInBetweenActions()
 
                                 lineToWrite = jobProperties + " | " + "* 🥳 Just Applied to this job: "  +str(offerPage)
                                 self.displayWriteResults(lineToWrite)
@@ -103,7 +107,7 @@ class Linkedin:
                             except:
                                 try:
                                     self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
-                                    time.sleep(random.uniform(1, constants.botSpeed))
+                                    utils.sleepInBetweenActions()
 
                                     comPercentage = self.driver.find_element(By.XPATH,'html/body/div[3]/div/div/div[2]/div/div/span').text
                                     percenNumber = int(comPercentage[0:comPercentage.index("%")])
@@ -201,14 +205,14 @@ class Linkedin:
 
     def easyApplyButton(self):
         try:
-            time.sleep(random.uniform(1, constants.botSpeed))
-            button = self.driver.find_element(By.XPATH,
-                '//button[contains(@class, "jobs-apply-button")]')
-            EasyApplyButton = button
+            utils.sleepInBetweenActions()
+            # button = self.driver.find_element(By.XPATH,
+            #     '//button[contains(@class, "jobs-apply-button")]')
+            # button = self.driver.find_element(By.CSS_SELECTOR, "button:contains('Easy Apply')")
+            button = self.driver.find_element(By.CSS_SELECTOR, "button[aria-label*='Easy Apply']")
+            return button
         except: 
-            EasyApplyButton = False
-
-        return EasyApplyButton
+            return False
 
     def applyProcess(self, percentage, offerPage):
         applyPages = math.floor(100 / percentage) 
@@ -216,17 +220,17 @@ class Linkedin:
         try:
             for pages in range(applyPages-2):
                 self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
-                time.sleep(random.uniform(1, constants.botSpeed))
+                utils.sleepInBetweenActions()
 
             self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Review your application']").click() 
-            time.sleep(random.uniform(1, constants.botSpeed))
+            utils.sleepInBetweenActions()
 
             if config.followCompanies is False:
                 self.driver.find_element(By.CSS_SELECTOR,"label[for='follow-company-checkbox']").click() 
-                time.sleep(random.uniform(1, constants.botSpeed))
+                utils.sleepInBetweenActions()
 
             self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Submit application']").click()
-            time.sleep(random.uniform(1, constants.botSpeed))
+            utils.sleepInBetweenActions()
 
             result = "* 🥳 Just Applied to this job: " +str(offerPage)
         except:
