@@ -1,0 +1,38 @@
+# Ignore all files and directories (this is a wildcard)
+# *
+
+# Now, explicitly allow certain files or directories by negating them with a "!"
+# !/Dockerfile
+# !/app/
+# !/requirements.txt
+
+# Compiled byte code
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Unit test / coverage reports
+.coverage
+.tox/
+
+# Git directory and logs
+.git/
+.github/
+.gitignore
+
+# Log and temp files
+*.log
+*.tmp
+
+# OS generated files
+.DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# Readme files
+*.md
+
+# Docker folder
+Docker/

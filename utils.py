@@ -1,4 +1,4 @@
-import math,constants,config,time
+import math,constants,config,time,random
 from typing import List
 
 from selenium import webdriver
@@ -90,6 +90,9 @@ def writeResults(text: str):
             f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
 
             f.write(text+ "\n")
+
+def sleepInBetweenActions():
+    time.sleep(random.uniform(constants.botSleepInBetweenActionsBottom, constants.botSleepInBetweenActionsTop))
 
 def printInfoMes(bot:str):
     prYellow("ℹ️ " +bot+ " is starting soon... ")
