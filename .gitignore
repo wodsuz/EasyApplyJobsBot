@@ -174,3 +174,6 @@ geckodriver.log
 angelco.py
 globalLogicCode.py
 linkedinProCode.py
+
+# configs for different searches
+configs/
