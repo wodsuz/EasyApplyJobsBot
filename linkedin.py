@@ -85,7 +85,7 @@ class Linkedin:
                         lineToWrite = jobProperties + " | " + "* 🤬 Blacklisted Job, skipped!: " +str(offerPage)
                         self.displayWriteResults(lineToWrite)
                     
-                    else :                    
+                    else:                    
                         button = self.easyApplyButton()
 
                         if button is not False:
@@ -93,15 +93,16 @@ class Linkedin:
                                 button.click()
                             except:
                                 self.driver.execute_script("arguments[0].click();", button)
+                            
                             utils.sleepInBetweenActions()
                             countApplied += 1
                             
                             try:
-                                self.chooseResume()
+                                self.chooseResumeIfOffered()
                                 self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
                                 utils.sleepInBetweenActions()
 
-                                lineToWrite = jobProperties + " | " + "* 🥳 Just Applied to this job: "  +str(offerPage)
+                                lineToWrite = jobProperties + " | " + "* 🥳 Just Applied to this job: " + str(offerPage)
                                 self.displayWriteResults(lineToWrite)
 
                             except:
@@ -110,17 +111,17 @@ class Linkedin:
                                     utils.sleepInBetweenActions()
 
                                     comPercentage = self.driver.find_element(By.XPATH,'html/body/div[3]/div/div/div[2]/div/div/span').text
-                                    percenNumber = int(comPercentage[0:comPercentage.index("%")])
-                                    result = self.applyProcess(percenNumber,offerPage)
+                                    percentNumber = int(comPercentage[0:comPercentage.index("%")])
+                                    result = self.applyProcess(percentNumber, offerPage)
                                     lineToWrite = jobProperties + " | " + result
                                     self.displayWriteResults(lineToWrite)
                                 
                                 except Exception as e: 
-                                    self.chooseResume()
-                                    lineToWrite = jobProperties + " | " + "* 🥵 Cannot apply to this Job! " +str(offerPage)
+                                    self.chooseResumeIfOffered()
+                                    lineToWrite = jobProperties + " | " + "* 🥵 Cannot apply to this Job! " + str(offerPage)
                                     self.displayWriteResults(lineToWrite)
                         else:
-                            lineToWrite = jobProperties + " | " + "* 🥳 Already applied! Job: " +str(offerPage)
+                            lineToWrite = jobProperties + " | " + "* 🥳 Already applied! Job: " + str(offerPage)
                             self.displayWriteResults(lineToWrite)
 
 
@@ -129,17 +130,29 @@ class Linkedin:
         
         utils.donate(self)
 
-    def chooseResume(self):
+    def chooseResumeIfOffered(self):
         try: 
             beSureIncludeResumeTxt = self.driver.find_element(By.CLASS_NAME, "jobs-document-upload__title--is-required")
-            if(beSureIncludeResumeTxt.text == "Be sure to include an updated resume"):
-                resumes = self.driver.find_elements(By.CSS_SELECTOR,"button[aria-label='Choose Resume']")
-                if(len(resumes) == 1):
-                    resumes[0].click()
-                elif(len(resumes)>1):
-                    resumes[config.preferredCv-1].click()
-                else:
-                    prRed("❌ No resume has been selected please add at least one resume to your Linkedin account.")
+            if beSureIncludeResumeTxt.text == "Be sure to include an updated resume":
+                more_resumes = self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Show more resumes']")
+                if(more_resumes.is_displayed()):
+                    more_resumes.click()
+                    utils.sleepInBetweenActions()
+
+                # Find all CV container elements
+                cv_containers = self.driver.find_elements(By.CSS_SELECTOR, ".jobs-document-upload-redesign-card__container")
+
+                # Loop through the elements to find the desired CV
+                for container in cv_containers:
+                    cv_name_element = container.find_element(By.CLASS_NAME, "jobs-document-upload-redesign-card__file-name")
+                    
+                    if config.distinctCVKeyword[0] in cv_name_element.text:
+                        # Check if CV is already selected
+                        if 'jobs-document-upload-redesign-card__container--selected' not in container.get_attribute('class'):
+                            cv_name_element.click()  # Clicking on the CV name, adjust if needed
+                            utils.sleepInBetweenActions()
+                        # exit the loop once the desired CV is found and selected
+                        break  
         except:
             pass
 
@@ -219,20 +232,22 @@ class Linkedin:
         result = ""  
         try:
             for pages in range(applyPages-2):
+                self.chooseResumeIfOffered()
                 self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
                 utils.sleepInBetweenActions()
 
+            self.chooseResumeIfOffered()
             self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Review your application']").click() 
             utils.sleepInBetweenActions()
 
-            if config.followCompanies is False:
+            if config.followCompanies is True:
                 self.driver.find_element(By.CSS_SELECTOR,"label[for='follow-company-checkbox']").click() 
                 utils.sleepInBetweenActions()
 
             self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Submit application']").click()
             utils.sleepInBetweenActions()
 
-            result = "* 🥳 Just Applied to this job: " +str(offerPage)
+            result = "* 🥳 Just Applied to this job: " + str(offerPage)
         except:
             # PRO FEATURE! OUTPUT UNANSWERED QUESTIONS, APPLY THEM VIA OPENAI, output them.
             result = "* 🥵 " +str(applyPages)+ " Pages, couldn't apply to this job! Extra info needed. Link: " +str(offerPage)

@@ -14,6 +14,10 @@ slow = 5
 botSleepInBetweenActionsBottom = 3
 botSleepInBetweenActionsTop = 10
 
+botSleepInBetweenBatchesBottom = 10
+botSleepInBetweenBatchesTop = 70
+batchSize = 10
+
 # TO DO ADD OTHER PRINT CONSTANTS
 
 # Linkedin Constants
