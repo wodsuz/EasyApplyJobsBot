@@ -13,6 +13,9 @@ slow = 5
 
 botSleepInBetweenActionsBottom = 3
 botSleepInBetweenActionsTop = 10
+botSleepInBetweenBatchesBottom = 10
+botSleepInBetweenBatchesTop = 70
+batchSize = 10
 
 # Webdriver Elements 
 jobsPageUrl = "https://www.linkedin.com/jobs"
@@ -22,6 +25,7 @@ totalJobs = "//small"
 testPageUrl = testJobUrl +"&start="+ str(2)
 offersPerPage = "//li[@data-occludable-job-id]"
 easyApplyButton = '//button[contains(@class, "jobs-apply-button")]'
+
 # TO DO ADD OTHER PRINT CONSTANTS
 
 # Linkedin Constants

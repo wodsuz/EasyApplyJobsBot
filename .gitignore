@@ -180,3 +180,6 @@ linkedinProCode.py
 
 # configs for different searches
 configs/
+
+# data folder
+data/
