@@ -89,7 +89,11 @@ class Linkedin:
                         button = self.easyApplyButton()
 
                         if button is not False:
-                            button.click()
+                            try:
+                                button.click()
+                            except:
+                                self.driver.execute_script("arguments[0].click();", button)
+                            
                             time.sleep(random.uniform(1, constants.botSpeed))
                             countApplied += 1
                             try:
@@ -202,13 +206,10 @@ class Linkedin:
     def easyApplyButton(self):
         try:
             time.sleep(random.uniform(1, constants.botSpeed))
-            button = self.driver.find_element(By.XPATH,
-                '//button[contains(@class, "jobs-apply-button")]')
-            EasyApplyButton = button
+            button = self.driver.find_element(By.CSS_SELECTOR, "button[aria-label*='Easy Apply']")
+            return button
         except: 
-            EasyApplyButton = False
-
-        return EasyApplyButton
+            return False
 
     def applyProcess(self, percentage, offerPage):
         applyPages = math.floor(100 / percentage) 
