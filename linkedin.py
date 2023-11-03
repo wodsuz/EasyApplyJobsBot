@@ -12,7 +12,14 @@ class Linkedin:
     def __init__(self):
         
             prYellow("🌐 Bot will run in Chrome browser and log in Linkedin for you.")
-            self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=utils.chromeBrowserOptions())
+
+            if config.headless:
+                # Specify the path to Chromedriver provided by the Alpine package
+                service = ChromeService(executable_path='/usr/bin/chromedriver')
+                self.driver = webdriver.Chrome(service=service, options=utils.chromeBrowserOptions())
+            else:
+                self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=utils.chromeBrowserOptions())
+            
             self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
 
             prYellow("🔄 Trying to log in linkedin...")
@@ -240,8 +247,13 @@ class Linkedin:
             self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Review your application']").click() 
             utils.sleepInBetweenActions()
 
-            if config.followCompanies is True:
-                self.driver.find_element(By.CSS_SELECTOR,"label[for='follow-company-checkbox']").click() 
+            followCompany = self.driver.find_element(By.CSS_SELECTOR,"label[for='follow-company-checkbox']")
+            # Use JavaScript to check the state of the checkbox
+            is_followCompany_checked = self.driver.execute_script(
+                "return document.getElementById('follow-company-checkbox').checked;"
+            )
+            if config.followCompanies != is_followCompany_checked:
+                followCompany.click() 
                 utils.sleepInBetweenActions()
 
             self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Submit application']").click()

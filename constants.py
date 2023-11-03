@@ -11,8 +11,8 @@ fast = 2
 medium = 3
 slow = 5 
 
-botSleepInBetweenActionsBottom = 3
-botSleepInBetweenActionsTop = 10
+botSleepInBetweenActionsBottom = 4
+botSleepInBetweenActionsTop = 12
 
 botSleepInBetweenBatchesBottom = 10
 botSleepInBetweenBatchesTop = 70
