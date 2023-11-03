@@ -12,12 +12,10 @@ class Linkedin:
     def __init__(self):
             prYellow("🌐 Bot will run in Chrome browser and log in Linkedin for you.")
 
-            if config.headless:
-                # Specify the path to Chromedriver provided by the Alpine package
-                service = ChromeService(executable_path='/usr/bin/chromedriver')
-                self.driver = webdriver.Chrome(service=service, options=utils.chromeBrowserOptions())
-            else:
-                self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=utils.chromeBrowserOptions())
+            # Specify the path to Chromedriver provided by the Alpine package
+            service = ChromeService(executable_path='/usr/bin/chromedriver')
+            # service = ChromeService(ChromeDriverManager().install())
+            self.driver = webdriver.Chrome(service=service, options=utils.chromeBrowserOptions())
             
             self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
 
@@ -60,7 +58,7 @@ class Linkedin:
             totalPages = utils.jobsToPages(totalJobs)
 
             urlWords =  utils.urlToKeywords(url)
-            lineToWrite = "\n Category: " + urlWords[0] + ", Location: " +urlWords[1] + ", Applying " +str(totalJobs)+ " jobs."
+            lineToWrite = "\n Search keyword: " + urlWords[0] + ", Location: " +urlWords[1] + ", Applying " +str(totalJobs)+ " jobs."
             self.displayWriteResults(lineToWrite)
 
             for page in range(totalPages):
