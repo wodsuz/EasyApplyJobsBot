@@ -1,4 +1,4 @@
-import math,constants,config,time,random
+import math,constants,config,time,random,os
 from typing import List
 
 from selenium import webdriver
@@ -20,8 +20,8 @@ def chromeBrowserOptions():
     if(len(config.chromeProfilePath)>0):
         initialPath = config.chromeProfilePath[0:config.chromeProfilePath.rfind("/")]
         profileDir = config.chromeProfilePath[config.chromeProfilePath.rfind("/")+1:]
-        options.add_argument('--user-data-dir=' +initialPath)
-        options.add_argument("--profile-directory=" +profileDir)
+        options.add_argument('--user-data-dir=' + initialPath)
+        options.add_argument("--profile-directory=" + profileDir)
     else:
         options.add_argument("--incognito")
     return options
@@ -69,27 +69,57 @@ def urlToKeywords(url: str) -> List[str]:
 
 def writeResults(text: str):
     timeStr = time.strftime("%Y%m%d")
-    fileName = "Applied Jobs DATA - " +timeStr + ".txt"
+    directory = "data"
+    fileName = "Applied Jobs DATA - " + timeStr + ".txt"
+    filePath = os.path.join(directory, fileName)
+
     try:
-        with open("data/" +fileName, encoding="utf-8" ) as file:
+        os.makedirs(directory, exist_ok=True)  # Ensure the 'data' directory exists.
+
+        # Open the file for reading and writing ('r+' opens the file for both)
+        with open(filePath, 'r+', encoding="utf-8") as file:
             lines = []
             for line in file:
                 if "----" not in line:
                     lines.append(line)
-                
-        with open("data/" +fileName, 'w' ,encoding="utf-8") as f:
-            f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )
-            f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
-            for line in lines: 
-                f.write(line)
-            f.write(text+ "\n")
-            
-    except:
-        with open("data/" +fileName, 'w', encoding="utf-8") as f:
-            f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )
-            f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
+            file.seek(0)  # Go back to the start of the file
+            file.truncate()  # Clear the file
+            file.write("---- Applied Jobs Data ---- created at: " + timeStr + "\n")
+            file.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result " + "\n")
+            for line in lines:
+                file.write(line)
+            file.write(text + "\n")
+    except FileNotFoundError:
+        with open(filePath, 'w', encoding="utf-8") as f:
+            f.write("---- Applied Jobs Data ---- created at: " + timeStr + "\n")
+            f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result " + "\n")
+            f.write(text + "\n")
+    except Exception as e:
+        prRed(f"❌ Error in writeResults: {e}")  # Assuming prRed is a function to print errors in red color
 
-            f.write(text+ "\n")
+# def writeResults(text: str):
+#     timeStr = time.strftime("%Y%m%d")
+#     fileName = "Applied Jobs DATA - " +timeStr + ".txt"
+#     try:
+#         with open("data/" +fileName, encoding="utf-8" ) as file:
+#             lines = []
+#             for line in file:
+#                 if "----" not in line:
+#                     lines.append(line)
+                
+#         with open("data/" +fileName, 'w' ,encoding="utf-8") as f:
+#             f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )
+#             f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
+#             for line in lines: 
+#                 f.write(line)
+#             f.write(text+ "\n")
+            
+#     except:
+#         with open("data/" +fileName, 'w', encoding="utf-8") as f:
+#             f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )
+#             f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
+
+#             f.write(text+ "\n")
 
 def sleepInBetweenActions():
     time.sleep(random.uniform(constants.botSleepInBetweenActionsBottom, constants.botSleepInBetweenActionsTop))
