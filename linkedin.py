@@ -12,9 +12,12 @@ class Linkedin:
     def __init__(self):
             prYellow("🌐 Bot will run in Chrome browser and log in Linkedin for you.")
 
-            # Specify the path to Chromedriver provided by the Alpine package
-            service = ChromeService(executable_path='/usr/bin/chromedriver')
-            # service = ChromeService(ChromeDriverManager().install())
+            if config.chromeDriverPath != "":
+                # Specify the path to Chromedriver provided by the Alpine package
+                service = ChromeService(executable_path=config.chromeDriverPath)
+            else:
+                service = ChromeService(ChromeDriverManager().install())
+            
             self.driver = webdriver.Chrome(service=service, options=utils.chromeBrowserOptions())
             
             self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
