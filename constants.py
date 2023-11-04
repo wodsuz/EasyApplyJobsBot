@@ -18,6 +18,9 @@ botSleepInBetweenBatchesBottom = 10
 botSleepInBetweenBatchesTop = 70
 batchSize = 10
 
+botSleepInBetweenSearchesBottom = 60
+botSleepInBetweenSearchesTop = 180
+
 # TO DO ADD OTHER PRINT CONSTANTS
 
 # Linkedin Constants
