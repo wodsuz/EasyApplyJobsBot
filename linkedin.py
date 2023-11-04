@@ -1,12 +1,14 @@
 import time,math,os
 import utils,constants,config
-
-from selenium import webdriver
-from selenium.webdriver.common.by import By
 from utils import prRed,prYellow,prGreen
 
 from webdriver_manager.chrome import ChromeDriverManager
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class Linkedin:
     def __init__(self):
@@ -57,7 +59,10 @@ class Linkedin:
         for url in urlData:        
             self.driver.get(url)
 
-            totalJobs = self.driver.find_element(By.XPATH,'//small').text 
+            wait = WebDriverWait(self.driver, 10) # wait for a maximum of 10 seconds
+            totalJobs = wait.until(EC.presence_of_element_located((By.XPATH, '//small'))).text
+            # totalJobs = self.driver.find_element(By.XPATH,'//small').text 
+
             totalPages = utils.jobsToPages(totalJobs)
 
             urlWords =  utils.urlToKeywords(url)
