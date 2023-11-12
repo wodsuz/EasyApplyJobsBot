@@ -6,7 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -83,8 +83,12 @@ class Linkedin:
                         utils.sleepInBetweenActions()
 
                         for offer in offersPerPage:
-                            offerId = offer.get_attribute("data-occludable-job-id")
-                            offerIds.append(int(offerId.split(":")[-1]))
+                            try:
+                                # Check if the specific "Applied" text is present within the <ul> element
+                                applied_element = self.driver.find_element(By.XPATH, "//ul[contains(@class, 'job-card-list__footer-wrapper')]//li/strong/span[contains(text(), 'Applied')]")
+                            except NoSuchElementException:
+                                offerId = offer.get_attribute("data-occludable-job-id")
+                                offerIds.append(int(offerId.split(":")[-1]))
 
                         for jobID in offerIds:
                             offerPage = 'https://www.linkedin.com/jobs/view/' + str(jobID)
