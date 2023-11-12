@@ -29,11 +29,11 @@ class Linkedin:
             prYellow("🔄 Trying to log in linkedin...")
             try:    
                 self.driver.find_element("id","username").send_keys(config.email)
-                time.sleep(2)
+                utils.sleepInBetweenActions(1,2)
                 self.driver.find_element("id","password").send_keys(config.password)
-                time.sleep(2)
+                utils.sleepInBetweenActions(1, 2)
                 self.driver.find_element("xpath",'//button[@type="submit"]').click()
-                time.sleep(5)
+                utils.sleepInBetweenActions(3, 7)
                 self.mongoConnection("Check")
             except:
                 prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8. If error continue you can define Chrome profile or run the bot on Firefox")
@@ -108,7 +108,6 @@ class Linkedin:
                                         self.driver.execute_script("arguments[0].click();", button)
                                     
                                     utils.sleepInBetweenActions()
-                                    countApplied += 1
                                     
                                     try:
                                         self.chooseResumeIfOffered()
@@ -117,6 +116,7 @@ class Linkedin:
 
                                         lineToWrite = jobProperties + " | " + "* 🥳 Just Applied to this job: " + str(offerPage)
                                         self.displayWriteResults(lineToWrite)
+                                        countApplied += 1
 
                                     except:
                                         try:

@@ -121,8 +121,8 @@ def writeResults(text: str):
 
 #             f.write(text+ "\n")
 
-def sleepInBetweenActions():
-    time.sleep(random.uniform(constants.botSleepInBetweenActionsBottom, constants.botSleepInBetweenActionsTop))
+def sleepInBetweenActions(bottom: int = constants.botSleepInBetweenActionsBottom, top: int = constants.botSleepInBetweenActionsTop):
+    time.sleep(random.uniform(bottom, top))
 
 def printInfoMes(bot:str):
     prYellow("ℹ️ " +bot+ " is starting soon... ")
