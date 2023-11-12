@@ -114,7 +114,7 @@ class Linkedin:
                                     utils.sleepInBetweenActions()
                                     
                                     try:
-                                        self.chooseResumeIfOffered()
+                                        self.handleResumeSelectionAndQuestions()
                                         self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
                                         utils.sleepInBetweenActions()
 
@@ -124,6 +124,7 @@ class Linkedin:
 
                                     except:
                                         try:
+                                            self.handleResumeSelectionAndQuestions()
                                             self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
                                             utils.sleepInBetweenActions()
 
@@ -134,7 +135,7 @@ class Linkedin:
                                             self.displayWriteResults(lineToWrite)
                                         
                                         except Exception as e: 
-                                            self.chooseResumeIfOffered()
+                                            self.handleResumeSelectionAndQuestions()
                                             lineToWrite = jobProperties + " | " + "* 🥵 Cannot apply to this Job! " + str(offerPage)
                                             self.displayWriteResults(lineToWrite)
                                 else:
@@ -142,7 +143,7 @@ class Linkedin:
                                     self.displayWriteResults(lineToWrite)
                                     
                 except TimeoutException:
-                    print("Element not found within the time limit")
+                    prRed("Element not found within the time limit")
                     # TODO Handle the situation, like retrying, logging, or graceful shutdown
 
                 prYellow("Category: " + urlWords[0] + "," +urlWords[1]+ " applied: " + str(countApplied) +
@@ -235,11 +236,11 @@ class Linkedin:
         result = ""  
         try:
             for pages in range(applyPages):
-                self.chooseResumeIfOffered()
+                self.handleResumeSelectionAndQuestions()
                 self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
                 utils.sleepInBetweenActions()
 
-            self.chooseResumeIfOffered()
+            self.handleResumeSelectionAndQuestions()
             self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Review your application']").click() 
             utils.sleepInBetweenActions()
 
@@ -261,12 +262,77 @@ class Linkedin:
 
         return result
 
-    def displayWriteResults(self,lineToWrite: str):
+    def displayWriteResults(self, lineToWrite: str):
         try:
-            print(lineToWrite)
+            prYellow(lineToWrite)
             utils.writeResults(lineToWrite)
         except Exception as e:
             prRed("❌ Error in DisplayWriteResults: " +str(e))
+
+    def handleResumeSelectionAndQuestions(self):
+        self.chooseResumeIfOffered()
+        self.handleQuestions()
+
+    def handleQuestions(self):
+        # Locate the div that contains all the questions
+        questionsContainer = self.driver.find_element(By.CSS_SELECTOR, "div.pb4")
+
+        # Find all question groups within that div
+        questionGroups = questionsContainer.find_elements(By.CSS_SELECTOR, "div.jobs-easy-apply-form-section__grouping")
+
+        # Iterate through each question group
+        for group in questionGroups:
+            # Find the label for the question within the group
+            questionLabel = group.find_element(By.CSS_SELECTOR, "label.artdeco-text-input--label").text
+            
+            # Determine the type of question and call the appropriate handler
+            if self.exists(group, By.CSS_SELECTOR, "input[type='text']"):
+                self.handleTextInput(group, questionLabel, "input[type='text']")
+            elif self.exists(group, By.CSS_SELECTOR, "input[type='radio']"):
+                self.handleRadioInput(group, questionLabel, "input[type='radio']")
+            # elif self.exists(group, By.CSS_SELECTOR, "select"):
+            #     self.handle_select_input(group, question_label)
+            else:
+                self.logUnhandledQuestion(questionLabel)
+
+    def exists(self, parent, by, selector):
+        # Check if an element exists without raising an exception
+        return len(parent.find_elements(by, selector)) > 0
+        
+    def handleTextInput(group, questionLabel, element):
+        # Locate the input element  
+        inputElement = group.find_element(By.CSS_SELECTOR, element)
+
+        # Retrieve the value of the input element
+        inputValue = inputElement.get_attribute('value')
+
+        # Check if the input element is empty
+        if inputValue == '':
+            # TODO Check the backend for answers. If there is an answer for this question, fill it in
+            # If you want to fill the input
+            # question_input.send_keys("Your answer here")
+            # If no answers are found, move to the next step (backend should handle saving unanswered questions)
+            prYellow("The input element is empty.")
+        else:
+            # TODO Save answers to the backend if they are not already saved
+            prYellow(f"The input element has the following value: {inputValue}")
+
+    def handleRadioInput(group, questionLabel, element):
+        # Check if it's a radio selector question
+        radioInputs = group.find_elements(By.CSS_SELECTOR, element)
+        for radioInput in radioInputs:
+            # Retrieve the associated label
+            label = radioInput.find_element(By.XPATH, "./following-sibling::label").text
+            # TODO Check the backend for answers. If there is an answer for this question, fill it in
+            # Check or uncheck based on some condition
+            # if "desired option" in label:
+            #     prYellow(f"Selecting option: {label}")
+            #     radio_input.click()  # Select the radio button if it's the desired option
+
+    def logUnhandledQuestion(self, questionLabel):
+        # Log or print the unhandled question
+        print(f"Unhandled question: {questionLabel}")
+
 
 start = time.time()
 Linkedin().linkJobApply()
