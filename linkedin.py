@@ -67,6 +67,11 @@ class Linkedin:
                     "data-occludable-job-id").split(":")[-1]) for offer in offersPerPage]
                 time.sleep(random.uniform(1, constants.botSpeed))
 
+                for offer in offersPerPage:
+                    if not self.element_exists(offer, By.XPATH, ".//*[contains(text(), 'Applied')]"):
+                        offerId = offer.get_attribute("data-occludable-job-id")
+                        offerIds.append(int(offerId.split(":")[-1]))
+
                 for jobID in offerIds:
                     offerPage = 'https://www.linkedin.com/jobs/view/' + str(jobID)
                     self.driver.get(offerPage)
@@ -214,6 +219,9 @@ class Linkedin:
             utils.writeResults(lineToWrite)
         except Exception as e:
             prRed("❌ Error in DisplayWriteResults: " +str(e))
+
+    def element_exists(self, parent, by, selector):
+        return len(parent.find_elements(by, selector)) > 0
 
 start = time.time()
 Linkedin().linkJobApply()
