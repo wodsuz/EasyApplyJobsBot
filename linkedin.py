@@ -135,7 +135,8 @@ class Linkedin:
                                             self.displayWriteResults(lineToWrite)
                                         
                                         except Exception as e: 
-                                            self.handleResumeSelectionAndQuestions()
+                                            if(config.displayWarnings):
+                                                prRed("⚠️ Warning in applying to job: " +str(e)[0:50])
                                             lineToWrite = jobProperties + " | " + "* 🥵 Cannot apply to this Job! " + str(offerPage)
                                             self.displayWriteResults(lineToWrite)
                                 else:
@@ -295,32 +296,35 @@ class Linkedin:
         self.handleQuestions()
 
     def handleQuestions(self):
-        # Locate the div that contains all the questions
-        questionsContainer = self.driver.find_element(By.CSS_SELECTOR, "div.pb4")
+        if self.exists(self.driver, By.CSS_SELECTOR, "div.pb4"):
+            # Locate the div that contains all the questions
+            questionsContainer = self.driver.find_element(By.CSS_SELECTOR, "div.pb4")
 
-        # Find all question groups within that div
-        questionGroups = questionsContainer.find_elements(By.CSS_SELECTOR, "div.jobs-easy-apply-form-section__grouping")
+            if self.exists(questionsContainer, By.CSS_SELECTOR, "div.jobs-easy-apply-form-section__grouping"):
+                # Find all question groups within that div
+                questionGroups = questionsContainer.find_elements(By.CSS_SELECTOR, "div.jobs-easy-apply-form-section__grouping")
 
-        # Iterate through each question group
-        for group in questionGroups:
-            # Find the label for the question within the group
-            questionLabel = group.find_element(By.CSS_SELECTOR, "label.artdeco-text-input--label").text
-            
-            # Determine the type of question and call the appropriate handler
-            if self.exists(group, By.CSS_SELECTOR, "input[type='text']"):
-                self.handleTextInput(group, questionLabel, "input[type='text']")
-            elif self.exists(group, By.CSS_SELECTOR, "input[type='radio']"):
-                self.handleRadioInput(group, questionLabel, "input[type='radio']")
-            # elif self.exists(group, By.CSS_SELECTOR, "select"):
-            #     self.handle_select_input(group, question_label)
-            else:
-                self.logUnhandledQuestion(questionLabel)
+                # Iterate through each question group
+                for group in questionGroups:
+                    if self.exists(group, By.CSS_SELECTOR, "label.artdeco-text-input--label"):
+                        # Find the label for the question within the group
+                        questionLabel = group.find_element(By.CSS_SELECTOR, "label.artdeco-text-input--label").text
+                        
+                        # Determine the type of question and call the appropriate handler
+                        if self.exists(group, By.CSS_SELECTOR, "input[type='text']"):
+                            self.handleTextInput(group, questionLabel, "input[type='text']")
+                        elif self.exists(group, By.CSS_SELECTOR, "input[type='radio']"):
+                            self.handleRadioInput(group, questionLabel, "input[type='radio']")
+                        # elif self.exists(group, By.CSS_SELECTOR, "select"):
+                        #     self.handle_select_input(group, question_label)
+                        else:
+                            self.logUnhandledQuestion(questionLabel)
 
     def exists(self, parent, by, selector):
-        # Check if an element exists without raising an exception
+        # Check if an element exists on the page
         return len(parent.find_elements(by, selector)) > 0
         
-    def handleTextInput(group, questionLabel, element):
+    def handleTextInput(self, group, questionLabel, element):
         # Locate the input element  
         inputElement = group.find_element(By.CSS_SELECTOR, element)
 
@@ -329,7 +333,10 @@ class Linkedin:
 
         # Check if the input element is empty
         if inputValue == '':
-            # TODO Check the backend for answers. If there is an answer for this question, fill it in
+            # TODO Check the backend for answers
+
+
+            # TODO If there is an answer for this question, fill it in
             # If you want to fill the input
             # question_input.send_keys("Your answer here")
             # If no answers are found, move to the next step (backend should handle saving unanswered questions)
@@ -338,7 +345,7 @@ class Linkedin:
             # TODO Save answers to the backend if they are not already saved
             prYellow(f"The input element has the following value: {inputValue}")
 
-    def handleRadioInput(group, questionLabel, element):
+    def handleRadioInput(self, group, questionLabel, element):
         # Check if it's a radio selector question
         radioInputs = group.find_elements(By.CSS_SELECTOR, element)
         for radioInput in radioInputs:
@@ -352,7 +359,7 @@ class Linkedin:
 
     def logUnhandledQuestion(self, questionLabel):
         # Log or print the unhandled question
-        print(f"Unhandled question: {questionLabel}")
+        prRed(f"Unhandled question: {questionLabel}")
 
 
 start = time.time()
