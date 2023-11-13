@@ -46,6 +46,12 @@ showing how this can be used. To buy, support this project and help me add more 
 - Run `python3 linkedin.py`
 - Check Applied Jobs DATA .txt file is generate under /data folder
 
+### Run inside a Docker container
+
+- clone the repo `git clone https://github.com/wodsuz/EasyApplyJobsBot`
+- Run `docker build -t easy-apply-bot .`
+
+
 ## Features 💡
 
 - Ability to filter jobs, by easy apply, by location (Worldwide, Europe, Poland, etc.), by keyword (python, react, node), by experience, position, job type and date posted.
