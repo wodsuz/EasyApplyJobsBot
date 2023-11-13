@@ -83,10 +83,10 @@ class Linkedin:
                         utils.sleepInBetweenActions()
 
                         for offer in offersPerPage:
-                            try:
-                                # Check if the specific "Applied" text is present within the <ul> element
-                                applied_element = self.driver.find_element(By.XPATH, "//ul[contains(@class, 'job-card-list__footer-wrapper')]//li/strong/span[contains(text(), 'Applied')]")
-                            except NoSuchElementException:
+                            if self.exists(offer, By.XPATH, ".//*[contains(text(), 'Applied')]"):
+                                if config.displayWarnings:
+                                    prYellow("⚠️ Not adding a job id as I already applied to this job")
+                            else:
                                 offerId = offer.get_attribute("data-occludable-job-id")
                                 offerIds.append(int(offerId.split(":")[-1]))
 
@@ -317,7 +317,7 @@ class Linkedin:
 
             # TODO If there is an answer for this question, fill it in
             # If you want to fill the input
-            # question_input.send_keys("Your answer here")
+            # question_input.send_keys("Your answer here") then sleep
             # If no answers are found, move to the next step (backend should handle saving unanswered questions)
             prYellow("The input element is empty.")
         else:
@@ -334,7 +334,7 @@ class Linkedin:
             # Check or uncheck based on some condition
             # if "desired option" in label:
             #     prYellow(f"Selecting option: {label}")
-            #     radio_input.click()  # Select the radio button if it's the desired option
+            #     radio_input.click()  # Select the radio button if it's the desired option then sleep
 
     def logUnhandledQuestion(self, questionLabel):
         # Log or print the unhandled question
