@@ -35,6 +35,12 @@ def prGreen(prt):
 def prYellow(prt):
     print(f"\033[93m{prt}\033[00m")
 
+def prBlue(prt):
+    print(f"\033[94m{prt}\033[00m")
+
+def displayWarning(message, exception):
+    prYellow(f"⚠️ Warning ⚠️ {message}: {str(exception)[0:100]}")
+
 def getUrlDataFile():
     urlData = ""
     try:
