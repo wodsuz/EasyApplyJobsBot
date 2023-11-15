@@ -313,7 +313,7 @@ class Linkedin:
                         # Determine the type of question and call the appropriate handler
                         if self.exists(group, By.CSS_SELECTOR, "input.artdeco-text-input--input"):
                             self.handleTextInput(group, questionLabel, By.CSS_SELECTOR, "input.artdeco-text-input--input")
-                        if self.exists(group, By.CSS_SELECTOR, "textarea"):
+                        elif self.exists(group, By.CSS_SELECTOR, "textarea"):
                             self.handleTextInput(group, questionLabel, By.CSS_SELECTOR, "textarea")
                         elif self.exists(group, By.CSS_SELECTOR, "input[type='radio']"):
                             self.handleRadioInput(group, questionLabel, By.CSS_SELECTOR, "input[type='radio']")
