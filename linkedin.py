@@ -34,7 +34,7 @@ class Linkedin:
                 utils.sleepInBetweenActions(1, 2)
                 self.driver.find_element("xpath",'//button[@type="submit"]').click()
                 utils.sleepInBetweenActions(3, 7)
-                self.mongoConnection("Check")
+                # self.mongoConnection("Check")
             except:
                 prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8. If error continue you can define Chrome profile or run the bot on Firefox")
     
@@ -136,7 +136,7 @@ class Linkedin:
                                         
                                         except Exception as e: 
                                             if(config.displayWarnings):
-                                                prRed("⚠️ Warning in applying to job: " +str(e)[0:50])
+                                                utils.displayWarning("Couldn't apply to a job", e)
                                             lineToWrite = jobProperties + " | " + "* 🥵 Cannot apply to this Job! " + str(offerPage)
                                             self.displayWriteResults(lineToWrite)
                                 else:
@@ -154,7 +154,7 @@ class Linkedin:
 
         except Exception as e:
             if config.displayWarnings:
-                prYellow("⚠️ Exception caught: " +str(e)[0:50])
+                utils.displayWarning("Unhandled exception in linkJobApply", e)
 
     def chooseResumeIfOffered(self):
         try: 
@@ -198,7 +198,7 @@ class Linkedin:
                 jobTitle += "(blacklisted title: "+ ' '.join(res)+ ")"
         except Exception as e:
             if(config.displayWarnings):
-                prYellow("⚠️ Warning in getting jobTitle: " +str(e)[0:50])
+                utils.displayWarning("in getting jobTitle", e)
             jobTitle = ""
 
         try:
@@ -208,35 +208,35 @@ class Linkedin:
                 jobCompany += "(blacklisted company: "+ ' '.join(res)+ ")"
         except Exception as e:
             if(config.displayWarnings):
-                prYellow("⚠️ Warning in getting jobCompany: " +str(e)[0:50])
+                utils.displayWarning("in getting jobCompany", e)
             jobCompany = ""
             
         try:
             jobLocation = self.driver.find_element(By.XPATH,"//span[contains(@class, 'bullet')]").get_attribute("innerHTML").strip()
         except Exception as e:
             if(config.displayWarnings):
-                prYellow("⚠️ Warning in getting jobLocation: " +str(e)[0:50])
+                utils.displayWarning("in getting jobLocation", e)
             jobLocation = ""
 
         try:
             jobWOrkPlace = self.driver.find_element(By.XPATH,"//span[contains(@class, 'workplace-type')]").get_attribute("innerHTML").strip()
         except Exception as e:
             if(config.displayWarnings):
-                prYellow("⚠️ Warning in getting jobWorkPlace: " +str(e)[0:50])
+                utils.displayWarning("in getting jobWorkPlace", e)
             jobWOrkPlace = ""
 
         try:
             jobPostedDate = self.driver.find_element(By.XPATH,"//span[contains(@class, 'posted-date')]").get_attribute("innerHTML").strip()
         except Exception as e:
             if(config.displayWarnings):
-                prYellow("⚠️ Warning in getting jobPostedDate: " +str(e)[0:50])
+                utils.displayWarning("in getting jobPostedDate", e)
             jobPostedDate = ""
 
         try:
-            jobApplications= self.driver.find_element(By.XPATH,"//span[contains(@class, 'applicant-count')]").get_attribute("innerHTML").strip()
+            jobApplications = self.driver.find_element(By.XPATH,"//span[contains(@class, 'applicant-count')]").get_attribute("innerHTML").strip()
         except Exception as e:
             if(config.displayWarnings):
-                prYellow("⚠️ Warning in getting jobApplications: " +str(e)[0:50])
+                utils.displayWarning("in getting jobApplications", e)
             jobApplications = ""
 
         textToWrite = str(count)+ " | " +jobTitle+  " | " +jobCompany+  " | "  +jobLocation+ " | "  +jobWOrkPlace+ " | " +jobPostedDate+ " | " +jobApplications
@@ -312,21 +312,21 @@ class Linkedin:
                         
                         # Determine the type of question and call the appropriate handler
                         if self.exists(group, By.CSS_SELECTOR, "input[type='text']"):
-                            self.handleTextInput(group, questionLabel, "input[type='text']")
+                            self.handleTextInput(group, questionLabel, By.CSS_SELECTOR, "input[type='text']")
+                        if self.exists(group, By.CSS_SELECTOR, "textarea"):
+                            self.handleTextInput(group, questionLabel, By.CSS_SELECTOR, "textarea")
                         elif self.exists(group, By.CSS_SELECTOR, "input[type='radio']"):
-                            self.handleRadioInput(group, questionLabel, "input[type='radio']")
-                        # elif self.exists(group, By.CSS_SELECTOR, "select"):
-                        #     self.handle_select_input(group, question_label)
+                            self.handleRadioInput(group, questionLabel, By.CSS_SELECTOR, "input[type='radio']")
                         else:
                             self.logUnhandledQuestion(questionLabel)
 
-    def exists(self, parent, by, selector):
+    def exists(self, parent, by, value):
         # Check if an element exists on the page
-        return len(parent.find_elements(by, selector)) > 0
+        return len(parent.find_elements(by, value)) > 0
         
-    def handleTextInput(self, group, questionLabel, element):
+    def handleTextInput(self, group, questionLabel, by, value):
         # Locate the input element  
-        inputElement = group.find_element(By.CSS_SELECTOR, element)
+        inputElement = group.find_element(by, value)
 
         # Retrieve the value of the input element
         inputValue = inputElement.get_attribute('value')
@@ -340,14 +340,16 @@ class Linkedin:
             # If you want to fill the input
             # question_input.send_keys("Your answer here") then sleep
             # If no answers are found, move to the next step (backend should handle saving unanswered questions)
-            prYellow("The input element is empty.")
+            if config.displayWarnings:
+                prYellow(f"The input for '{questionLabel}' is empty.")
         else:
             # TODO Save answers to the backend if they are not already saved
-            prYellow(f"The input element has the following value: {inputValue}")
+            if config.displayWarnings:
+                prYellow(f"The input for '{questionLabel}' has the following value: {inputValue}")
 
-    def handleRadioInput(self, group, questionLabel, element):
+    def handleRadioInput(self, group, questionLabel, by, value):
         # Check if it's a radio selector question
-        radioInputs = group.find_elements(By.CSS_SELECTOR, element)
+        radioInputs = group.find_elements(by, value)
         for radioInput in radioInputs:
             # Retrieve the associated label
             label = radioInput.find_element(By.XPATH, "./following-sibling::label").text
