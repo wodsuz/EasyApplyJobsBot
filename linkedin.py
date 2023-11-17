@@ -41,7 +41,7 @@ class Linkedin:
         if not os.path.exists('data'):
             os.makedirs('data')
         try: 
-            with open('data/urlData.txt', 'w',encoding="utf-8" ) as file:
+            with open('data/urlData.txt', 'w', encoding="utf-8" ) as file:
                 linkedinJobLinks = utils.LinkedinUrlGenerate().generateUrlLinks()
                 for url in linkedinJobLinks:
                     file.write(url+ "\n")
@@ -135,7 +135,7 @@ class Linkedin:
                                             self.displayWriteResults(lineToWrite)
                                         
                                         except Exception as e: 
-                                            if(config.displayWarnings):
+                                            if config.displayWarnings:
                                                 utils.displayWarning("Couldn't apply to a job", e)
                                             lineToWrite = jobProperties + " | " + "* 🥵 Cannot apply to this Job! " + str(offerPage)
                                             self.displayWriteResults(lineToWrite)
@@ -197,7 +197,7 @@ class Linkedin:
             if (len(res) > 0):
                 jobTitle += "(blacklisted title: " + ' '.join(res) + ")"
         except Exception as e:
-            if(config.displayWarnings):
+            if config.displayWarnings:
                 utils.displayWarning("in getting jobTitle", e)
             jobTitle = ""
 
@@ -207,35 +207,35 @@ class Linkedin:
             if (len(res) > 0):
                 jobDetail += "(blacklisted company: " + ' '.join(res) + ")"
         except Exception as e:
-            if(config.displayWarnings):
+            if config.displayWarnings:
                 utils.displayWarning("in getting jobCompany", e)
             jobCompany = ""
             
         try:
             jobLocation = self.driver.find_element(By.XPATH,"//span[contains(@class, 'bullet')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            if(config.displayWarnings):
+            if config.displayWarnings:
                 utils.displayWarning("in getting jobLocation", e)
             jobLocation = ""
 
         try:
             jobWorkPlaceType = self.driver.find_element(By.XPATH,"//span[contains(@class, 'workplace-type')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            if(config.displayWarnings):
+            if config.displayWarnings:
                 utils.displayWarning("in getting jobWorkPlace", e)
             jobWorkPlaceType = ""
 
         try:
             jobPostedDate = self.driver.find_element(By.XPATH,"//span[contains(@class, 'posted-date')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            if(config.displayWarnings):
+            if config.displayWarnings:
                 utils.displayWarning("in getting jobPostedDate", e)
             jobPostedDate = ""
 
         try:
             jobApplications = self.driver.find_element(By.XPATH,"//span[contains(@class, 'applicant-count')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            if(config.displayWarnings):
+            if config.displayWarnings:
                 utils.displayWarning("in getting jobApplications", e)
             jobApplications = ""
 
@@ -266,10 +266,21 @@ class Linkedin:
 
             followCompany = self.driver.find_element(By.CSS_SELECTOR,"label[for='follow-company-checkbox']")
             # Use JavaScript to check the state of the checkbox
-            is_followCompany_checked = self.driver.execute_script(
-                "return document.getElementById('follow-company-checkbox').checked;"
-            )
+            # is_followCompany_checked = self.driver.execute_script(
+            #     "return document.getElementById('follow-company-checkbox').checked;"
+            # )
+            # Use JavaScript to check the state of the checkbox
+            is_followCompany_checked = self.driver.execute_script("""
+                var label = arguments[0];
+                var checkbox = document.getElementById('follow-company-checkbox');
+                var style = window.getComputedStyle(label, '::after');
+                var content = style.getPropertyValue('content');
+                // Check if content is not 'none' or empty which may indicate the presence of the ::after pseudo-element
+                return checkbox.checked || (content && content !== 'none' && content !== '');
+            """, followCompany)
             if config.followCompanies != is_followCompany_checked:
+                # Use JavaScript to dispatch a click event to the checkbox
+                # self.driver.execute_script("arguments[0].click();", followCompany) # possible solution for not following companies
                 followCompany.click() 
                 utils.sleepInBetweenActions()
 
@@ -287,7 +298,7 @@ class Linkedin:
             prYellow(lineToWrite)
             utils.writeResults(lineToWrite)
         except Exception as e:
-            prRed("❌ Error in DisplayWriteResults: " +str(e))
+            prRed("❌ Error in DisplayWriteResults: " + str(e))
 
     def handleResumeSelectionAndQuestions(self):
         self.chooseResumeIfOffered()
