@@ -41,16 +41,6 @@ def prBlue(prt):
 def displayWarning(message, exception):
     prYellow(f"⚠️ Warning ⚠️ {message}: {str(exception)[0:100]}")
 
-def getUrlDataFile():
-    urlData = ""
-    try:
-        file = open('data/urlData.txt', 'r')
-        urlData = file.readlines()
-    except FileNotFoundError:
-        text = "FileNotFound:urlData.txt file is not found. Please run ./data folder exists and check config.py values of yours. Then run the bot again"
-        prRed(text)
-    return urlData
-
 def jobsToPages(numOfJobs: str) -> int:
   number_of_pages = 1
 
@@ -142,12 +132,12 @@ def donate(self):
 
 class LinkedinUrlGenerate:
     def generateUrlLinks(self):
-        path = []
+        urls = []
         for location in config.location:
             for keyword in config.keywords:
                     url = constants.linkJobUrl + "?f_AL=true&keywords=" + keyword + self.jobType() + self.remote() + self.checkJobLocation(location) + self.jobExp() + self.datePosted() + self.jobTitle() + self.salary() + self.sortBy()
-                    path.append(url)
-        return path
+                    urls.append(url)
+        return urls
 
     def checkJobLocation(self, job):
         jobLoc = "&location=" + job

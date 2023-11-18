@@ -13,50 +13,36 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class Linkedin:
     def __init__(self):
+        prYellow("🌐 Bot will run in Chrome browser and log in Linkedin for you.")
 
-            prYellow("🌐 Bot will run in Chrome browser and log in Linkedin for you.")
+        if config.chromeDriverPath != "":
+            # Specify the path to Chromedriver provided by the Alpine package
+            service = ChromeService(executable_path=config.chromeDriverPath)
+        else:
+            service = ChromeService(ChromeDriverManager().install())
+        
+        self.driver = webdriver.Chrome(service=service, options=utils.chromeBrowserOptions())
+        self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
+        self.wait = WebDriverWait(self.driver, 15)
 
-            if config.chromeDriverPath != "":
-                # Specify the path to Chromedriver provided by the Alpine package
-                service = ChromeService(executable_path=config.chromeDriverPath)
-            else:
-                service = ChromeService(ChromeDriverManager().install())
-            
-            self.driver = webdriver.Chrome(service=service, options=utils.chromeBrowserOptions())
-            self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
-            self.wait = WebDriverWait(self.driver, 15)
-
-            prYellow("🔄 Trying to log in linkedin...")
-            try:    
-                self.driver.find_element("id","username").send_keys(config.email)
-                utils.sleepInBetweenActions(1,2)
-                self.driver.find_element("id","password").send_keys(config.password)
-                utils.sleepInBetweenActions(1, 2)
-                self.driver.find_element("xpath",'//button[@type="submit"]').click()
-                utils.sleepInBetweenActions(3, 7)
-                # self.mongoConnection("Check")
-            except:
-                prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8. If error continue you can define Chrome profile or run the bot on Firefox")
-    
-    def generateUrls(self):
-        if not os.path.exists('data'):
-            os.makedirs('data')
-        try: 
-            with open('data/urlData.txt', 'w', encoding="utf-8" ) as file:
-                linkedinJobLinks = utils.LinkedinUrlGenerate().generateUrlLinks()
-                for url in linkedinJobLinks:
-                    file.write(url+ "\n")
-            prGreen("✅ Urls are created successfully, now the bot will visit those urls.")
+        prYellow("🔄 Trying to log in linkedin...")
+        try:    
+            self.driver.find_element("id","username").send_keys(config.email)
+            utils.sleepInBetweenActions(1,2)
+            self.driver.find_element("id","password").send_keys(config.password)
+            utils.sleepInBetweenActions(1, 2)
+            self.driver.find_element("xpath",'//button[@type="submit"]').click()
+            utils.sleepInBetweenActions(3, 7)
+            # self.mongoConnection("Check")
         except:
-            prRed("❌ Couldn't generate url, make sure you have /data folder and modified config.py file for your preferances.")
-
+            prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8. If error continue you can define Chrome profile or run the bot on Firefox")
+    
     def linkJobApply(self):
         try:
-            self.generateUrls()
             countApplied = 0
             countJobs = 0
 
-            urlData = utils.getUrlDataFile()
+            urlData = utils.LinkedinUrlGenerate().generateUrlLinks()
 
             for url in urlData:        
                 self.driver.get(url)
@@ -99,7 +85,7 @@ class Linkedin:
 
                             jobProperties = self.getJobProperties(countJobs)
                             if "blacklisted" in jobProperties: 
-                                lineToWrite = jobProperties + " | " + "* 🤬 Blacklisted Job, skipped!: " +str(offerPage)
+                                lineToWrite = jobProperties + " | " + "* 🤬 Blacklisted Job, skipped!: " + str(offerPage)
                                 self.displayWriteResults(lineToWrite)
                             
                             else:                    
@@ -203,7 +189,7 @@ class Linkedin:
 
         try:
             jobCompany = self.driver.find_element(By.XPATH,"//a[contains(@class, 'ember-view t-black t-normal')]").get_attribute("innerHTML").strip()
-            res = [blItem for blItem in config.blacklistCompanies if(blItem.lower() in jobTitle.lower())]
+            res = [blItem for blItem in config.blacklistCompanies if(blItem.lower() in jobCompany.lower())]
             if (len(res)>0):
                 jobCompany += "(blacklisted company: "+ ' '.join(res)+ ")"
         except Exception as e:
@@ -267,6 +253,7 @@ class Linkedin:
             utils.sleepInBetweenActions()
 
             followCompany = self.driver.find_element(By.CSS_SELECTOR,"label[for='follow-company-checkbox']")
+            # I followed 10 pages before writing this code, so let's check if it works
             # Use JavaScript to check the state of the checkbox
             # is_followCompany_checked = self.driver.execute_script(
             #     "return document.getElementById('follow-company-checkbox').checked;"
