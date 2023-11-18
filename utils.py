@@ -1,4 +1,4 @@
-import math,constants,config,time,random,os
+import math, constants, config, time, random, os, traceback 
 from typing import List
 
 from selenium import webdriver
@@ -38,8 +38,11 @@ def prYellow(prt):
 def prBlue(prt):
     print(f"\033[94m{prt}\033[00m")
 
-def displayWarning(message, exception):
-    prYellow(f"⚠️ Warning ⚠️ {message}: {str(exception)[0:100]}")
+def displayWarning(shouldDisplay, message, exception, displayTraceback = False):
+    if (shouldDisplay):
+        prYellow(f"⚠️ Warning ⚠️ {message}: {str(exception)[0:100]}")
+        if (displayTraceback):
+            traceback.print_exc()
 
 def jobsToPages(numOfJobs: str) -> int:
   number_of_pages = 1
@@ -116,6 +119,10 @@ def writeResults(text: str):
 #             f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
 
 #             f.write(text+ "\n")
+
+def interact(action):
+    action()
+    sleepInBetweenActions()
 
 def sleepInBetweenActions(bottom: int = constants.botSleepInBetweenActionsBottom, top: int = constants.botSleepInBetweenActionsTop):
     time.sleep(random.uniform(bottom, top))

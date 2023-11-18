@@ -36,7 +36,7 @@ class Linkedin:
         except:
             prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8. If error continue you can define Chrome profile or run the bot on Firefox")
     
-    def linkJobApply(self):
+    def startApplying(self):
         try:
             countApplied = 0
             countJobs = 0
@@ -51,17 +51,16 @@ class Linkedin:
                     totalJobs = self.wait.until(EC.presence_of_element_located((By.XPATH, '//small'))).text # TODO - fix finding total jobs
                     # totalJobs = self.driver.find_element(By.XPATH,'//small').text 
 
-                    totalPages = utils.jobsToPages(totalJobs)
+                    totalSearchResultPages = utils.jobsToPages(totalJobs)
 
                     urlWords =  utils.urlToKeywords(url)
-                    lineToWrite = "\n Search keyword: " + urlWords[0] + ", Location: " +urlWords[1] + ", Applying " +str(totalJobs)+ " jobs."
+                    lineToWrite = "\n Search keyword: " + urlWords[0] + ", Location: " + urlWords[1] + ", Applying " + str(totalJobs) + " jobs."
                     self.displayWriteResults(lineToWrite)
 
-                    for page in range(totalPages):
-                        currentPageJobs = constants.jobsPerPage * page
-                        url = url +"&start="+ str(currentPageJobs)
-                        self.driver.get(url)
-                        utils.sleepInBetweenActions()
+                    for searchResultPage in range(totalSearchResultPages):
+                        currentSearchResultPageJobs = constants.jobsPerPage * searchResultPage
+                        url = url + "&start=" + str(currentSearchResultPageJobs)
+                        utils.interact(lambda : self.driver.get(url))
 
                         offersPerPage = self.driver.find_elements(By.XPATH,'//li[@data-occludable-job-id]')
                         offerIds = []
@@ -72,14 +71,14 @@ class Linkedin:
                             if self.exists(offer, By.XPATH, ".//*[contains(text(), 'Applied')]"):
                                 if config.displayWarnings:
                                     prYellow("⚠️ Not adding a job id as I already applied to this job")
-                            else:
-                                offerId = offer.get_attribute("data-occludable-job-id")
-                                offerIds.append(int(offerId.split(":")[-1]))
+                                continue
+                            
+                            offerId = offer.get_attribute("data-occludable-job-id")
+                            offerIds.append(int(offerId.split(":")[-1]))
 
                         for jobID in offerIds:
                             offerPage = 'https://www.linkedin.com/jobs/view/' + str(jobID)
-                            self.driver.get(offerPage)
-                            utils.sleepInBetweenActions()
+                            utils.interact(lambda : self.driver.get(offerPage))
 
                             countJobs += 1
 
@@ -87,47 +86,10 @@ class Linkedin:
                             if "blacklisted" in jobProperties: 
                                 lineToWrite = jobProperties + " | " + "* 🤬 Blacklisted Job, skipped!: " + str(offerPage)
                                 self.displayWriteResults(lineToWrite)
+                                continue
                             
-                            else:                    
-                                easyApplyButton = self.easyApplyButton()
-
-                                if easyApplyButton is not False:
-                                    try:
-                                        easyApplyButton.click()
-                                    except:
-                                        self.driver.execute_script("arguments[0].click();", easyApplyButton)
-                                    
-                                    utils.sleepInBetweenActions()
-                                    
-                                    try:
-                                        self.handleResumeSelectionAndQuestions()
-                                        self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
-                                        utils.sleepInBetweenActions()
-
-                                        lineToWrite = jobProperties + " | " + "* 🥳 Just Applied to this job: " + str(offerPage)
-                                        self.displayWriteResults(lineToWrite)
-                                        countApplied += 1
-
-                                    except:
-                                        try:
-                                            self.handleResumeSelectionAndQuestions()
-                                            self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
-                                            utils.sleepInBetweenActions()
-
-                                            comPercentage = self.driver.find_element(By.XPATH,'html/body/div[3]/div/div/div[2]/div/div/span').text
-                                            percentNumber = int(comPercentage[0:comPercentage.index("%")])
-                                            result = self.applyProcess(percentNumber, offerPage)
-                                            lineToWrite = jobProperties + " | " + result
-                                            self.displayWriteResults(lineToWrite)
-                                        
-                                        except Exception as e: 
-                                            if config.displayWarnings:
-                                                utils.displayWarning("Couldn't apply to a job", e)
-                                            lineToWrite = jobProperties + " | " + "* 🥵 Cannot apply to this Job! " + str(offerPage)
-                                            self.displayWriteResults(lineToWrite)
-                                else:
-                                    lineToWrite = jobProperties + " | " + "* 🥳 Already applied! Job: " + str(offerPage)
-                                    self.displayWriteResults(lineToWrite)
+                            # TODO Test if countApplied is working
+                            self.handleJobPost(countApplied, offerPage, jobProperties)
                                     
                 except TimeoutException:
                     prRed("Element not found within the time limit")
@@ -135,38 +97,50 @@ class Linkedin:
 
                 prYellow("Category: " + urlWords[0] + "," +urlWords[1]+ " applied: " + str(countApplied) +
                     " jobs out of " + str(countJobs) + ".")
-            
-            utils.donate(self)
 
         except Exception as e:
-            if config.displayWarnings:
-                utils.displayWarning("Unhandled exception in linkJobApply", e)
+            utils.displayWarning(config.displayWarnings, "Unhandled exception in startApplying", e, True)
 
-    def chooseResumeIfOffered(self):
-        try: 
-            beSureIncludeResumeTxt = self.driver.find_element(By.CLASS_NAME, "jobs-document-upload__title--is-required")
-            if beSureIncludeResumeTxt.text == "Be sure to include an updated resume":
-                more_resumes = self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Show more resumes']")
-                if(more_resumes.is_displayed()):
-                    more_resumes.click()
-                    utils.sleepInBetweenActions()
+    def handleJobPost(self, countApplied, offerPage, jobProperties):
+        if self.exists(self.driver, By.CSS_SELECTOR, "button[aria-label*='Easy Apply']"):
+            # button = self.driver.find_element(By.XPATH,
+            #     '//button[contains(@class, "jobs-apply-button")]')
+            # button = self.driver.find_element(By.CSS_SELECTOR, "button:contains('Easy Apply')")
+            button = self.driver.find_element(By.CSS_SELECTOR, "button[aria-label*='Easy Apply']")
+            utils.interact(lambda : self.click_button(button))
+            
+            # Now, the easy apply popup should be open
+            if self.exists(self.driver, By.CSS_SELECTOR, "button[aria-label='Submit application']"):
+                self.handleSubmitPage(offerPage, jobProperties)
+            elif self.exists(self.driver, By.CSS_SELECTOR, "button[aria-label='Continue to next step']"):
+                self.handleMultiplePages(countApplied, offerPage, jobProperties)
 
-                # Find all CV container elements
-                cv_containers = self.driver.find_elements(By.CSS_SELECTOR, ".jobs-document-upload-redesign-card__container")
+        else:
+            lineToWrite = jobProperties + " | " + "* 🥳 Already applied! Job: " + str(offerPage)
+            self.displayWriteResults(lineToWrite)
 
-                # Loop through the elements to find the desired CV
-                for container in cv_containers:
-                    cv_name_element = container.find_element(By.CLASS_NAME, "jobs-document-upload-redesign-card__file-name")
-                    
-                    if config.distinctCVKeyword[0] in cv_name_element.text:
-                        # Check if CV is already selected
-                        if 'jobs-document-upload-redesign-card__container--selected' not in container.get_attribute('class'):
-                            cv_name_element.click()  # Clicking on the CV name, adjust if needed
-                            utils.sleepInBetweenActions()
-                        # exit the loop once the desired CV is found and selected
-                        break  
-        except:
-            pass
+    def chooseResumeIfPossible(self):
+        if self.isResumePage():
+            utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR, "button[aria-label='Show more resumes']"))
+
+            # Find all CV container elements
+            cv_containers = self.driver.find_elements(By.CSS_SELECTOR, ".jobs-document-upload-redesign-card__container")
+
+            # Loop through the elements to find the desired CV
+            for container in cv_containers:
+                cv_name_element = container.find_element(By.CLASS_NAME, "jobs-document-upload-redesign-card__file-name")
+                
+                if config.distinctCVKeyword[0] in cv_name_element.text:
+                    # Check if CV is already selected
+                    if 'jobs-document-upload-redesign-card__container--selected' not in container.get_attribute('class'):
+                        utils.interact(lambda : self.click_button(cv_name_element))
+                    # exit the loop once the desired CV is found and selected
+                    break  
+
+    def isResumePage(self):
+        upload_button_present = self.exists(self.driver, By.CSS_SELECTOR, "label.jobs-document-upload__upload-button")
+        resume_container_present = self.exists(self.driver, By.CSS_SELECTOR, "div.jobs-document-upload-redesign-card__container")
+        return upload_button_present and resume_container_present
 
     def getJobProperties(self, count):
         textToWrite = ""        
@@ -183,8 +157,7 @@ class Linkedin:
             if (len(res) > 0):
                 jobTitle += "(blacklisted title: " + ' '.join(res) + ")"
         except Exception as e:
-            if config.displayWarnings:
-                utils.displayWarning("in getting jobTitle", e)
+            utils.displayWarning(config.displayWarnings, "in getting jobTitle", e)
             jobTitle = ""
 
         try:
@@ -193,15 +166,13 @@ class Linkedin:
             if (len(res)>0):
                 jobCompany += "(blacklisted company: "+ ' '.join(res)+ ")"
         except Exception as e:
-            if config.displayWarnings:
-                utils.displayWarning("in getting jobCompany", e)
+            utils.displayWarning(config.displayWarnings, "in getting jobCompany", e)
             jobCompany = ""
             
         try:
             jobLocation = self.driver.find_element(By.XPATH,"//span[contains(@class, 'bullet')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            if config.displayWarnings:
-                utils.displayWarning("in getting jobLocation", e)
+            utils.displayWarning(config.displayWarnings, "in getting jobLocation", e)
             jobLocation = ""
 
         try:
@@ -214,15 +185,13 @@ class Linkedin:
         try:
             jobPostedDate = self.driver.find_element(By.XPATH,"//span[contains(@class, 'posted-date')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            if config.displayWarnings:
-                utils.displayWarning("in getting jobPostedDate", e)
+            utils.displayWarning(config.displayWarnings, "in getting jobPostedDate", e)
             jobPostedDate = ""
 
         try:
             jobApplications = self.driver.find_element(By.XPATH,"//span[contains(@class, 'applicant-count')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            if config.displayWarnings:
-                utils.displayWarning("in getting jobApplications", e)
+            utils.displayWarning(config.displayWarnings, "in getting jobApplications", e)
             jobApplications = ""
 
         # TODO Use jobDetail later
@@ -235,58 +204,48 @@ class Linkedin:
 
         textToWrite = str(count) + " | " + jobTitle +  " | " + jobCompany +  " | " + jobLocation + " | " + jobWorkPlaceType + " | " + jobPostedDate + " | " + jobApplications
         return textToWrite
+    
+    def handleMultiplePages(self, countApplied, offerPage, jobProperties):
+        utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR, "button[aria-label='Continue to next step']"))
 
-    def easyApplyButton(self):
+        comPercentage = self.driver.find_element(By.XPATH,'html/body/div[3]/div/div/div[2]/div/div/span').text
+        percentage = int(comPercentage[0:comPercentage.index("%")])
+        applyPages = math.ceil(100 / percentage) 
         try:
-            utils.sleepInBetweenActions()
-            button = self.driver.find_element(By.XPATH, "//div[contains(@class,'jobs-apply-button--top-card')]//button[contains(@class, 'jobs-apply-button')]")
-            # button = self.driver.find_element(By.CSS_SELECTOR, "button[aria-label*='Easy Apply']")
-            return button
-        except: 
-            return False
+            for _ in range(applyPages-2):
+                self.handleApplicationStep()
+                utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Continue to next step']"))
 
-    def applyProcess(self, percentage, offerPage):
-        applyPages = math.floor(100 / percentage) - 2
-        result = ""  
-        try:
-            for pages in range(applyPages):
-                self.handleResumeSelectionAndQuestions()
-                self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
-                utils.sleepInBetweenActions()
+            self.handleApplicationStep()
+            utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Review your application']"))
 
-            self.handleResumeSelectionAndQuestions()
-            self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Review your application']").click() 
-            utils.sleepInBetweenActions()
-
-            followCompany = self.driver.find_element(By.CSS_SELECTOR,"label[for='follow-company-checkbox']")
-            # I followed 10 pages before writing this code, so let's check if it works
-            # Use JavaScript to check the state of the checkbox
-            # is_followCompany_checked = self.driver.execute_script(
-            #     "return document.getElementById('follow-company-checkbox').checked;"
-            # )
-            # Use JavaScript to check the state of the checkbox
-            is_followCompany_checked = self.driver.execute_script("""
-                var label = arguments[0];
-                var checkbox = document.getElementById('follow-company-checkbox');
-                var style = window.getComputedStyle(label, '::after');
-                var content = style.getPropertyValue('content');
-                // Check if content is not 'none' or empty which may indicate the presence of the ::after pseudo-element
-                return checkbox.checked || (content && content !== 'none' && content !== '');
-            """, followCompany)
-            if config.followCompanies != is_followCompany_checked:
-                # Use JavaScript to dispatch a click event to the checkbox
-                # self.driver.execute_script("arguments[0].click();", followCompany) # possible solution for not following companies
-                followCompany.click() 
-                utils.sleepInBetweenActions()
-
-            self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Submit application']").click()
-            utils.sleepInBetweenActions()
-
-            result = "* 🥳 Just Applied to this job: " + str(offerPage)
+            self.handleSubmitPage(countApplied, offerPage, jobProperties)
         except:
-            result = "* 🥵 " + str(applyPages) + " Pages, couldn't apply to this job! Extra info needed. Link: " + str(offerPage)
+            # TODO Instead of except, output which questions need to be answered
+            self.displayWriteResults(jobProperties + " | " + "* 🥵 " + str(applyPages) + " Pages, couldn't apply to this job! Extra info needed. Link: " + str(offerPage))
+        
+    def handleSubmitPage(self, countApplied, offerPage, jobProperties):
+        followCompany = self.driver.find_element(By.CSS_SELECTOR,"label[for='follow-company-checkbox']")
+        # I followed 10 pages before writing this code, so let's check if it works
+        # Use JavaScript to check the state of the checkbox
+        # is_followCompany_checked = self.driver.execute_script(
+        #     "return document.getElementById('follow-company-checkbox').checked;"
+        # )
+        # Use JavaScript to check the state of the checkbox
+        is_followCompany_checked = self.driver.execute_script("""
+            var label = arguments[0];
+            var checkbox = document.getElementById('follow-company-checkbox');
+            var style = window.getComputedStyle(label, '::after');
+            var content = style.getPropertyValue('content');
+            // Check if content is not 'none' or empty which may indicate the presence of the ::after pseudo-element
+            return checkbox.checked || (content && content !== 'none' && content !== '');
+        """, followCompany)
+        if config.followCompanies != is_followCompany_checked:
+            utils.interact(lambda : self.click_button(followCompany))
 
-        return result
+        utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Submit application']"))
+        self.displayWriteResults(jobProperties + " | " + "* 🥳 Just Applied to this job: " + str(offerPage))
+        countApplied += 1
 
     def displayWriteResults(self, lineToWrite: str):
         try:
@@ -295,9 +254,9 @@ class Linkedin:
         except Exception as e:
             prRed("❌ Error in DisplayWriteResults: " + str(e))
 
-    def handleResumeSelectionAndQuestions(self):
-        self.chooseResumeIfOffered()
-        self.handleQuestions()
+    def handleApplicationStep(self):
+        self.chooseResumeIfPossible()
+        # TODO self.handleQuestions()
 
     def handleQuestions(self):
         if self.exists(self.driver, By.CSS_SELECTOR, "div.pb4"):
@@ -310,6 +269,25 @@ class Linkedin:
 
                 # Iterate through each question group
                 for group in questionGroups:
+                    # TODO Next commented code is to handle city selection and other dropdowns
+                    """  
+                    # Find the element (assuming you have a way to locate this div, here I'm using a common class name they might share)
+                    div_element = self.driver.find_element(By.CLASS_NAME, "common-class-name")
+
+                    # Check for the specific data-test attribute
+                    if div_element.get_attribute("data-test-single-typeahead-entity-form-component") is not None:
+                        # Handle the first type of div
+                        print("This is the first type of div with data-test-single-typeahead-entity-form-component")
+
+                    elif div_element.get_attribute("data-test-single-line-text-form-component") is not None:
+                        # Handle the second type of div
+                        print("This is the second type of div with data-test-single-line-text-form-component")
+
+                    else:
+                        # Handle the case where the div doesn't match either type
+                        print("The div doesn't match either specified type")
+                    """
+
                     if self.exists(group, By.CSS_SELECTOR, "label.artdeco-text-input--label"):
                         # Find the label for the question within the group
                         questionLabel = group.find_element(By.CSS_SELECTOR, "label.artdeco-text-input--label").text
@@ -339,7 +317,6 @@ class Linkedin:
         if inputValue == '':
             # TODO Check the backend for answers
 
-
             # TODO If there is an answer for this question, fill it in
             # If you want to fill the input
             # question_input.send_keys("Your answer here") then sleep
@@ -367,8 +344,20 @@ class Linkedin:
         # Log or print the unhandled question
         prRed(f"Unhandled question: {questionLabel}")
 
+    def clickIfExists(self, by, selector):
+        if self.exists(self.driver, by, selector):
+            clickableElement = self.driver.find_element(by, selector)
+            self.click_button(clickableElement)
+
+    def click_button(self, button):
+        try:
+            button.click()
+        except Exception as e:
+            # If click fails, use JavaScript to click on the button
+            self.driver.execute_script("arguments[0].click();", button)
+
 
 start = time.time()
-Linkedin().linkJobApply()
+Linkedin().startApplying()
 end = time.time()
 prYellow("---Took: " + str(round((time.time() - start)/60)) + " minute(s).")
