@@ -46,15 +46,15 @@ class Linkedin:
 
             for url in urlData:        
                 self.driver.get(url)
-
+                urlWords = utils.urlToKeywords(url)
+                
                 try:
                     totalJobs = self.wait.until(EC.presence_of_element_located((By.XPATH, '//small'))).text # TODO - fix finding total jobs
                     # totalJobs = self.driver.find_element(By.XPATH,'//small').text 
 
                     totalSearchResultPages = utils.jobsToPages(totalJobs)
 
-                    urlWords =  utils.urlToKeywords(url)
-                    lineToWrite = "\n Search keyword: " + urlWords[0] + ", Location: " + urlWords[1] + ", Applying " + str(totalJobs) + " jobs."
+                    lineToWrite = "\n Search keyword: " + urlWords[0] + ", Location: " + urlWords[1] + ", Applying to " + str(totalJobs) + " jobs."
                     self.displayWriteResults(lineToWrite)
 
                     for searchResultPage in range(totalSearchResultPages):
@@ -95,7 +95,7 @@ class Linkedin:
                     prRed("Element not found within the time limit")
                     # TODO Handle the situation, like retrying, logging, or graceful shutdown
 
-                prYellow("Category: " + urlWords[0] + "," +urlWords[1]+ " applied: " + str(countApplied) +
+                prYellow("Category: " + urlWords[0] + "," + urlWords[1]+ " applied: " + str(countApplied) +
                     " jobs out of " + str(countJobs) + ".")
 
         except Exception as e:

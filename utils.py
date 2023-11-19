@@ -62,7 +62,7 @@ def jobsToPages(numOfJobs: str) -> int:
 def urlToKeywords(url: str) -> List[str]:
     keywordUrl = url[url.index("keywords=")+9:]
     keyword = keywordUrl[0:keywordUrl.index("&") ] 
-    locationUrl =  url[url.index("location=")+9:]
+    locationUrl = url[url.index("location=")+9:]
     location = locationUrl[0:locationUrl.index("&") ] 
     return [keyword,location]
 
