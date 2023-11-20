@@ -89,7 +89,7 @@ class Linkedin:
                                 continue
                             
                             # TODO Test if countApplied is working
-                            self.handleJobPost(countApplied, offerPage, jobProperties)
+                            countApplied = self.handleJobPost(countApplied, offerPage, jobProperties)
                                     
                 except TimeoutException:
                     prRed("Element not found within the time limit")
@@ -111,13 +111,15 @@ class Linkedin:
             
             # Now, the easy apply popup should be open
             if self.exists(self.driver, By.CSS_SELECTOR, "button[aria-label='Submit application']"):
-                self.handleSubmitPage(offerPage, jobProperties)
+                countApplied = self.handleSubmitPage(countApplied, offerPage, jobProperties)
             elif self.exists(self.driver, By.CSS_SELECTOR, "button[aria-label='Continue to next step']"):
-                self.handleMultiplePages(countApplied, offerPage, jobProperties)
+                countApplied = self.handleMultiplePages(countApplied, offerPage, jobProperties)
 
         else:
             lineToWrite = jobProperties + " | " + "* 🥳 Already applied! Job: " + str(offerPage)
             self.displayWriteResults(lineToWrite)
+
+        return countApplied
 
     def chooseResumeIfPossible(self):
         if self.isResumePage():
@@ -210,10 +212,12 @@ class Linkedin:
             self.handleApplicationStep()
             utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Review your application']"))
 
-            self.handleSubmitPage(countApplied, offerPage, jobProperties)
+            countApplied = self.handleSubmitPage(countApplied, offerPage, jobProperties)
         except:
             # TODO Instead of except, output which questions need to be answered
             self.displayWriteResults(jobProperties + " | " + "* 🥵 " + str(applyPages) + " Pages, couldn't apply to this job! Extra info needed. Link: " + str(offerPage))
+
+        return countApplied
         
     def handleSubmitPage(self, countApplied, offerPage, jobProperties):
         followCompany = self.driver.find_element(By.CSS_SELECTOR,"label[for='follow-company-checkbox']")
@@ -237,6 +241,7 @@ class Linkedin:
         utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Submit application']"))
         self.displayWriteResults(jobProperties + " | " + "* 🥳 Just Applied to this job: " + str(offerPage))
         countApplied += 1
+        return countApplied
 
     def displayWriteResults(self, lineToWrite: str):
         try:
