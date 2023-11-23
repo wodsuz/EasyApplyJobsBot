@@ -41,7 +41,7 @@ def prYellow(prt):
 def prBlue(prt):
     print(f"\033[94m{prt}\033[00m")
 
-def displayWarning(shouldDisplay, message, exception, displayTraceback = False):
+def displayWarning(shouldDisplay, message, exception=Exception(), displayTraceback = False):
     if (shouldDisplay):
         prYellow(f"⚠️ Warning ⚠️ {message}: {str(exception)[0:100]}")
         if (displayTraceback):
