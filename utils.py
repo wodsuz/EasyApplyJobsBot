@@ -23,7 +23,10 @@ def chromeBrowserOptions():
         options.add_argument('--user-data-dir=' + initialPath)
         options.add_argument("--profile-directory=" + profileDir)
     else:
-        options.add_argument("--incognito")
+        # options.add_argument("--incognito")
+        # this is for running in a docker container
+        user_data_dir = os.environ.get('CHROME_USER_DATA_DIR', '/home/user/chrome_data')
+        options.add_argument(f'--user-data-dir={user_data_dir}')
     return options
 
 def prRed(prt):
