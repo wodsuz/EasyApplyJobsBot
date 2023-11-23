@@ -39,11 +39,16 @@ class Linkedin:
                 utils.sleepInBetweenActions(1, 2)
                 self.driver.find_element("xpath",'//button[@type="submit"]').click()
                 utils.sleepInBetweenActions(3, 7)
+                self.checkIfLoggedIn()
             except:
                 prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8. If error continue you can define Chrome profile or run the bot on Firefox")
     
     def checkIfLoggedIn(self):
-        return self.exists(self.driver, By.XPATH, "//img[@id='ember14']")
+        if self.exists(self.driver, By.XPATH, "//img[@id='ember14']"):
+            prGreen("✅ Logged in Linkedin.")
+            return True
+        else:
+            return False
         
     def startApplying(self):
         try:
