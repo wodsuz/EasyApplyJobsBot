@@ -44,8 +44,8 @@ class Linkedin:
                 prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8. If error continue you can define Chrome profile or run the bot on Firefox")
     
     def checkIfLoggedIn(self):
-        if self.exists(self.driver, By.XPATH, "//img[@id='ember14']"):
-            prGreen("✅ Logged in Linkedin.")
+        if self.exists(self.driver, By.CSS_SELECTOR, "img.global-nav__me-photo.evi-image.ember-view"):
+            prGreen("✅ Already logged in Linkedin.")
             return True
         else:
             return False
@@ -177,14 +177,57 @@ class Linkedin:
             utils.displayWarning(config.displayWarnings, "in getting jobTitle", e)
             jobTitle = ""
 
-        try:
-            jobCompany = self.driver.find_element(By.XPATH,"//a[contains(@class, 'ember-view t-black t-normal')]").get_attribute("innerHTML").strip()
-            res = [blItem for blItem in config.blacklistCompanies if(blItem.lower() in jobCompany.lower())]
-            if (len(res)>0):
-                jobCompany += "(blacklisted company: "+ ' '.join(res)+ ")"
-        except Exception as e:
-            utils.displayWarning(config.displayWarnings, "in getting jobCompany", e)
-            jobCompany = ""
+        # First, find the container that holds all the elements.
+        if self.exists(self.driver, By.CLASS_NAME, "job-details-jobs-unified-top-card__primary-description"):
+            primary_description_div = self.driver.find_element(By.CLASS_NAME, "job-details-jobs-unified-top-card__primary-description")
+
+            if self.exists(primary_description_div, By.CSS_SELECTOR, "a.app-aware-link"):
+                # Inside this container, find the company name link.
+                jobCompanyLink = primary_description_div.find_element(By.CSS_SELECTOR, "a.app-aware-link")
+                jobCompany = jobCompanyLink.text.strip()
+                res = [blItem for blItem in config.blacklistCompanies if(blItem.lower() in jobCompany.lower())]
+                if (len(res)>0):
+                    jobCompany += "(blacklisted company: "+ ' '.join(res)+ ")"
+            else:
+                utils.displayWarning(config.displayWarnings, "in getting jobCompany")
+
+            # if self.exists(jobCompanyLink, By.XPATH, "./following-sibling::span"):
+            #     # Next, find the location span following the company link.
+            #     location_span = jobCompanyLink.find_element(By.XPATH, "./following-sibling::span")
+            #     jobLocation = location_span.text.strip()
+            # else:
+            #     utils.displayWarning(config.displayWarnings, "in getting jobLocation")
+
+            if self.exists(primary_description_div, By.CSS_SELECTOR, "span.tvm__text--neutral"):
+                # Find the posted date span by class name inside the container.
+                posted_date_span = primary_description_div.find_element(By.CSS_SELECTOR, "span.tvm__text--neutral")
+                jobPostedDate = posted_date_span.text.strip()
+
+                # Lastly, find the number of applicants.
+                applicants_span = primary_description_div.find_elements(By.CSS_SELECTOR, "span.tvm__text--neutral")[-1]  # last span with this class
+                jobApplications = applicants_span.text.strip()
+            else:
+                utils.displayWarning(config.displayWarnings, "in getting jobPostedDate and/or jobApplications")
+
+        # try:
+        #     a_elements = self.driver.find_elements(By.CSS_SELECTOR, "a.app-aware-link[href*='/company/'][href*='/life']")
+
+        #     # Since this might match multiple elements, you would iterate over them to get the company names
+        #     for a_element in a_elements:
+        #         jobCompany = a_element.text
+        #         if jobCompany:  # Ensure that company_name is not empty
+        #             print(jobCompany.strip())
+        #         else:
+        #             # If the regular .text property does not work because the text is within comments
+        #             jobCompany = self.driver.execute_script("return arguments[0].firstChild.textContent || arguments[0].innerText;", a_element)
+        #             # print(company_name.strip())
+        #         # jobCompany = self.driver.find_element(By.XPATH,"//a[contains(@class, 'ember-view t-black t-normal')]").get_attribute("innerHTML").strip()
+        #         res = [blItem for blItem in config.blacklistCompanies if(blItem.lower() in jobCompany.lower())]
+        #         if (len(res)>0):
+        #             jobCompany += "(blacklisted company: "+ ' '.join(res)+ ")"
+        # except Exception as e:
+        #     utils.displayWarning(config.displayWarnings, "in getting jobCompany", e)
+        #     jobCompany = ""
             
         try:
             jobLocation = self.driver.find_element(By.XPATH,"//span[contains(@class, 'bullet')]").get_attribute("innerHTML").strip()
@@ -196,20 +239,20 @@ class Linkedin:
             jobWorkPlaceType = self.driver.find_element(By.XPATH,"//span[contains(@class, 'workplace-type')]").get_attribute("innerHTML").strip()
         except Exception as e:
             if config.displayWarnings:
-                utils.displayWarning("in getting jobWorkPlace", e)
+                utils.displayWarning("in getting jobWorkPlaceType", e)
             jobWorkPlaceType = ""
 
-        try:
-            jobPostedDate = self.driver.find_element(By.XPATH,"//span[contains(@class, 'posted-date')]").get_attribute("innerHTML").strip()
-        except Exception as e:
-            utils.displayWarning(config.displayWarnings, "in getting jobPostedDate", e)
-            jobPostedDate = ""
+        # try:
+        #     jobPostedDate = self.driver.find_element(By.XPATH,"//span[contains(@class, 'posted-date')]").get_attribute("innerHTML").strip()
+        # except Exception as e:
+        #     utils.displayWarning(config.displayWarnings, "in getting jobPostedDate", e)
+        #     jobPostedDate = ""
 
-        try:
-            jobApplications = self.driver.find_element(By.XPATH,"//span[contains(@class, 'applicant-count')]").get_attribute("innerHTML").strip()
-        except Exception as e:
-            utils.displayWarning(config.displayWarnings, "in getting jobApplications", e)
-            jobApplications = ""
+        # try:
+        #     jobApplications = self.driver.find_element(By.XPATH,"//span[contains(@class, 'applicant-count')]").get_attribute("innerHTML").strip()
+        # except Exception as e:
+        #     utils.displayWarning(config.displayWarnings, "in getting jobApplications", e)
+        #     jobApplications = ""
 
         # TODO Use jobDetail later
         try:
