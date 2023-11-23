@@ -1,13 +1,30 @@
 version: '3.8'
 
 services:
+  # vnc-linkedin-bot:
+  #   container_name: vnc-linkedin-easy-apply-bot
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile-vnc
+  #   volumes:
+  #     - chrome_data_vnc:/home/user/chrome_data  # This will be the persistent volume for Chrome user data
+  #   environment:
+  #     - PYTHONUNBUFFERED=1
+  #   user: "user"  # To ensure we run as the unprivileged user you created in your Dockerfile
+  #   ports:
+  #     - "5901:5901"  # VNC port
+
   linkedin-bot:
-    build: .
+    container_name: linkedin-easy-apply-bot
+    build:
+      context: .
+      dockerfile: Dockerfile-headless
     volumes:
-      - chrome_data:/home/user/chrome_data  # This will be the persistent volume for Chrome user data
+      - chrome_data_headless:/home/user/chrome_data  # This will be the persistent volume for Chrome user data
     environment:
       - PYTHONUNBUFFERED=1
     # user: "user"  # To ensure we run as the unprivileged user you created in your Dockerfile
+    command: python3 allConfigsRunner.py
 
 volumes:
-  chrome_data:  # This volume will store Chrome user data persistently
+  chrome_data_headless:  # This volume will store Chrome user data persistently
