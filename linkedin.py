@@ -13,7 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class Linkedin:
     def __init__(self):
-        prYellow("🌐 Bot will run in Chrome browser and log in Linkedin for you.")
+        prYellow("🌐 Bot will run in Chrome browser.")
 
         if config.chromeDriverPath != "":
             # Specify the path to Chromedriver provided by the Alpine package
@@ -21,21 +21,30 @@ class Linkedin:
         else:
             service = ChromeService(ChromeDriverManager().install())
         
-        self.driver = webdriver.Chrome(service=service, options=utils.chromeBrowserOptions())
-        self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
+        self.driver = webdriver.Chrome(service=service, options=utils.chromeBrowserOptions())        
         self.wait = WebDriverWait(self.driver, 15)
 
-        prYellow("🔄 Trying to log in linkedin...")
-        try:    
-            self.driver.find_element("id","username").send_keys(config.email)
-            utils.sleepInBetweenActions(1,2)
-            self.driver.find_element("id","password").send_keys(config.password)
-            utils.sleepInBetweenActions(1, 2)
-            self.driver.find_element("xpath",'//button[@type="submit"]').click()
-            utils.sleepInBetweenActions(3, 7)
-        except:
-            prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8. If error continue you can define Chrome profile or run the bot on Firefox")
+        # Navigate to the LinkedIn home page to check if we're already logged in
+        self.driver.get("https://www.linkedin.com")
+        utils.sleepInBetweenActions(3, 7)
+
+        if not self.checkIfLoggedIn():
+            self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
+
+            prYellow("🔄 Trying to log in linkedin...")
+            try:    
+                self.driver.find_element("id","username").send_keys(config.email)
+                utils.sleepInBetweenActions(1,2)
+                self.driver.find_element("id","password").send_keys(config.password)
+                utils.sleepInBetweenActions(1, 2)
+                self.driver.find_element("xpath",'//button[@type="submit"]').click()
+                utils.sleepInBetweenActions(3, 7)
+            except:
+                prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8. If error continue you can define Chrome profile or run the bot on Firefox")
     
+    def checkIfLoggedIn(self):
+        return self.exists(self.driver, By.XPATH, "//img[@id='ember14']")
+        
     def startApplying(self):
         try:
             countApplied = 0

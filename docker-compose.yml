@@ -1,18 +1,13 @@
-version: "3"
+version: '3.8'
 
 services:
-  selenium:
-    image: seleniarm/standalone-chromium
-    ports:
-      - 4444:4444
-    restart: always
-
-  app:
-    build:
-      context: .
+  linkedin-bot:
+    build: .
     volumes:
-      - ./app:/app
-    command: sh -c "python3 bot.py"
-    depends_on:
-      - selenium
-    shm_size: "2g"
+      - chrome_data:/home/user/chrome_data  # This will be the persistent volume for Chrome user data
+    environment:
+      - PYTHONUNBUFFERED=1
+    # user: "user"  # To ensure we run as the unprivileged user you created in your Dockerfile
+
+volumes:
+  chrome_data:  # This volume will store Chrome user data persistently

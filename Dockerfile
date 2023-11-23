@@ -1,6 +1,8 @@
 FROM python:3.12-alpine
 
 ENV PYTHONUNBUFFERED=1
+# Define where Chrome will store its user data
+ENV CHROME_USER_DATA_DIR=/home/user/chrome_data
 
 RUN apk add --no-cache chromium chromium-chromedriver
 
@@ -27,7 +29,7 @@ RUN chmod -R 777 /app/data
 WORKDIR /app
 
 # Use an unprivileged user to run the app
-RUN adduser -D user
-USER user
+# RUN adduser -D user
+# USER user
 
 CMD ["python3", "allConfigsRunner.py"]
