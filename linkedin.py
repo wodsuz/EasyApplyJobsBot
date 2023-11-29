@@ -61,14 +61,10 @@ class Linkedin:
                 self.driver.get(url)
                 time.sleep(random.uniform(1, constants.botSpeed))
 
-                offersPerPage = self.driver.find_elements(By.XPATH,'//li[@data-occludable-job-id]')
-                offerIds = []
-
+                offersPerPage = self.driver.find_elements(By.XPATH, '//li[@data-occludable-job-id]')
+                offerIds = [(offer.get_attribute(
+                    "data-occludable-job-id").split(":")[-1]) for offer in offersPerPage]
                 time.sleep(random.uniform(1, constants.botSpeed))
-
-                for offer in offersPerPage:
-                    offerId = offer.get_attribute("data-occludable-job-id")
-                    offerIds.append(int(offerId.split(":")[-1]))
 
                 for jobID in offerIds:
                     offerPage = 'https://www.linkedin.com/jobs/view/' + str(jobID)
@@ -83,10 +79,10 @@ class Linkedin:
                         self.displayWriteResults(lineToWrite)
                     
                     else :                    
-                        button = self.easyApplyButton()
+                        easyApplybutton = self.easyApplyButton()
 
-                        if button is not False:
-                            button.click()
+                        if easyApplybutton is not False:
+                            easyApplybutton.click()
                             time.sleep(random.uniform(1, constants.botSpeed))
                             countApplied += 1
                             try:
