@@ -14,7 +14,6 @@ headless = False
 firefoxProfileRootDir = r""
 # get Chrome profile path by typing following url: chrome://version/
 chromeProfilePath = r""
-#"/home/ongun/.config/google-chrome/Profile 3"
 
 # These settings are for running Linkedin job apply bot
 # Paaste your easyApply email and key below
