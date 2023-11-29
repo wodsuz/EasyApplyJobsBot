@@ -119,16 +119,18 @@ class Linkedin:
         utils.donate(self)
 
     def chooseResume(self):
-        try: 
-            beSureIncludeResumeTxt = self.driver.find_element(By.CLASS_NAME, "jobs-document-upload__title--is-required")
-            if(beSureIncludeResumeTxt.text == "Be sure to include an updated resume"):
-                resumes = self.driver.find_elements(By.CSS_SELECTOR,"button[aria-label='Choose Resume']")
-                if(len(resumes) == 1):
-                    resumes[0].click()
-                elif(len(resumes)>1):
-                    resumes[config.preferredCv-1].click()
-                else:
-                    prRed("❌ No resume has been selected please add at least one resume to your Linkedin account.")
+        try:
+            self.driver.find_element(
+                By.CLASS_NAME, "jobs-document-upload__title--is-required")
+            resumes = self.driver.find_elements(
+                By.XPATH, "//div[contains(@class, 'ui-attachment--pdf')]")
+            if (len(resumes) == 1 and resumes[0].get_attribute("aria-label") == "Select this resume"):
+                resumes[0].click()
+            elif (len(resumes) > 1 and resumes[config.preferredCv-1].get_attribute("aria-label") == "Select this resume"):
+                resumes[config.preferredCv-1].click()
+            elif (type(len(resumes)) != int):
+                prRed(
+                    "❌ No resume has been selected please add at least one resume to your Linkedin account.")
         except:
             pass
 
