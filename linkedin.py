@@ -186,27 +186,25 @@ class Linkedin:
         return EasyApplyButton
 
     def applyProcess(self, percentage, offerPage):
-        applyPages = math.floor(100 / percentage) 
-        result = ""  
-        try:
-            for pages in range(applyPages-2):
-                self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
-                time.sleep(random.uniform(1, constants.botSpeed))
+        applyPages = math.floor(100 / percentage) - 2 
+        result = ""
+        for pages in range(applyPages):  
+            self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Continue to next step']").click()
 
-            self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Review your application']").click() 
-            time.sleep(random.uniform(1, constants.botSpeed))
+        self.driver.find_element( By.CSS_SELECTOR, "button[aria-label='Review your application']").click()
+        time.sleep(random.uniform(1, constants.botSpeed))
 
-            if config.followCompanies is False:
-                self.driver.find_element(By.CSS_SELECTOR,"label[for='follow-company-checkbox']").click() 
-                time.sleep(random.uniform(1, constants.botSpeed))
+        if config.followCompanies is False:
+            try:
+                self.driver.find_element(By.CSS_SELECTOR, "label[for='follow-company-checkbox']").click()
+            except:
+                pass
 
-            self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Submit application']").click()
-            time.sleep(random.uniform(1, constants.botSpeed))
+        self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
+        time.sleep(random.uniform(1, constants.botSpeed))
 
-            result = "* 🥳 Just Applied to this job: " +str(offerPage)
-        except:
-            # PRO FEATURE! OUTPUT UNANSWERED QUESTIONS, APPLY THEM VIA OPENAI, output them.
-            result = "* 🥵 " +str(applyPages)+ " Pages, couldn't apply to this job! Extra info needed. Link: " +str(offerPage)
+        result = "* 🥳 Just Applied to this job: " + str(offerPage)
+
         return result
 
     def displayWriteResults(self,lineToWrite: str):
