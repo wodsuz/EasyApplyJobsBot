@@ -97,7 +97,7 @@ def printInfoMes(bot:str):
 def donate(self):
     prYellow('If you like the project, please support me so that i can make more such projects, thanks!')
     try:
-        self.driver.get('https://commerce.coinbase.com/checkout/923b8005-792f-4874-9a14-2992d0b30685')
+        self.driver.get('https://www.automated-bots.com/')
     except Exception as e:
         prRed("Error in donate: " +str(e))
 
