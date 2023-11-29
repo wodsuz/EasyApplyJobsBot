@@ -34,9 +34,9 @@ class Linkedin:
                 linkedinJobLinks = utils.LinkedinUrlGenerate().generateUrlLinks()
                 for url in linkedinJobLinks:
                     file.write(url+ "\n")
-            prGreen("✅ Urls are created successfully, now the bot will visit those urls.")
+            prGreen("✅ Apply urls are created successfully, now the bot will visit those urls.")
         except:
-            prRed("❌ Couldn't generate url, make sure you have /data folder and modified config.py file for your preferances.")
+            prRed("❌ Couldn't generate urls, make sure you have editted config file line 25-39")
 
     def linkJobApply(self):
         self.generateUrls()
