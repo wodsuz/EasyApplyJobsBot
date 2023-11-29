@@ -10,12 +10,11 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 
 class Linkedin:
     def __init__(self):
-        
             prYellow("🌐 Bot will run in Chrome browser and log in Linkedin for you.")
             self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=utils.chromeBrowserOptions())
             self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
 
-            prYellow("🔄 Trying to log in linkedin...")
+            prYellow("🔄 Trying to log in Linkedin...")
             try:    
                 self.driver.find_element("id","username").send_keys(config.email)
                 time.sleep(2)
@@ -25,9 +24,7 @@ class Linkedin:
                 time.sleep(5)
                 self.linkJobApply()
             except:
-                prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8. If error continue you can define Chrome profile or run the bot on Firefox")
-
-
+                prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8.")
     
     def generateUrls(self):
         if not os.path.exists('data'):
