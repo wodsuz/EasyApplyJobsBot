@@ -47,6 +47,7 @@ class Linkedin:
 
         for url in urlData:        
             self.driver.get(url)
+            time.sleep(random.uniform(1, constants.botSpeed))
 
             totalJobs = self.driver.find_element(By.XPATH,'//small').text 
             totalPages = utils.jobsToPages(totalJobs)
