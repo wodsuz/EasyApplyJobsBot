@@ -97,14 +97,14 @@ class Linkedin:
                                 try:
                                     self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
                                     time.sleep(random.uniform(1, constants.botSpeed))
-
+                                    self.chooseResume()
                                     comPercentage = self.driver.find_element(By.XPATH,'html/body/div[3]/div/div/div[2]/div/div/span').text
                                     percenNumber = int(comPercentage[0:comPercentage.index("%")])
                                     result = self.applyProcess(percenNumber,offerPage)
                                     lineToWrite = jobProperties + " | " + result
                                     self.displayWriteResults(lineToWrite)
                                 
-                                except Exception as e: 
+                                except Exception: 
                                     self.chooseResume()
                                     lineToWrite = jobProperties + " | " + "* 🥵 Cannot apply to this Job! " +str(offerPage)
                                     self.displayWriteResults(lineToWrite)
