@@ -137,61 +137,46 @@ class Linkedin:
     def getJobProperties(self, count):
         textToWrite = ""
         jobTitle = ""
-        jobCompany = ""
         jobLocation = ""
-        jobWOrkPlace = ""
-        jobPostedDate = ""
-        jobApplications = ""
 
         try:
-            jobTitle = self.driver.find_element(By.XPATH,"//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
-            res = [blItem for blItem in config.blackListTitles if(blItem.lower() in jobTitle.lower())]
-            if (len(res)>0):
-                jobTitle += "(blacklisted title: "+ ' '.join(res)+ ")"
+            jobTitle = self.driver.find_element(
+                By.XPATH, "//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
+            res = [blItem for blItem in config.blackListTitles if (blItem.lower() in jobTitle.lower())]
+            if (len(res) > 0):
+                jobTitle += "(blacklisted title: " + ' '.join(res) + ")"
         except Exception as e:
-            if(config.displayWarnings):
-                prYellow("⚠️ Warning in getting jobTitle: " +str(e)[0:50])
+            if (config.displayWarnings):
+                prYellow("⚠️ Warning in getting jobTitle: " + str(e)[0:50])
             jobTitle = ""
 
         try:
-            jobCompany = self.driver.find_element(By.XPATH,"//a[contains(@class, 'ember-view t-black t-normal')]").get_attribute("innerHTML").strip()
-            res = [blItem for blItem in config.blacklistCompanies if(blItem.lower() in jobTitle.lower())]
-            if (len(res)>0):
-                jobCompany += "(blacklisted company: "+ ' '.join(res)+ ")"
+            time.sleep(5)
+            jobDetail = self.driver.find_element(
+                By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div").text.replace("·", "|")
+            res = [blItem for blItem in config.blacklistCompanies if (blItem.lower() in jobTitle.lower())]
+            if (len(res) > 0):
+                jobDetail += "(blacklisted company: " + ' '.join(res) + ")"
         except Exception as e:
-            if(config.displayWarnings):
-                prYellow("⚠️ Warning in getting jobCompany: " +str(e)[0:50])
-            jobCompany = ""
-            
+            if (config.displayWarnings):
+                print(e)
+                prYellow("⚠️ Warning in getting jobDetail: " + str(e)[0:100])
+            jobDetail = ""
+
         try:
-            jobLocation = self.driver.find_element(By.XPATH,"//span[contains(@class, 'bullet')]").get_attribute("innerHTML").strip()
+            jobWorkStatusSpans = self.driver.find_elements(
+                By.XPATH, "//span[contains(@class,'ui-label ui-label--accent-3 text-body-small')]//span[contains(@aria-hidden,'true')]")
+            for span in jobWorkStatusSpans:
+                jobLocation = jobLocation + " | " + span.text
+
         except Exception as e:
-            if(config.displayWarnings):
-                prYellow("⚠️ Warning in getting jobLocation: " +str(e)[0:50])
+            if (config.displayWarnings):
+                print(e)
+                prYellow("⚠️ Warning in getting jobLocation: " + str(e)[0:100])
             jobLocation = ""
 
-        try:
-            jobWOrkPlace = self.driver.find_element(By.XPATH,"//span[contains(@class, 'workplace-type')]").get_attribute("innerHTML").strip()
-        except Exception as e:
-            if(config.displayWarnings):
-                prYellow("⚠️ Warning in getting jobWorkPlace: " +str(e)[0:50])
-            jobWOrkPlace = ""
-
-        try:
-            jobPostedDate = self.driver.find_element(By.XPATH,"//span[contains(@class, 'posted-date')]").get_attribute("innerHTML").strip()
-        except Exception as e:
-            if(config.displayWarnings):
-                prYellow("⚠️ Warning in getting jobPostedDate: " +str(e)[0:50])
-            jobPostedDate = ""
-
-        try:
-            jobApplications= self.driver.find_element(By.XPATH,"//span[contains(@class, 'applicant-count')]").get_attribute("innerHTML").strip()
-        except Exception as e:
-            if(config.displayWarnings):
-                prYellow("⚠️ Warning in getting jobApplications: " +str(e)[0:50])
-            jobApplications = ""
-
-        textToWrite = str(count)+ " | " +jobTitle+  " | " +jobCompany+  " | "  +jobLocation+ " | "  +jobWOrkPlace+ " | " +jobPostedDate+ " | " +jobApplications
+        textToWrite = str(count) + " | " + jobTitle + \
+            " | " + jobDetail + jobLocation
         return textToWrite
 
     def easyApplyButton(self):
