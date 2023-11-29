@@ -178,7 +178,7 @@ class Linkedin:
     def easyApplyButton(self):
         try:
             time.sleep(random.uniform(1, constants.botSpeed))
-            button = self.driver.find_element(By.XPATH,'//button[contains(@class, "jobs-apply-button")]')
+            button = self.driver.find_element(By.XPATH, "//div[contains(@class,'jobs-apply-button--top-card')]//button[contains(@class, 'jobs-apply-button')]")
             EasyApplyButton = button
         except: 
             EasyApplyButton = False
