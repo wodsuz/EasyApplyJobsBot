@@ -140,8 +140,7 @@ class Linkedin:
         jobLocation = ""
 
         try:
-            jobTitle = self.driver.find_element(
-                By.XPATH, "//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
+            jobTitle = self.driver.find_element(By.XPATH, "//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
             res = [blItem for blItem in config.blackListTitles if (blItem.lower() in jobTitle.lower())]
             if (len(res) > 0):
                 jobTitle += "(blacklisted title: " + ' '.join(res) + ")"
@@ -152,8 +151,7 @@ class Linkedin:
 
         try:
             time.sleep(5)
-            jobDetail = self.driver.find_element(
-                By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div").text.replace("·", "|")
+            jobDetail = self.driver.find_element(By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div").text.replace("·", "|")
             res = [blItem for blItem in config.blacklistCompanies if (blItem.lower() in jobTitle.lower())]
             if (len(res) > 0):
                 jobDetail += "(blacklisted company: " + ' '.join(res) + ")"
@@ -164,8 +162,7 @@ class Linkedin:
             jobDetail = ""
 
         try:
-            jobWorkStatusSpans = self.driver.find_elements(
-                By.XPATH, "//span[contains(@class,'ui-label ui-label--accent-3 text-body-small')]//span[contains(@aria-hidden,'true')]")
+            jobWorkStatusSpans = self.driver.find_elements(By.XPATH, "//span[contains(@class,'ui-label ui-label--accent-3 text-body-small')]//span[contains(@aria-hidden,'true')]")
             for span in jobWorkStatusSpans:
                 jobLocation = jobLocation + " | " + span.text
 
@@ -175,15 +172,13 @@ class Linkedin:
                 prYellow("⚠️ Warning in getting jobLocation: " + str(e)[0:100])
             jobLocation = ""
 
-        textToWrite = str(count) + " | " + jobTitle + \
-            " | " + jobDetail + jobLocation
+        textToWrite = str(count) + " | " + jobTitle +" | " + jobDetail + jobLocation
         return textToWrite
 
     def easyApplyButton(self):
         try:
             time.sleep(random.uniform(1, constants.botSpeed))
-            button = self.driver.find_element(By.XPATH,
-                '//button[contains(@class, "jobs-apply-button")]')
+            button = self.driver.find_element(By.XPATH,'//button[contains(@class, "jobs-apply-button")]')
             EasyApplyButton = button
         except: 
             EasyApplyButton = False
