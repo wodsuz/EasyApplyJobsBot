@@ -23,7 +23,7 @@ class Linkedin:
                 time.sleep(2)
                 self.driver.find_element("xpath",'//button[@type="submit"]').click()
                 time.sleep(5)
-                self.mongoConnection("Check")
+                self.linkJobApply()
             except:
                 prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8. If error continue you can define Chrome profile or run the bot on Firefox")
 
