@@ -1,4 +1,4 @@
-# General bot settings
+# General bot settings to use Pro settings you need to download Pro version from: www.automated-bots.com
 
 #PRO FEATURE - browser you want the bot to run ex: ["Chrome"] or ["Firefox"]. Firefox is only supported in Pro feature
 browser = ["Chrome"]
