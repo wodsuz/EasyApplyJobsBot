@@ -39,6 +39,7 @@ class Linkedin:
                 utils.sleepInBetweenActions(1, 2)
                 self.driver.find_element("xpath",'//button[@type="submit"]').click()
                 utils.sleepInBetweenActions(3, 7)
+                self.checkIfLoggedIn()
             except:
                 prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8. If error continue you can define Chrome profile or run the bot on Firefox")
         
@@ -60,6 +61,8 @@ class Linkedin:
 
             for url in urlData:        
                 self.driver.get(url)
+                utils.sleepInBetweenActions()
+
                 urlWords = utils.urlToKeywords(url)
                 
                 try:
@@ -159,7 +162,7 @@ class Linkedin:
         return upload_button_present and resume_container_present
 
     def getJobProperties(self, count):
-        textToWrite = ""
+        textToWrite = ""        
         jobTitle = ""
         jobCompany = ""
         jobLocation = ""
@@ -168,10 +171,10 @@ class Linkedin:
         jobApplications = ""
 
         try:
-            jobTitle = self.driver.find_element(By.XPATH,"//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
-            res = [blItem for blItem in config.blackListTitles if(blItem.lower() in jobTitle.lower())]
-            if (len(res)>0):
-                jobTitle += "(blacklisted title: "+ ' '.join(res)+ ")"
+            jobTitle = self.driver.find_element(By.XPATH, "//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
+            res = [blItem for blItem in config.blackListTitles if (blItem.lower() in jobTitle.lower())]
+            if (len(res) > 0):
+                jobTitle += "(blacklisted title: " + ' '.join(res) + ")"
         except Exception as e:
             utils.displayWarning(config.displayWarnings, "in getting jobTitle", e)
             jobTitle = ""
@@ -213,6 +216,14 @@ class Linkedin:
         except Exception as e:
             utils.displayWarning(config.displayWarnings, "in getting jobWorkPlaceType", e)
             jobWorkPlaceType = ""
+
+        # TODO Use jobDetail later
+        try:
+            jobDetail = self.driver.find_element(By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div").text.replace("·", "|")
+        except Exception as e:
+            if (config.displayWarnings):
+                utils.displayWarning("in getting jobDetail: ", e)
+            jobDetail = ""
 
         textToWrite = str(count) + " | " + jobTitle +  " | " + jobCompany +  " | " + jobLocation + " | " + jobWorkPlaceType + " | " + jobPostedDate + " | " + jobApplications
         return textToWrite

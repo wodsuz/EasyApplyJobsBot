@@ -1,19 +1,19 @@
-# General bot settings
+# General bot settings to use Pro settings you need to download Pro version from: www.automated-bots.com
 
 #PRO FEATURE - browser you want the bot to run ex: ["Chrome"] or ["Firefox"]. Firefox is only supported in Pro feature
 browser = ["Chrome"]
 # Enter your Linkedin password and username below. Do not commit this file after entering these credentials.
 # Linkedin credentials
-email = " "
-password = " "
+email = "YourLinkedin@UserEmail.com"
+password = "YourLinkedinPassword"
 
 #PRO FEATURE - Optional! run browser in headless mode, no browser screen will be shown it will work in background.
 headless = False
 #PRO FEATURE - Optional! If you left above credentials fields empty. For Firefox or Chrome enter profile dir to run the bot to prevent logging in your account each time
 # get Firefox profile path by typing following url: about:profiles
-firefoxProfileRootDir = r"/home/ongun/snap/firefox/common/.mozilla/firefox/pz0eh58h.Linkedin_bot"
+firefoxProfileRootDir = r""
 # get Chrome profile path by typing following url: chrome://version/
-chromeProfilePath = r"/home/ongun/.config/google-chrome/Profile 3"
+chromeProfilePath = r""
 
 # These settings are for running Linkedin job apply bot
 # Paaste your easyApply email and key below
@@ -78,7 +78,7 @@ messageToHiringManager = ""
 #PRO FEATURE! - List and output non Easy Apply jobs links
 listNonEasyApplyJobsUrl = False
 #PRO FEATURE! - Select radio button for unsawered questions. If the bot cannot find an answer for a radio button, it will automatically select first or second option. Default radio button answer, 1 for Yes, 2 for No. Leave empty if you dont want this option.
-selectRadioOptionForUnasweredQuestions = 1
+defaultRadioOption = 1
 #PRO FEATURE! - Check yes or no to all checkbox questions (True - yes, False - no), leave empty if you dont want this option
 answerAllCheckboxes = ""
 #PRO FEAUTRE! - Output file type. Can be .txt or .csv (excel) 

@@ -1,0 +1,675 @@
+#PRO FEATURE - Auto answer additional questions from the below values.
+inputField:
+  First Name: FirstName
+  Last Name: LastName
+  Phone Country Code: Canada (+1) # See linkedin for your country code, must be exact
+  Phone Number: 1234567890
+  Street address: 123 Fake Street
+  City: Katowice, Śląskie, Poland
+  State: Poland
+  Zip: 41-214
+  Linkedin: https://www.linkedin.com/in/
+  Website: https://www.ongundemirag.com/ # github/website is interchangable here
+  # Questions having these technology keywords inside (whole numbers only) - case insensitive
+  Accounting/Auditing: 0
+  Administrative: 0
+  Advertising: 0
+  Analyst: 0
+  Art/Creative: 0
+  Business Development: 1
+  Consulting: 0
+  Customer Service: 0
+  Distribution Design: 0
+  Education: 0
+  Engineering: 3
+  Finance: 0
+  General Business: 2
+  Health Care Provider: 0
+  Human Resources: 0
+  Information Technology: 0
+  Legal: 0
+  Management: 1
+  Manufacturing: 0
+  Marketing: 0
+  Public Relations: 0
+  Purchasing: 0
+  Product Management: 2
+  Project Management: 3
+  Production: 0
+  Quality Assurance: 0
+  Research: 0
+  Sales: 0
+  Science: 0
+  Strategy/Planning: 0
+  Supply Chain: 0
+  Training: 0
+  Writing/Editing: 0
+  # default to put for any skill that you did not list
+  Years of experience: 0
+  C++: 0
+  Python: 3
+  Javascript: 3
+  Node: 3
+  python: 3
+  Spring Boot: 0
+  Java: 3
+  PHP: 0
+  Laravel: 0
+  SASS: 3
+  React: 3
+  React Native: 2
+  Django: 0
+  SAP: 0
+  ipt: 0
+  MySQL: 0
+  Shopify: 0
+  Typescript: 3
+  JavaScript: 3
+  Angular: 0
+  Redux.js: 2
+  Angular Command Line Interface (CLI): 0
+  selenium: 3
+  C#: 0
+  C (Programming Language): 0
+  Software Development: 3
+  Linux: 2
+  Cross-functional team: 0
+  Social media platforms: 0
+  Microsoft Azure: 0
+  AWS: 0
+  .NET: 0
+  # add custom one here
+  universityGpa: 4.0
+  # What is your level of proficiency in a: polski? Required
+  english: Native or bilingual # None, Conversational, Professional, Native or bilingual
+  polski: Conversational # None, Conversational, Professional, Native or bilingual
+  angielski: Native or bilingual # None, Conversational, Professional, Native or bilingual
+  # Other queations, you can add custom ones below and bot will also add the unrecognized ones at the end
+  # Can you provide a ballpark salary range you'd be looking for? Required / # Desired salary Required / Salary expectations for
+  # what would be the monthly compensation you are seeking? (in dollar)
+  Salary range: 15000 usd - 18000 usd net monthly.
+  Desired salary: 15000 usd - 18000 usd net monthly.
+  Salary expectations: 15000 usd - 18000 usd net monthly.
+  Monthly compensation: 15000 usd - 18000 usd net monthly.
+  # If you selected Word of mouth, Referral or Other from the question above, please specify in the box below.
+  Word of mouth, Referral or Other: None
+  # College or University
+  College or University: ABC University
+  # Have you ever applied at ... before? Required
+  Have you ever applied: "No"
+  #  Please provide 3 references with their name, phone number, and email address. Required
+  References: A, 045,abc@gmail.com | B,234,abc@gmail.com | C,2134,abc@gmail.com
+  #  How many hours are you available every week? Required
+  Hours are you available every week: 40
+  #  What is your desired hourly pay rate (in USD)? Required
+  Hourly pay rate: 30
+  #  Notice period in weeks Required
+  Notice period: 2 weeks
+  #  Please evaluate on a scale from 1 to 10 you ability to manage technical issues on different social media platforms? Required
+  Manage Technical Issues: 8
+  # What are your salary requirements in gross monthly PLN?
+  gross monthly PLN: 32269
+  # Unanswered questions from the bot will go below you can write your answer after ":" For example How many years of x experience you have:5
+  # how many years of work experience do you have with programming languages?
+  programming languages: 5
+  # how many years of work experience do you have with internet of things (iot)?
+  internet of things (iot): 1
+  # how many years of work experience do you have with opencv?
+  opencv: 0
+  # how many years of work experience do you have with numpy?
+  numpy: 3
+  # how many years of work experience do you have with devops?
+  Devops: 3
+  # how many years of work experience do you have with user interface design?
+  Interface Design: 3
+  # ¿cuántos años de experiencia tienes con modelo-vista-controlador (mvc)?
+  modelo-vista-controlador: 0
+  # how many years of work experience do you have with Embedded Software?
+  Embedded software: 3
+  # how many years of work experience do you have with apache?
+  Apache: 0
+  # how many years of work experience do you have with puppeteering?
+  puppeteering: 0
+  # how many years of work experience do you have with scorm?
+  scorm: 0
+  # how many years of work experience do you have with aicc?
+  aicc: 0
+  # how many years of work experience do you have with sql server integration services (ssis)?
+  server integration services: 0
+  # how many years of work experience do you have using google analytics?
+  google analytics: 3
+  # how many years of work experience do you have using instagram analytics?
+  instagram analytics: 0
+  # how many years of work experience do you have using facebook ads manager?
+  facebook ads manager: 2
+  # ui/ux experience / how many years of work experience do you have with [skill]? ui developer
+  ui: 5
+  ux: 5
+  # how many years of work experience do you have with microservices?
+  microservices: 2
+  # how many years of work experience do you have with google material design?
+  google material design: 3
+  # ¿cuántos años de experiencia tienes con prueba unitaria?
+  experiencia tienes con prueba unitaria: 5
+  # ¿cuántos años de experiencia tienes con interfaces?
+  interfaces: 5
+  # how many years of work experience do you have with golang?
+  Golang: 2
+  # how many years of work experience do you have with kafka ?
+  kafka: 0
+  # how many years of work experience do you have with docker?
+  Docker: 0
+  # how many years of work experience do you have with ci/cd ?
+  ci/cd: 4
+  # quanti anni di esperienza di lavoro hai con supporto tecnico?
+  supporto tecnico: 2
+  # how many years of work experience do you have with android sdk?
+  android sdk: 0
+  # how many years of work experience do you have with microsoft office?
+  microsoft office: 5
+  # wie viele jahre erfahrung haben sie mit: national institute of standards and technology?
+  national institute of standards and technology: 0
+  # wie viele jahre erfahrung haben sie mit: cybersecurity?
+  cybersecurity: 2
+  # how many years of work experience do you have with saas development?
+  saas: 3
+  # how many years of work experience do you have with akka?
+  akka: 0
+  # combien de langages de programmation maitrisez vous ?
+  langages de programmation maitrisez vous: 3
+  # combien d'années d'expérience justifiez vous dans le développement informatique ?
+  développement informatique: 5
+  # ¿cuántos años de experiencia tienes con zoho?
+  zoho: 0
+  # ¿cuántos años de experiencia tienes con implantación de software?
+  implantación de software: 3
+  # how many years of work experience do you have with software defined networking?
+  software defined networking: 0
+  # quanti anni di esperienza di lavoro hai con creazione di siti web?
+  creazione di siti web: 5
+  # quanti anni di esperienza di lavoro hai con progettazione di siti wordpress?
+  wordpress: 2
+  # how many years of work experience do you have with ruby on rails?
+  ruby: 2
+  # ¿cuál es tu pretensión salarial neta anual?
+  salarial: 5000
+  # what is your expected ctc?
+  ctc: 5000
+  # how many years of work experience do you have with oracle forms?
+  oracle forms: 0 
+  # how many years of work experience do you have with weblogic?
+  weblogic: 0
+  # please indicate your expected income
+  expected income: 5000
+  # quanti anni di esperienza hai nel ruolo di sw engineer?
+  ruolo di sw engineer: 5
+  # how many years of work experience do you have with solidworks?
+  solidworks: 0
+  # ¿cuáles son tus expectativas salariales?
+  salariales: 5000
+  # how many years of work experience do you have with kubernetes?
+  kubuernetes: 0
+  # how many years of work experience do you have with symfony framework?
+  Symfony: 0 
+  # experience in mobile development using xamarin
+  Xamarin: 0
+  # experience with search engines like solr
+  Solr: 0
+  # what is your salary expectation?
+  Salary: 5000
+  # do you have experience working for a product company?
+  experience working for a product company: Yes
+  # how many years of work experience do you have with skill development?
+  Skill development: 0
+  # quanti anni di esperienza di lavoro hai con l’uso di visual studio?
+  visual studio: 5
+  # how many years of work experience do you have with spring?
+  Spring: 0
+  # hoeveel jaar werkervaring hebt u met econometrie?
+  econometrie: 0 
+  # hoeveel jaar werkervaring hebt u met communicatie?
+  communicatie: 0
+  # hoeveel jaar werkervaring hebt u met financiën?
+  financiën: 0
+  # hoeveel jaar werkervaring hebt u met embedded systems?
+  embedde systems: 2
+  # please provide your desired monthly gross salary (huf)
+  # prénom
+  # nom de famille
+  # courriel
+  # téléphone
+  # quelles sont vos disponibilités pour un stage ? (date de début & durée)
+  # aménagements nécessaires
+  # how many years of work experience do you have with gitlab?
+  Gitlab: 1
+  # what are your expectations for a monthly gross salary? (please provide a number)
+  # how many years of work experience do you have using graphic design?
+  Graphic design: 2
+  # how many years of work experience do you have with snowflake cloud?
+  snowflake cloud: 0
+  # how many years of technology, information and internet experience do you currently have?
+  technology, information and internet experience: 5
+  # what is the expected net pay rate per hour in a b2b collaboration model (in pln)?
+  # how many years of work experience do you have with gis/spatial data?
+  gis/spatial data: 0
+  # how many years of work experience do you have with microsoft excel?
+  # quanti anni di esperienza di lavoro hai con sql database?
+  # quanti anni di esperienza di lavoro hai con imballaggio?
+  # how many years of work experience do you have with hashicorp vault?
+  # how many years of work experience do you have with windows server?
+  # how many years of work experience do you have with azure active directory?
+  # wie viele jahre erfahrung haben sie mit: embedded-software-programmierung?
+  # ¿cuántos años de experiencia tienes con woocommerce?
+  # how many years of work experience do you have with telecommunications?
+  # how many years of work experience do you have with computer vision?
+  # how many years of work experience do you have with on-page seo?
+  # how many years of work experience do you have with e-commerce seo?
+  # how many years of work experience do you have with off-page seo?
+  # tengo 2 personas que salen de mi web sobre 5 sin ver ninguna otra página. ¿de cuánto es mi tasa de rebote?
+  # how many years of work experience do you have with custom app development?
+  # hoeveel jaar werkervaring hebt u met field support?
+  # ¿cuántos años de experiencia tienes con producción de newsletter?
+  # how many years of work experience do you have with personal assistance?
+  # what is your salary indication gross per month in €uro's?
+  # how many years of work experience do you have with software troubleshooting?
+  # how many years of work experience do you have with computer hardware troubleshooting?
+  # how many years of work experience do you have with active directory experience?
+  # how did you hear about this job?
+  Hear: Linkedin
+  # quanti anni di esperienza di lavoro hai con vmware?
+  # quanti anni di esperienza di lavoro hai con comptia?
+  # ¿cuántos años de experiencia tienes programando en ionic?
+  # ¿cuál es tu remuneración pretendida para la posición?
+  # ¿cuántos años de experiencia tienes trabajando en flutter?
+  # how many years have you worked as a developer?
+  # how many years of work experience do you have with micro focus quality center?
+  # how many years of work experience do you have with design thinking?
+  # ile lat posługujesz się zawodowo narzędziem modele 3d?
+  # quanti anni di esperienza di lavoro hai con cloud development?
+  # ¿cuántos años de experiencia tienes con administración de páginas web?
+  # há quantos anos você já usa tecnologias microsoft no trabalho?
+  # há quantos anos você já usa microsoft sharepoint no trabalho?
+  # quanti anni di esperienza di lavoro hai con matlab?
+  # how many years of work experience do you have with e-handel?
+  # what salary are you looking for?
+  # ¿cuántos años tienes de experiencia con github?
+  github: 5
+  # ¿cuántos años tienes de experiencia cloud?
+  cloud: 2
+  # wie viele jahre erfahrung haben sie mit: typo3?
+  # how many years of work experience do you have with microsoft power platform?
+  # ile lat posługujesz się zawodowo narzędziem html/css validation?
+  # how many years of work experience do you have with codesys?
+  # how many years of work experience do you have with embedded systems?
+  # how many years of work experience do you have with woocommerce?
+  # combien d’années d’expérience avez-vous en tant que développeur web ?
+  # wie viele jahre erfahrung haben sie mit: machine vision?
+  # wie viele jahre erfahrung haben sie mit: firstspirit?
+  # años de experiencia en non-relational databases:
+  # años de experiencia en relational databases:
+  # are you based in prague? if not, where are you based?
+  # ¿cuántos años de experiencia tienes con openmodelica?
+  # ¿cuánto tiempo necesitarías para incorporarte? (días naturales)
+  # are you based in lisbon? if not where are you based?
+  # ¿cuántos años de experiencia tienes con diseño creativo?
+  # reasonable accommodation
+  # wie viele jahre erfahrung haben sie mit: anwenderschulung?
+  # quanti anni di esperienza di lavoro hai con sviluppo di prodotto?
+  # quanti anni di esperienza di lavoro hai con meccatronica?
+  # how many years of work experience do you have with mobile application development?
+  # summary
+  # if you have samples of your work or a portfolio site, please include a link here.
+  # when are you available to start work?
+  # how many years of work experience do you have with wireframe/mockup generation tools? (e.g. figma, xd, sketch, etc.)
+  # middle name
+  # suffix
+  # ile lat posługujesz się zawodowo narzędziem automated processes?
+  # how many years of work experience do you have with microsoft dynamics nav?
+  # how many years of work experience do you have with design?
+  # how many years of work experience do you have with abap?
+  # do you have experience in the development of external forms using adobe forms?
+  # how many years of work experience do you have with websphere application server?
+  # ile lat posługujesz się zawodowo narzędziem clojure?
+  # how many years of work experience do you have with windows?
+  # ile lat posługujesz się zawodowo narzędziem aveva system platform?
+  # ile lat posługujesz się zawodowo narzędziem business systems implementation?
+  # 您有多少年的技術支援使用经验？
+  # ile posiadasz lat doświadczenia we wdrażaniu systemów pim/e-commerce?
+  # how many years of work experience do you have with smartplant?
+  # how many years of work experience do you have with piping and instrumentation drawing (p&id)?
+  # jakie są twoje oczekiwania na umowę o pracę ( w pln brutto/miesiąc)?
+  # how many years of work experience do you have with akeneo?
+  akeno: 0
+  # how many years of work experience do you have in a start-up environment?
+  Start-up: 3
+  # how many years of work experience do you have with communication?
+  # how many years of work experience do you have with snowflake?
+  # how many years of work experience do you have as a data engineer?
+  # how many years of work experience do you have using dbt?
+  # rust experience
+  # substrate experience
+  # how many years of work experience do you have with cryptocurrency?
+radio:
+  # Do you have a valid driver's license? (yes/no checkbox)
+  Driver: "yes"
+  # Will you now, or in the future, require sponsorship for employment visa status (e.g. H-1B visa status)? (yes/no checkbox)
+  Sponsor: "no"
+  # Are you legally authorized to work in COUNTRY? (yes/no checkbox)
+  Legally authorized: "yes"
+  # We must fill this position urgently. Can you start immediately? (yes/no checkbox)
+  Urgent: "yes"
+  # Are you comfortable commuting to this job's location? (yes/no checkbox)
+  Commute: "yes"
+  # Have you completed the following level of education: DEGREE TYPE? (yes/no checkbox)
+  High School Diploma: "yes"
+  Bachelor's Degree: "yes"
+  Associate's Degree: "no"
+  Master's Degree: "yes"
+  Master of Business Administration: "no"
+  Doctor of Philosophy: "no"
+  Doctor of Medicine: "no"
+  Doctor of Law: "no"
+  # Are you willing to undergo a background check, in accordance with local law/regulations?
+  Background Check: "yes"
+  # Are you comfortable working in a remote setting?
+  Remote: "yes"
+  # Are you willing to relocate?
+  Relocate: "yes"
+  # Are you a US Citizen?
+  US Citizen: "yes"
+  # Are you willing to travel 25% of the time?
+  Travel 25%: "yes"
+  # Are you willing to take a drug test, in accordance with local law/regulations?
+  Drug Test: "yes"
+  # Are you comfortable working in a hybrid setting?
+  Hybrid: "yes"
+  # Are you comfortable working in an onsite setting?
+  Onsite: "yes"
+  # Questions related with North korea
+  North Korea: "no"
+  # Data retention policy
+  Data retention: "no"
+  #  Are you legally authorized to work in Canada?
+  Legally authorized to work in Canada: "yes"
+  # Are you currently residing in any state outside of California? Yes = I live outside of California No = I live in California
+  outside of California: "yes"
+  # Gender (Male - 0 / Female - 1 / Decline to Answer - 2)
+  Gender: "Decline to Answer"
+  #  Veteran status  ( I identify as one or more listed above - 0 /  I am not a protected veteran - 1 /  I don't wish to answer - 2  ))
+  Veteran: "I don't wish to answer "
+  #  Disability status  ( Yes, I Have A Disability - 0 /  No, I Don't Have A Disability - 1 /  I don't wish to answer - 2  ))
+  Disability: "I don't wish to answer "
+  # Race/Ethnicity  (Hispanic or Latino - 0 /  American Indian or Alaska Native (Not Hispanic or Latino) - 1 / Asian (Not Hispanic or Latino) - 2 /  Black or African American (Not Hispanic or Latino)  - 4 /  Native Hawaiian or Other Pacific Islander (Not Hispanic or Latino) - 5 /  Two or More Races (Not Hispanic or Latino) - 6 /  White (Not Hispanic or Latino - 7 /  I prefer not to specify - 8  )
+  Race: "I prefer not to specify"
+  # how many years of work experience do you have with devops?
+  Devops: 3
+  # how many years of work experience do you have with user interface design?
+  Interface Design: 3
+  # Eexample question: Do you want to live in Spain? You should write Spain:"yes" for yes or Spain:"no" for no radio button click. you can also write spain the text is case insensitive.
+  Spain: "Yes"
+  # are you comfortable commuting to this job's location? Options : [yes,no]
+  location: "Yes"
+  # benötigen sie jetzt oder in zukunft eine bürgschaft für ein arbeitsvisum? Options : [ja,nein]
+  arbeitsvisum: "Ja"
+  # sind sie bereit, die fahrzeit zum arbeitsort in kauf zu nehmen? Options : [ja,nein]
+  die fahrzeit zum arbeitsort in kauf zu nehmen: "Ja"
+  # sind sie rechtlich befugt, in diesem land zu arbeiten: deutschland? Options : [ja,nein]
+  deutschland: "nein"
+  # sind sie rechtlich befugt, in diesem land zu arbeiten: österreich? Options : [ja,nein]
+  österreich: "Ja"
+  # are you proficient in react, javascript, html and css? Options : [yes,no]
+  # are you able to work in the lisbon office 2/3 times a week? Options : [yes,no]
+  # are you fluent in speaking, reading and writing in english? Options : [yes,no]
+  # bent u wettelijk bevoegd om in nederland te werken? Options : [ja,nee]
+  # bent u wettelijk bevoegd om in belgië te werken? Options : [ja,nee]
+  # door dit vakje aan te vinken, verklaart u dat u het privacybeleid van netcompanyhebt gelezen en begrepen. Options : [ik geef toestemming]
+  # sei disponibile a percorrere la distanza prevista per recarti al lavoro in questa sede?  Options : [sì,no]
+  percorrere la distanza prevista: "si"
+  # ¿puedes desplazarte hasta la ubicación de este empleo? Options : [sí,no]
+  # privacy policies Options : [confirm]
+  privacy policies: "confirm"
+  # agree to receive occasional email updates from qualitest. your consent is voluntary. please view our privacy policy: https://www.qualitestgroup.com/about-us/privacy-policy/ and our terms and conditions: https://www.qualitestgroup.com/about-us/terms-conditions/ you have the right to unsubscribe and withdraw your consent at any time. Options : [yes,no]
+  agree to receive occasional email updates: "no"
+  # do you have the right to live and work in uk? Options : [yes,no]
+  uk: "yes"
+  # are based in greece? Options : [yes,no]
+  Greece: "no"
+  # do you have at least 3 years of working experience in a similar role? Options : [yes,no]
+  3 years of working experience in a similar role: "yes"
+  # do you have solid working experience with jenkins? Options : [yes,no]
+  jenkins: "no"
+  # czy zgadzasz się na dojazd do pracy w tej lokalizacji  Options : [tak,nie]
+  # ¿tienes permiso de trabajo para españa? Options : [sí,no]
+  # avez-vous besoin, ou aurez-vous besoin plus tard, d’un parrainage d’immigration pour obtenir une autorisation de travail ? Options : [oui,non]
+  # by submitting this form i confirm that i have read and understood manta’s privacy notice on processing of my personal data.  Options : [yes]
+  # the contractor shall have a nato secret security clearance. Options : [yes,no]
+  # the candidate has relevant and recent experience in software development using java and typescript (angular). Options : [yes,no]
+  # the candidate has and recent experience in programming at the computer network level. Options : [yes,no]
+  # the candidate has extensive and recent experience in programming at the network interface level (udp, tcp) and serial interface level. Options : [yes,no]
+  # the candidate has relevant and recent knowledge of (programming) tactical data links (tdl), e.g. link 1, link 16. Options : [yes,no]
+  # the candidate is well able to produce efficient, clear, readable, maintainable and high quality code. Options : [yes,no]
+  # the candidate has experience with developing and troubleshooting near real time systems development. Options : [yes,no]
+  # the candidate has relevant and recent experience in continuous software integration and automated testing, including knowledge of test automation frameworks. Options : [yes,no]
+  # the candidate has relevant and recent experience in using development tools (e.g. maven, jira, gitlab, zephyr) and the scrum methodology. Options : [yes,no]
+  # the candidate is able to speak and write fluent english since the work is conducted in english Options : [yes,no]
+  # the candidate must have the nationality of one of the nato nations. Options : [yes,no]
+  # i have read the privacy notice, and understand that providing this information is voluntary and will not affect my application process (required) Options : [yes,no]
+  # i identify my ethnicity as (select all that apply): Options : [black (including african-american, african-caribbean, african),hispanic or latinx (including mexican, brazilian, spanish, cuban, dominican, and puerto rican),indigenous (including indigenous people of canada, australia, new zealand, south america),north african (including algerian, egyptian, libyan, moroccan, tunisian),south asian (including bangladeshi, bhutanese, indian, nepali, pakistani, sri lankan),southeast asian (including burmese, cambodian, filipino, hmong, indonesian, laotian, malaysian, mien, singaporean, thai, and vietnamese),west asian (including iranian, iraqi, afghan, cypriots, israeli, turkish, syrian, lebanese, saudi arabian, yemeni),east asian (including chinese, japanese, korean, mongolian, tibetan, and taiwanese),white (including european),prefer not to answer]
+  # i identify my sexual orientation as: Options : [straight,gay,lesbian,bisexual,queer,prefer to self-describe in another way,prefer not to answer]
+  # i am neurodiverse (select all that apply): Options : [attention deficit hyperactivity disorder (adhd),autistic spectrum,dyslexia,dyspraxia,social anxiety disorders,sensory processing disorder (spd),prefer not to answer,no, i don’t have a neurodiversity,other]
+  # are you located in the united states? Options : [yes,no]
+  # are you in the dc metro area? please note this is not a requirement for the job. Options : [yes,no]
+  # do you have experience writing custom wordpress plugins? Options : [yes,no]
+  # what's your citizenship / employment eligibility? Options : [u.s. citizen/permanent resident,non-citizen allowed to work for any employer,non-citizen allowed to work for current employer,non-citizen seeking work authorization,canadian citizen/permanent resident,other]
+  # do you have experience with angular version 14+? Options : [yes,no]
+  angular: "yes"
+  # how many years of experience in web development do you have? Options : [0 - 5 years,5 - 8 years,8+ years]
+  web development: 0 - 5 years,
+  # are you currently located in or near kraków, poland? Options : [yes,no]
+  kraków: "yes"
+  # i am allowing guidewire software to contact me about future job opportunities for up to 2 years. privacy policy Options : [yes,no]
+  contact me about future job opportunities: "yes"
+dropdown:
+  # Are you located in the World? Options: ['Select an option', 'Yes', 'No']
+  Are you located in the World?: "Yes" 
+  # what is your level of proficiency in czech? Options : [Select an option,None,Conversational,Professional,Native or bilingual]
+  Czech: "None"
+  # are you located in prague? Options : [Select an option,Yes,No]
+  Prague: "No"
+  # what is your level of proficiency in english? Options : [Select an option,None,Conversational,Professional,Native or bilingual]
+  English: "Native"
+ # what is your level of proficiency in greek? Options : [Select an option,None,Conversational,Professional,Native or bilingual]
+  Greek: "None"
+  # disposez-vous d'une expérience d'au moins 2 ans à ce poste ? Options : [Sélectionnez une option,Yes,No]
+  expérience d'au moins 2 ans à ce poste: "Yes"
+  # can you join the organization within 30days? Options : [Select an option,Yes,No]
+  30days: "Yes"
+  # are you ready to work on-site / uk? Options : [Select an option,Yes,No]
+  Uk: "Yes"
+  # can you be in the brno office 2 times a week?  Options : [Vyberte možnost,Yes,No]
+  Brno : "Yes"
+  # qual è il tuo grado di conoscenza della lingua inglese? Options : [Seleziona un’opzione,Nessuno,Parlato,Professionale,Madrelingua o bilingue]
+  # what is your level of proficiency in french? Options : [Select an option,None,Conversational,Professional,Native or bilingual]
+  French: "None"
+  # do you have a background in engineering (whatever domain) ? Options : [Select an option,Yes,No]
+  background in engineering: "Yes"
+  # do you want to be/become a mobile developer ? Options : [Select an option,Yes,No]
+  Mobile developer: "Yes"
+  # what is your level of proficiency in italian? Options : [Select an option,None,Conversational,Professional,Native or bilingual]
+  Italian: "None"
+  # web service rest(resteasy) in standard openapi (swagger specification), ejb e jpa, spring, spring boot Options : [Select an option,Yes,No]
+  Openapi: "Yes"
+  # database (postgres, oracle, mysql) Options : [Select an option,Yes,No]
+  Database: "Yes"
+  # logger apache slf4j, maven 3, nodejs Options : [Select an option,Yes,No]
+  nodejs: "Yes"
+  # quel est votre niveau en anglais ? Options : [Sélectionnez une option,Inexistant,Conversationnel,Professionnel,Natif ou bilingue]
+  Anglais: "Natif"
+  # connaissez-vous l'environnement de développement windev et webdev ? Options : [Sélectionnez une option,Yes,No]
+  webdev: "Yes"
+  # wie gut beherrschen sie englisch? Options : [Option auswählen,Gar nicht,Gut,Verhandlungssicher,Muttersprache oder zweisprachig]
+  englisch:  "Muttersprache"
+  # wie gut beherrschen sie deutsch? Options : [Option auswählen,Gar nicht,Gut,Verhandlungssicher,Muttersprache oder zweisprachig]
+  deutsch: "Gar nicht"
+  # verfügen sie über eine abgeschlossene ausbildung / studium als fachinformatiker:in / informatiker:in oder eine vergleichbare qualifikation Options : [Option auswählen,Yes,No]
+  fachinformatiker: "Yes"
+  # what is your level of proficiency in čeština? Options : [Vyberte možnost,None,Conversational,Professional,Native or bilingual]
+  čeština: "None"
+  # avez vous déjà été entrepreneur ? Options : [Sélectionnez une option,Yes,No]
+  entrepreneur: "Yes"
+  # ¿cuál es tu nivel de inglés? Options : [Selecciona una opción,Ninguno,Conversación,Profesional,Nativo o bilingüe]
+  inglés: "Nativo"
+  # do you live in portugal? Options : [Select an option,Yes,No]
+  Portugal: "No"
+  # what is your level of proficiency in angličtina? Options : [Vyberte možnost,None,Conversational,Professional,Native or bilingual]
+  angličtina: "Native"
+  # risiedi attualmente in veneto e puoi dimostrarlo? in caso contrario, ti chiediamo la cortesia di non inviare la candidatura. Options : [Seleziona un’opzione,Yes,No]
+  # what is your level of proficiency in lithuanian? Options : [Select an option,None,Conversational,Professional,Native or bilingual]
+  lithuanian: "None"
+  # qual è il tuo grado di conoscenza della lingua italiano? Options : [Seleziona un’opzione,Nessuno,Parlato,Professionale,Madrelingua o bilingue]
+  Italian: "Nessuno"
+  # uso della lingua italiana parlata e scritta, come madrelingua o c2 equivalente Options : [Select an option,Yes,No]
+  italiana parlata e scritta: "No"
+  # ¿eres graduado universitario en carreras de tencología/ ingeniería o matemáticas? Options : [Selecciona una opción,Yes,No]
+  tencología: "Yes"
+  # ¿has hecho testeo automatizado? Options : [Selecciona una opción,Yes,No]
+  automatizado: "Yes"
+  # what is your level of proficiency in german? Options : [Select an option,None,Conversational,Professional,Native or bilingual]
+  German: "None"
+  # do you hold a nato security clearance? Options : [Select an option,Yes,No]
+  nato security clearance: "No"
+  # what is your level of proficiency in hungarian? Options : [Select an option,None,Conversational,Professional,Native or bilingual]
+  Hungarian: "None"
+  # what is your level of proficiency in dutch? Options : [Select an option,None,Conversational,Professional,Native or bilingual]
+  dutch: "None"
+  # hai conseguito la laurea in ambito informatico? Options : [Seleziona un’opzione,Sì,No]
+  informatico: "Si"
+  # hai esperienza in ambito programmazione python? Options : [Seleziona un’opzione,Sì,No]
+  python: "Si"
+  # ¿resides a 20 km o menos de mataró? requisito indispensable* Options : [Selecciona una opción,Yes,No]
+  mataró: "No"
+  # are you comfortable with hybrid work, coming to the office in central tallinn 50% of the days? Options : [Select an option,Yes,No]
+  hybrid work: "Yes"
+  # do you have 4-8 years of frontend product development experience? Options : [Selecciona una opción,Yes,No]
+  4-8 years of frontend product development experience: "Yes"
+  # what is your level of proficiency in chinese? Options : [Select an option,None,Conversational,Professional,Native or bilingual]
+  chinese: "None"
+  # do you have experience in html/css?  Options : [Select an option,Yes,No]
+  # did you actively develop complex applications using solid js/react and webgl/regl.js or comparable technologies?  Options : [Option auswählen,Yes,No]
+  # what is your level of proficiency in русский? Options : [Выберите один вариант,None,Conversational,Professional,Native or bilingual]
+  # what is your level of proficiency in английский? Options : [Выберите один вариант,None,Conversational,Professional,Native or bilingual]
+  # experience with understanding and improving existing code Options : [Select an option,Yes,No]
+  # experience with end-to-end project implementation Options : [Select an option,Yes,No]
+  # notice period Options : [Select an option,Available immediately,1 week,2 weeks,3 weeks,1 month,2 months,3 months and more]
+  # are you able to work in a location at 2h driving from brussels (belgium) Options : [Select an option,Yes,No]
+  # are you a eu citizen? Options : [Select an option,Yes,No]
+  # are you a resident of greece? Options : [Select an option,Yes,No]
+  # hai la conoscenza di scripting in shell? Options : [Seleziona un’opzione,Yes,No]
+  # hai conoscenze di networking? Options : [Seleziona un’opzione,Yes,No]
+  # hai una buona conoscenza della lingua inglese? Options : [Seleziona un’opzione,Yes,No]
+  # sei disponibile ad effettuare una modalità ibrida su milano? Options : [Seleziona un’opzione,Yes,No]
+  # what is your level of proficiency in latvian? Options : [Select an option,None,Conversational,Professional,Native or bilingual]
+  # qual è il tuo grado di conoscenza della lingua francese? Options : [Seleziona un’opzione,Nessuno,Parlato,Professionale,Madrelingua o bilingue]
+  # sei legalmente autorizzato/a a lavorare in italia? Options : [Seleziona un’opzione,Yes,No]
+  # are you aware this role will be onsite in valencia, spain? Options : [Select an option,Yes,No]
+  # hoe vaardig bent u in het nederlands? Options : [Selecteer een optie,Niet,Conversatie,Beroepsmatig,Moedertaal of tweetalig]
+  # job offers communication Options : [Select an option,Yes,No]
+  # aurez-vous une convention de stage pour les dates mentionnées précédemment ?  Options : [Select an option,Yes,No]
+  # hai esperienza di 1/2 anni in ambito di progettazione software ? Options : [Seleziona un’opzione,Yes,No]
+  # conosci bene la lingua inglese ? Options : [Seleziona un’opzione,Yes,No]
+  # vivi nelle province bologna, forli/cesena, ravenna, rimini (o disponibile al trasferimento) ? Options : [Seleziona un’opzione,Yes,No]
+  # sei disponibile a lavorare in presenza ? Options : [Seleziona un’opzione,Yes,No]
+  # hai laurea in informatica o ingegneria informatica o percorso education affine ? Options : [Seleziona un’opzione,Yes,No]
+  # hai esperienza in c# oppure c / c++ ? Options : [Seleziona un’opzione,Yes,No]
+  # what is your level of proficiency in polish? Options : [Select an option,None,Conversational,Professional,Native or bilingual]
+  # will you be physically located in poland at all times while providing services? Options : [Select an option,Yes,No]
+  # do you live in the capital area of copenhagen? Options : [Select an option,Yes,No]
+  # hai esperienza con postgresql? Options : [Seleziona un’opzione,Yes,No]
+  # hai esperienza con la gestione di server linux? Options : [Seleziona un’opzione,Yes,No]
+  # do you have good backend experience ? Options : [Select an option,Yes,No]
+  # do you have at least 8+ years of experience  Options : [Select an option,Yes,No]
+  # are you able to give coding test ? Options : [Select an option,Yes,No]
+  # to which gender identity do you most identify ? Options : [Select an option,Do not wish to answer,Man,Non-binary,Woman]
+  # ¿tienes claro que se trata de un puesto presencial a jornada completa? ¿estás dispuesto? Options : [Selecciona una opción,Yes,No]
+  # solid knowledge of the radio access network (ran) technologies. Options : [Select an option,Yes,No]
+  # hoe vaardig bent u in het frans? Options : [Selecteer een optie,Niet,Conversatie,Beroepsmatig,Moedertaal of tweetalig]
+  # what is your level of proficiency in spanish? Options : [Select an option,None,Conversational,Professional,Native or bilingual]
+  # what is your level of proficiency in catalan? Options : [Select an option,None,Conversational,Professional,Native or bilingual]
+  # poner una canonical hacia la categoria portatiles en este caso es una buena idea : https://www.pccomponentes.com/portatiles?price_from=3156&price_to=6680 Options : [Select an option,Yes,No]
+  # ¿puedes trabajar presencialmente en nuestra oficina de valencia? Options : [Selecciona una opción,Yes,No]
+  # quel est votre niveau en français ? Options : [Sélectionnez une option,Inexistant,Conversationnel,Professionnel,Natif ou bilingue]
+  # heeft u kennis van elektromechanica? Options : [Selecteer een optie,Yes,No]
+  # heeft u kennis van (of interesse in) regel- en meettechniek? Options : [Selecteer een optie,Yes,No]
+  # do you have experience with c++ programming language? Options : [Select an option,Yes,No]
+  # do you have a bachelor of science (b.sc.) working level in computer science area? Options : [Select an option,Yes,No]
+  # do you live, or are you willing to live in hoogeveen area (7903 an, 12), the netherlands? Options : [Select an option,Yes,No]
+  # do you have any related security certification on cloud security ? Options : [Select an option,Yes,No]
+  # what is your availability to start? Options : [Select an option,Immediate,Less than 1 week,1-2 weeks,2-3 weeks,3+ weeks]
+  # what is your location? Options : [Select an option,USA,UK,India,Israel,Other location,Romania]
+  # will you require sponsorship now or in the future? Options : [Select an option,Yes, immediate sponsorship (H1B),Yes, in the future (OPT, CPT, H4, L2, etc..),No (Citizen, Green Card, Permanent Resident)]
+  # background/experience with data science Options : [Select an option,Yes,No]
+  # background/experience with devops Options : [Select an option,Yes,No]
+  # experience in utilizing ai tools and technologies Options : [Select an option,Yes,No]
+  # what is your level of proficiency in dansk? Options : [Vælg valgmulighed,None,Conversational,Professional,Native or bilingual]
+  # what is your level of proficiency in engelsk? Options : [Vælg valgmulighed,None,Conversational,Professional,Native or bilingual]
+  # do you have experience with geo spatial data? Options : [Select an option,Yes,No]
+  # do you live in poland? Options : [Select an option,Yes,No]
+  # do you have experience with adobe analytics setup? Options : [Select an option,Yes,No]
+  # jaki jest twój poziom biegłości języka: angielski? Options : [Wybierz opcję,Żaden,Komunikatywny,Zawodowy,Język ojczysty lub biegłość dwujęzyczna]
+  # jaki jest twój poziom biegłości języka: polski? Options : [Wybierz opcję,Żaden,Komunikatywny,Zawodowy,Język ojczysty lub biegłość dwujęzyczna]
+  # bringst du eine ausbildung oder studium im it bzw. technischen bereich und erste erfahrungen bei der betreuung oder dem aufbau von data warehouses oder data-lakes mit? Options : [Option auswählen,Yes,No]
+  # permiso de trabajo en españa Options : [Select an option,Yes,No]
+  # what is your level of proficiency in swedish? Options : [Select an option,None,Conversational,Professional,Native or bilingual]
+  # risiedi in provincia di udine? Options : [Seleziona un’opzione,Yes,No]
+  # will you now or in the future require visa sponsorship from manta? Options : [Select an option,Yes,No]
+  # är du bekväm med att arbeta inom försvarsindustrin?  Options : [Select an option,Yes,No]
+  # phone country code Options : [Select an option,Poland (+48),Afghanistan (+93),Aland Islands (+358),Albania (+355),Algeria (+213),American Samoa (+1),Andorra (+376),Angola (+244),Anguilla (+1),Antarctica (+0),Antigua and Barbuda (+1),Argentina (+54),Armenia (+374),Aruba (+297),Australia (+61),Austria (+43),Azerbaijan (+994),Bahamas (+1),Bahrain (+973),Bangladesh (+880),Barbados (+1),Belarus (+375),Belgium (+32),Belize (+501),Benin (+229),Bermuda (+1),Bhutan (+975),Bolivia (+591),Bosnia and Herzegovina (+387),Botswana (+267),Bouvet Island (+0),Brazil (+55),British Indian Ocean Territory (+246),Brunei Darussalam (+673),Bulgaria (+359),Burkina Faso (+226),Burundi (+257),Cambodia (+855),Cameroon (+237),Canada (+1),Cape Verde (+238),Caribbean Nations (+0),Cayman Islands (+1),Central African Republic (+236),Chad (+235),Chile (+56),China (+86),Christmas Island (+61),Cocos (Keeling) Islands (+61),Colombia (+57),Comoros (+269),Congo (+242),Cook Islands (+682),Costa Rica (+506),Cote D’Ivoire (Ivory Coast) (+225),Croatia (+385),Cuba (+53),Cyprus (+357),Czech Republic (+420),Democratic Republic of the Congo (+243),Denmark (+45),Djibouti (+253),Dominica (+1),Dominican Republic (+1),Ecuador (+593),Egypt (+20),El Salvador (+503),Equatorial Guinea (+240),Eritrea (+291),Estonia (+372),Ethiopia (+251),Falkland Islands (Malvinas) (+500),Faroe Islands (+298),Federated States of Micronesia (+691),Fiji (+679),Finland (+358),France (+33),French Guiana (+594),French Polynesia (+689),French Southern Territories (+0),Gabon (+241),Gambia (+220),Georgia (+995),Germany (+49),Ghana (+233),Gibraltar (+350),Greece (+30),Greenland (+299),Grenada (+1),Guadeloupe (+590),Guam (+1),Guatemala (+502),Guernsey (+44),Guinea (+224),Guinea-Bissau (+245),Guyana (+592),Haiti (+509),Heard Island and McDonald Islands (+0),Honduras (+504),Hong Kong (+852),Hungary (+36),Iceland (+354),India (+91),Indonesia (+62),Iran (+98),Iraq (+964),Ireland (+353),Isle of Man (+44),Israel (+972),Italy (+39),Jamaica (+1),Japan (+81),Jersey (+44),Jordan (+962),Kazakhstan (+7),Kenya (+254),Kiribati (+686),Korea (+82),Korea (North) (+850),Kosovo (+383),Kuwait (+965),Kyrgyzstan (+996),Laos (+856),Latvia (+371),Lebanon (+961),Lesotho (+266),Liberia (+231),Libya (+218),Liechtenstein (+423),Lithuania (+370),Luxembourg (+352),Macao (+853),Macedonia (+389),Madagascar (+261),Malawi (+265),Malaysia (+60),Maldives (+960),Mali (+223),Malta (+356),Marshall Islands (+692),Martinique (+596),Mauritania (+222),Mauritius (+230),Mayotte (+262),Mexico (+52),Moldova (+373),Monaco (+377),Mongolia (+976),Montenegro (+382),Montserrat (+1),Morocco (+212),Mozambique (+258),Myanmar (+95),Namibia (+264),Nauru (+674),Nepal (+977),Netherlands (+31),Netherlands Antilles (+0),New Caledonia (+687),New Zealand (+64),Nicaragua (+505),Niger (+227),Nigeria (+234),Niue (+683),Norfolk Island (+672),Northern Mariana Islands (+1),Norway (+47),Pakistan (+92),Palau (+680),Palestinian Territory (+970),Panama (+507),Papua New Guinea (+675),Paraguay (+595),Peru (+51),Philippines (+63),Pitcairn (+0),Portugal (+351),Puerto Rico (+1),Qatar (+974),Reunion (+262),Romania (+40),Russian Federation (+7),Rwanda (+250),S. Georgia and S. Sandwich Islands (+0),Saint Helena (+290),Saint Kitts and Nevis (+1),Saint Lucia (+1),Saint Pierre and Miquelon (+508),Saint Vincent and the Grenadines (+1),Samoa (+685),San Marino (+378),Sao Tome and Principe (+239),Saudi Arabia (+966),Senegal (+221),Serbia (+381),Serbia and Montenegro (+0),Seychelles (+248),Sierra Leone (+232),Singapore (+65),Slovak Republic (+421),Slovenia (+386),Solomon Islands (+677),Somalia (+252),South Africa (+27),South Sudan (+211),Spain (+34),Sri Lanka (+94),Sudan (+249),Sultanate of Oman (+968),Suriname (+597),Svalbard and Jan Mayen (+47),Swaziland (+268),Sweden (+46),Switzerland (+41),Syria (+963),Taiwan (+886),Tajikistan (+992),Tanzania (+255),Thailand (+66),Timor-Leste (+670),Togo (+228),Tokelau (+690),Tonga (+676),Trinidad and Tobago (+1),Tunisia (+216),Turkey (+90),Turkmenistan (+993),Turks and Caicos Islands (+1),Tuvalu (+688),Uganda (+256),Ukraine (+380),United Arab Emirates (+971),United Kingdom (+44),United States (+1),Uruguay (+598),Uzbekistan (+998),Vanuatu (+678),Vatican City State (Holy See) (+39),Venezuela (+58),Vietnam (+84),Virgin Islands (British) (+1),Virgin Islands (U.S.) (+1),Wallis and Futuna (+681),Western Sahara (+212),Yemen (+967),Zambia (+260),Zimbabwe (+263)]
+  # ¿tienes interés en la simulación aeronáutica? Options : [Selecciona una opción,Yes,No]
+  # have you ever used a hootsuite product? Options : [Select an option,Yes,No]
+  # are you legally eligible to work in the location you are applying for (romania)? Options : [Select an option,Yes,No]
+  # if you do not live in the location you are applying to, are you willing to relocate? Options : [Select an option,Yes,No,Already live in the location]
+  # erfahrung mit contentserv pim-systemen? Options : [Option auswählen,Yes,No]
+  # have you ever worked with playwright? Options : [Select an option,Yes,No]
+  # have you ever worked with cypress? Options : [Select an option,Yes,No]
+  # have you ever worked with nightwatch.js? Options : [Select an option,Yes,No]
+  # опыт работы в пентестинг более 3х лет?  Options : [Выберите один вариант,Yes,No]
+  # наличие сертификата oscp?  Options : [Выберите один вариант,Yes,No]
+  # английский в2+? Options : [Выберите один вариант,Yes,No]
+  # вы готовы к релокации на кипр (лимассол)? Options : [Выберите один вариант,Yes,No]
+  # do you live in monterrey,n.l, mexico? Options : [Selecciona una opción,Yes,No]
+  # do you have a portfolio? if so, please link to this in your resume. Options : [Select an option,Yes,No]
+  portfolio: "yes"  # experience with graphql?  Options : [Select an option,Yes,No]
+  # are you a former ensono associate? Options : [Select an option,Yes,No]
+  # salutation Options : [Select an option,Mr.,Mrs.,Ms.,Miss]
+  # gender? Options : [Select an option,Male,Female,Prefer not to answer]
+  # czy posiadasz znajomość architektury mikrousługowej?  Options : [Wybierz opcję,Yes,No]
+  # czy posiadasz znajomość zagadnień integracji międzysystemowej? Options : [Wybierz opcję,Yes,No]
+  # are you currently living in gdansk (or ready to work in hybrid model from there)?  Options : [Select an option,Yes,No]
+  ready to work in hybrid model : "yes"
+  # candidate has eu passport? Options : [Select an option,Yes,No]
+  eu passport: "no"
+  # are you ux/ui developer with minimum 3 years of experience? Options : [Select an option,Yes,No]
+  ui/ix: "yes"
+  # are you having hands on experience with rest, nosql, soapui or postman ? Options : [Select an option,Yes,No]
+  ands on experience with rest, nosql, soapui or postman: "yes"
+  # are you open to an employee contract? Options : [Select an option,Yes,No]
+  employee contract: "yes"
+  # are you based in the gdańsk or tri-city area? Options : [Select an option,Yes,No]
+  gdańsk or tri-city area: "no"
+  # are you open to a gross salary of 9,500 to 15,000 pln per month? Options : [Select an option,Yes,No]
+  gross salary of 9,500 to 15,000 pln per month?: "yes"
+  # are you based in either poland, lithuania, latvia or estonia? Options : [Select an option,Yes,No]
+  poland: "yes"
+  # have you ever worked with api of any of the following companies - amazon, ebay, tiktok, clover, square? Options : [Select an option,Yes,No]
+  api of any of the following companie: "yes"  # this role is based in central manchester and requires 3 days per week in the office. do you live a commutable distance currently?  Options : [Select an option,Yes,No]
+  # are you able to work in central manchester 3 days per week? Options : [Select an option,Yes,No]
+  manchester 3 days per week: "yes"
+  # do you live within a commutable distance to cheltenham? Options : [Select an option,Yes,No]
+  # do you have experience with ui and/or ux? Options : [Select an option,Yes,No]
+  # do you have 2 years + experience developing solutions in javascript/react.js? Options : [Select an option,Yes,No]
+  # are you able to commute to the buckinghamshire area?  Options : [Select an option,Yes,No]
+  # do you have experience with java and react at a senior level? Options : [Select an option,Yes,No]
+  # do you have experience with real-time development?  Options : [Select an option,Yes,No]
+  # do you have experience of dlt / blockchain architecture?  Options : [Select an option,Yes,No]
+  # do you have a post study visa/tier 4 visa, or tier 2 general visa? Options : [Select an option,Yes,No]
+  # do you have enhanced dv clearance? Options : [Select an option,Yes,No]

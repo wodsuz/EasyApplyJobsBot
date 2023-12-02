@@ -165,6 +165,9 @@ pytransform/
 #config file
 mainConfig.py
 
+#testing file
+test.py
+
 # user files
 geckodriver.log
 *.txt
@@ -172,8 +175,6 @@ geckodriver.log
 
 # premium files
 angelco.py
-globalLogicCode.py
-linkedinProCode.py
 
 # configs for different searches
 configs/
