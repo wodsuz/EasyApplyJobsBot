@@ -26,10 +26,10 @@ ENV CHROME_USER_DATA_DIR=/home/user/chrome_data
 RUN apt-get install -y chromium-driver chromium
 
 # Create symbolic links for the expected Google Chrome names to the Chromium executable
-RUN ln -s /usr/bin/chromium-browser /usr/bin/google-chrome && \
-    ln -s /usr/bin/chromium-browser /usr/bin/google-chrome-stable && \
-    ln -s /usr/bin/chromium-browser /usr/bin/google-chrome-beta && \
-    ln -s /usr/bin/chromium-browser /usr/bin/google-chrome-dev
+RUN ln -s /usr/bin/chromium /usr/bin/google-chrome && \
+    ln -s /usr/bin/chromium /usr/bin/google-chrome-stable && \
+    ln -s /usr/bin/chromium /usr/bin/google-chrome-beta && \
+    ln -s /usr/bin/chromium /usr/bin/google-chrome-dev
     
 # Copy the requirements file and install Python dependencies
 COPY ./requirements.txt /requirements.txt
@@ -48,10 +48,10 @@ RUN chmod -R 777 /app/data
 WORKDIR /app
 
 # Use an unprivileged user to run the app
-RUN adduser --disabled-password --gecos "" user
-USER user
+# RUN adduser --disabled-password --gecos "" user
+# USER user
 
-# CMD Xvfb :99 -screen 0 1024x768x16 & \
-#     fluxbox & \
-#     x11vnc -display :99 -N -forever -usepw & \
-#     python3 allConfigsRunner.py
+CMD Xvfb :99 -screen 0 1024x768x16 & \
+    fluxbox & \
+    x11vnc -display :99 -N -forever -usepw & \
+    python3 allConfigsRunner.py

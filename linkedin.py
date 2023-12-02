@@ -13,7 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class Linkedin:
     def __init__(self):
-        prYellow("🌐 Bot will run in Chrome browser.")
+        prYellow("🌐 The Bot is starting.")
 
         if config.chromeDriverPath != "":
             # Specify the path to Chromedriver provided by the Alpine package
@@ -47,7 +47,7 @@ class Linkedin:
     
     def checkIfLoggedIn(self):
         if self.exists(self.driver, By.CSS_SELECTOR, "img.global-nav__me-photo.evi-image.ember-view"):
-            prGreen("✅ Already logged in Linkedin.")
+            prGreen("✅ Logged in Linkedin.")
             return True
         else:
             return False
@@ -109,14 +109,17 @@ class Linkedin:
                             countApplied = self.handleJobPost(countApplied, offerPage, jobProperties)
                                     
                 except TimeoutException:
-                    prRed("Element not found within the time limit")
-                    # TODO Handle the situation, like retrying, logging, or graceful shutdown
+                    prRed("0 jobs found for: " + urlWords[0] + " in " + urlWords[1])
 
                 prYellow("Category: " + urlWords[0] + "," + urlWords[1]+ " applied: " + str(countApplied) +
                     " jobs out of " + str(countJobs) + ".")
 
         except Exception as e:
             utils.displayWarning(config.displayWarnings, "Unhandled exception in startApplying", e, True)
+            self.driver.save_screenshot("unhandled_exception.png")
+            with open("page_source_at_unhandled_exception.html", "w") as file:
+                file.write(self.driver.page_source)
+        
 
     def handleJobPost(self, countApplied, offerPage, jobProperties):
         if self.exists(self.driver, By.CSS_SELECTOR, "button[aria-label*='Easy Apply']"):
