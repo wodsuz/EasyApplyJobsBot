@@ -20,11 +20,10 @@ services:
       context: .
       dockerfile: Dockerfile-headless
     volumes:
-      - chrome_data_headless:/home/user/chrome_data  # This will be the persistent volume for Chrome user data
+      - chrome_data_headless:/home/user/chrome_data
     environment:
       - PYTHONUNBUFFERED=1
-    # user: "user"  # To ensure we run as the unprivileged user you created in your Dockerfile
     command: python3 allConfigsRunner.py
 
 volumes:
-  chrome_data_headless:  # This volume will store Chrome user data persistently
+  chrome_data_headless:

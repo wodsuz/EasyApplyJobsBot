@@ -1,6 +1,6 @@
-import time,math,os
-import utils,constants,config
-from utils import prRed,prYellow,prGreen
+import time, math
+import utils, constants, config, repository_wrapper
+from utils import prRed, prYellow, prGreen
 
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -41,6 +41,8 @@ class Linkedin:
                 utils.sleepInBetweenActions(3, 7)
             except:
                 prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8. If error continue you can define Chrome profile or run the bot on Firefox")
+        
+        repository_wrapper.init()
     
     def checkIfLoggedIn(self):
         if self.exists(self.driver, By.CSS_SELECTOR, "img.global-nav__me-photo.evi-image.ember-view"):
@@ -238,11 +240,6 @@ class Linkedin:
         
     def handleSubmitPage(self, countApplied, offerPage, jobProperties):
         followCompany = self.driver.find_element(By.CSS_SELECTOR,"label[for='follow-company-checkbox']")
-        # I followed 10 pages before writing this code, so let's check if it works
-        # Use JavaScript to check the state of the checkbox
-        # is_followCompany_checked = self.driver.execute_script(
-        #     "return document.getElementById('follow-company-checkbox').checked;"
-        # )
         # Use JavaScript to check the state of the checkbox
         is_followCompany_checked = self.driver.execute_script("""
             var label = arguments[0];
