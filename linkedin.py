@@ -191,9 +191,9 @@ class Linkedin:
                 # Inside this container, find the company name link.
                 jobCompanyLink = primary_description_div.find_element(By.CSS_SELECTOR, "a.app-aware-link")
                 jobCompany = jobCompanyLink.text.strip()
-                res = [blItem for blItem in config.blacklistCompanies if(blItem.lower() in jobCompany.lower())]
-                if (len(res)>0):
-                    blacklistedParts += "(blacklisted company: "+ ' '.join(res)+ ")"
+                is_blacklisted = any(blItem.strip().lower() == jobCompany.lower() for blItem in config.blacklistCompanies)
+                if is_blacklisted:
+                    blacklistedParts += "(blacklisted company)"
             else:
                 utils.displayWarning(config.displayWarnings, "in getting jobCompany")
 
