@@ -172,12 +172,13 @@ class Linkedin:
         jobWorkPlaceType = ""
         jobPostedDate = ""
         jobApplications = ""
+        blacklistedParts = ""
 
         try:
             jobTitle = self.driver.find_element(By.XPATH, "//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
             res = [blItem for blItem in config.blackListTitles if (blItem.lower() in jobTitle.lower())]
             if (len(res) > 0):
-                jobTitle += "(blacklisted title: " + ' '.join(res) + ")"
+                blacklistedParts += "(blacklisted title: " + ' '.join(res) + ")"
         except Exception as e:
             utils.displayWarning(config.displayWarnings, "in getting jobTitle", e)
             jobTitle = ""
@@ -192,7 +193,7 @@ class Linkedin:
                 jobCompany = jobCompanyLink.text.strip()
                 res = [blItem for blItem in config.blacklistCompanies if(blItem.lower() in jobCompany.lower())]
                 if (len(res)>0):
-                    jobCompany += "(blacklisted company: "+ ' '.join(res)+ ")"
+                    blacklistedParts += "(blacklisted company: "+ ' '.join(res)+ ")"
             else:
                 utils.displayWarning(config.displayWarnings, "in getting jobCompany")
 
@@ -228,7 +229,7 @@ class Linkedin:
                 utils.displayWarning("in getting jobDetail: ", e)
             jobDetail = ""
 
-        textToWrite = str(count) + " | " + jobTitle +  " | " + jobCompany +  " | " + jobLocation + " | " + jobWorkPlaceType + " | " + jobPostedDate + " | " + jobApplications
+        textToWrite = str(count) + " | " + jobTitle +  " | " + jobCompany +  " | " + jobLocation + " | " + jobWorkPlaceType + " | " + jobPostedDate + " | " + jobApplications + " | " + blacklistedParts
         return textToWrite
     
     def handleMultiplePages(self, countApplied, offerPage, jobProperties):
