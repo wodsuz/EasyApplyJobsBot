@@ -159,78 +159,120 @@ class Linkedin:
                     # exit the loop once the desired CV is found and selected
                     break  
 
+
     def isResumePage(self):
         upload_button_present = self.exists(self.driver, By.CSS_SELECTOR, "label.jobs-document-upload__upload-button")
         resume_container_present = self.exists(self.driver, By.CSS_SELECTOR, "div.jobs-document-upload-redesign-card__container")
         return upload_button_present and resume_container_present
 
+
     def getJobProperties(self, count):
         textToWrite = ""        
-        jobTitle = ""
+        jobTitle = self.getJobTitle()
         jobCompany = ""
-        jobLocation = ""
-        jobWorkPlaceType = ""
+        jobLocation = self.getJobLocation()
+        jobWorkPlaceType = self.getJobWorkPlaceType()
         jobPostedDate = ""
         jobApplications = ""
-        blacklistedParts = ""
+
+        # First, find the container that holds all the elements.
+        if self.exists(self.driver, By.CLASS_NAME, "job-details-jobs-unified-top-card__primary-description"):
+            primary_description_div = self.driver.find_element(By.CLASS_NAME, "job-details-jobs-unified-top-card__primary-description")
+            jobCompany = self.getJobCompany(primary_description_div)
+            jobPostedDate = self.getJobPostedDate(primary_description_div)
+            jobApplications = self.getJobApplications(primary_description_div)
+
+        textToWrite = str(count) + " | " + jobTitle +  " | " + jobCompany +  " | " + jobLocation + " | " + jobWorkPlaceType + " | " + jobPostedDate + " | " + jobApplications
+        return textToWrite
+    
+
+    def getJobTitle(self):
+        jobTitle = ""
 
         try:
             jobTitle = self.driver.find_element(By.XPATH, "//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
             res = [blItem for blItem in config.blackListTitles if (blItem.lower() in jobTitle.lower())]
             if (len(res) > 0):
-                blacklistedParts += "(blacklisted title: " + ' '.join(res) + ")"
+                jobTitle += " (blacklisted title: " + ' '.join(res) + ")"
         except Exception as e:
             utils.displayWarning(config.displayWarnings, "in getting jobTitle", e)
-            jobTitle = ""
 
-        # First, find the container that holds all the elements.
-        if self.exists(self.driver, By.CLASS_NAME, "job-details-jobs-unified-top-card__primary-description"):
-            primary_description_div = self.driver.find_element(By.CLASS_NAME, "job-details-jobs-unified-top-card__primary-description")
+        return jobTitle
+    
 
-            if self.exists(primary_description_div, By.CSS_SELECTOR, "a.app-aware-link"):
-                # Inside this container, find the company name link.
-                jobCompanyLink = primary_description_div.find_element(By.CSS_SELECTOR, "a.app-aware-link")
-                jobCompany = jobCompanyLink.text.strip()
-                is_blacklisted = any(blItem.strip().lower() == jobCompany.lower() for blItem in config.blacklistCompanies)
-                if is_blacklisted:
-                    blacklistedParts += "(blacklisted company)"
-            else:
-                utils.displayWarning(config.displayWarnings, "in getting jobCompany")
+    def getJobCompany(self, primary_description_div):
+        jobCompany = ""
 
-            if self.exists(primary_description_div, By.CSS_SELECTOR, "span.tvm__text--neutral"):
-                neutral_text_spans = primary_description_div.find_elements(By.CSS_SELECTOR, "span.tvm__text--neutral")
-                for span in neutral_text_spans:
-                    if "applicant" in span.text.lower():  # This will catch both 'applicant' and 'applicants'
-                        jobApplications = span.text.strip()
-                    if self.exists(span, By.TAG_NAME, 'span'):
-                        date_span = span.find_element(By.TAG_NAME, 'span')
-                        if date_span:
-                            jobPostedDate = date_span.text.strip()
-            else:
-                utils.displayWarning(config.displayWarnings, "in getting jobPostedDate and/or jobApplications")
-            
+        if self.exists(primary_description_div, By.CSS_SELECTOR, "a.app-aware-link"):
+            # Inside this container, find the company name link.
+            jobCompanyLink = primary_description_div.find_element(By.CSS_SELECTOR, "a.app-aware-link")
+            jobCompany = jobCompanyLink.text.strip()
+            is_blacklisted = any(blItem.strip().lower() == jobCompany.lower() for blItem in config.blacklistCompanies)
+            if is_blacklisted:
+                jobCompany += " (blacklisted company)"
+        else:
+            utils.displayWarning(config.displayWarnings, "in getting jobCompany")
+
+        return jobCompany
+    
+    
+    def getJobLocation(self):
+        jobLocation = ""
+
         try:
             jobLocation = self.driver.find_element(By.XPATH,"//span[contains(@class, 'bullet')]").get_attribute("innerHTML").strip()
         except Exception as e:
             utils.displayWarning(config.displayWarnings, "in getting jobLocation", e)
-            jobLocation = ""
+
+        return jobLocation
+    
+
+    def getJobWorkPlaceType(self):
+        jobWorkPlaceType = ""
 
         try:
             jobWorkPlaceType = self.driver.find_element(By.XPATH,"//span[contains(@class, 'workplace-type')]").get_attribute("innerHTML").strip()
         except Exception as e:
             utils.displayWarning(config.displayWarnings, "in getting jobWorkPlaceType", e)
-            jobWorkPlaceType = ""
+            
+        return jobWorkPlaceType
 
-        # TODO Use jobDetail later
+    # TODO Use jobDetail later
+    def getJobDetails(self):
+        jobDescription = ""
+
         try:
-            jobDetail = self.driver.find_element(By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div").text.replace("·", "|")
+            jobDescription = self.driver.find_element(By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div").text.replace("·", "|")
         except Exception as e:
             if (config.displayWarnings):
-                utils.displayWarning("in getting jobDetail: ", e)
-            jobDetail = ""
+                utils.displayWarning("in getting jobDescription: ", e)
 
-        textToWrite = str(count) + " | " + jobTitle +  " | " + jobCompany +  " | " + jobLocation + " | " + jobWorkPlaceType + " | " + jobPostedDate + " | " + jobApplications + " | " + blacklistedParts
-        return textToWrite
+        return jobDescription        
+
+
+    def getJobApplications(self, primary_description_div):
+        if self.exists(primary_description_div, By.CSS_SELECTOR, "span.tvm__text--neutral"):
+            neutral_text_spans = primary_description_div.find_elements(By.CSS_SELECTOR, "span.tvm__text--neutral")
+            for span in neutral_text_spans:
+                if "applicant" in span.text.lower():  # Catches 'applicant' and 'applicants'
+                    return span.text.strip()
+        else:
+            utils.displayWarning(config.displayWarnings, "in getting jobApplications")
+        return ""
+
+
+    def getJobPostedDate(self, primary_description_div):
+        if self.exists(primary_description_div, By.CSS_SELECTOR, "span.tvm__text--neutral"):
+            neutral_text_spans = primary_description_div.find_elements(By.CSS_SELECTOR, "span.tvm__text--neutral")
+            for span in neutral_text_spans:
+                if self.exists(span, By.TAG_NAME, 'span'):
+                    date_span = span.find_element(By.TAG_NAME, 'span')
+                    if date_span:
+                        return date_span.text.strip()
+        else:
+            utils.displayWarning(config.displayWarnings, "in getting jobPostedDate")
+        return ""
+
     
     def handleMultiplePages(self, countApplied, offerPage, jobProperties):
         utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR, "button[aria-label='Continue to next step']"))
