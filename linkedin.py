@@ -1,16 +1,19 @@
-import time, math
-import utils, constants, config, repository_wrapper
-from utils import prRed, prYellow, prGreen
+import math
+import time
+
+import config
+import constants
 import models
-
-from webdriver_manager.chrome import ChromeDriverManager
-
+import repository_wrapper
+import utils
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from utils import prGreen, prRed, prYellow
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 class Linkedin:
@@ -57,8 +60,7 @@ class Linkedin:
 
     def startApplying(self):
         try:
-            countApplied = 0
-            countJobs = 0
+            jobCounter = models.JobCounter()
 
             urlData = utils.LinkedinUrlGenerate().generateUrlLinks()
 
@@ -84,13 +86,13 @@ class Linkedin:
                         jobIds = self.getJobIdsFromSearchPage()
 
                         for jobID in jobIds:
-                            countApplied, countJobs = self.processJob(jobID, countApplied, countJobs)
+                            jobCounter = self.processJob(jobID=jobID, jobCounter=jobCounter)
                                     
                 except TimeoutException:
                     prRed("0 jobs found for: " + urlWords[0] + " in " + urlWords[1])
 
-                prYellow("Category: " + urlWords[0] + " in " + urlWords[1]+ " applied: " + str(countApplied) +
-                    " jobs out of " + str(countJobs) + ".")
+                prYellow("Category: " + urlWords[0] + " in " + urlWords[1]+ " applied: " + str(jobCounter.applied) +
+                    " jobs out of " + str(jobCounter.total) + ".")
 
         except Exception as e:
             utils.displayWarning(config.displayWarnings, "Unhandled exception in startApplying", e, True)
@@ -110,20 +112,23 @@ class Linkedin:
         return jobPage
 
 
-    def processJob(self, jobID, countApplied, countJobs):
+    def processJob(self, jobID: str, jobCounter: models.JobCounter):
         jobPage = self.goToJobPage(jobID)
-        countJobs += 1
+        jobCounter.total += 1
 
         jobProperties = self.getJobProperties()
         if self.isJobBlacklisted(jobProperties): 
-            lineToWrite = self.getLogTextForJobProperties(jobProperties, countJobs) + " | " + "* 🤬 Blacklisted Job, skipped!: " + str(jobPage)
+            jobCounter.skipped_blacklisted += 1
+            lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🤬 Blacklisted Job, skipped!: " + str(jobPage)
             self.displayWriteResults(lineToWrite)
 
         else:        
-            # TODO Test if countApplied is working
-            countApplied = self.handleJobPost(countApplied, jobPage, jobProperties, countJobs)
+            jobCounter = self.handleJobPost(
+                jobPage=jobPage, 
+                jobProperties=jobProperties, 
+                jobCounter=jobCounter)
 
-        return countApplied, countJobs
+        return jobCounter
     
     
     def getJobIdsFromSearchPage(self, jobsPerPage):
@@ -142,15 +147,15 @@ class Linkedin:
         return jobIds
     
 
-    def getLogTextForJobProperties(self, jobProperties, count):
-        textToWrite = str(count) + " | " + jobProperties.title +  " | " + jobProperties.company +  " | " + jobProperties.location + " | " + jobProperties.work_place_type + " | " + jobProperties.posted_date + " | " + jobProperties.applicants_at_time_of_applying
+    def getLogTextForJobProperties(self, jobProperties: models.Job, jobCounter: models.JobCounter):
+        textToWrite = str(jobCounter.total) + " | " + jobProperties.title +  " | " + jobProperties.company +  " | " + jobProperties.location + " | " + jobProperties.workplace_type + " | " + jobProperties.posted_date + " | " + jobProperties.applicants_at_time_of_applying
         if self.isJobBlacklisted(jobProperties):
             textToWrite = textToWrite + " | " + "blacklisted"
 
         return textToWrite
         
 
-    def handleJobPost(self, countApplied, jobPage, jobProperties, countJobs):
+    def handleJobPost(self, jobPage, jobProperties: models.Job, jobCounter: models.JobCounter):
         if self.exists(self.driver, By.CSS_SELECTOR, "button[aria-label*='Easy Apply']"):
             # button = self.driver.find_element(By.XPATH,
             #     '//button[contains(@class, "jobs-apply-button")]')
@@ -160,15 +165,16 @@ class Linkedin:
             
             # Now, the easy apply popup should be open
             if self.exists(self.driver, By.CSS_SELECTOR, "button[aria-label='Submit application']"):
-                countApplied = self.handleSubmitPage(countApplied, jobPage, jobProperties, countJobs)
+                jobCounter = self.handleSubmitPage(jobPage, jobProperties, jobCounter)
             elif self.exists(self.driver, By.CSS_SELECTOR, "button[aria-label='Continue to next step']"):
-                countApplied = self.handleMultiplePages(countApplied, jobPage, jobProperties, countJobs)
+                jobCounter = self.handleMultiplePages(jobPage, jobProperties, jobCounter)
 
         else:
-            lineToWrite = self.getLogTextForJobProperties(jobProperties, countJobs) + " | " + "* 🥳 Already applied! Job: " + str(jobPage)
+            jobCounter.skipped_already_applied += 1
+            lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥳 Already applied! Job: " + str(jobPage)
             self.displayWriteResults(lineToWrite)
 
-        return countApplied
+        return jobCounter
     
 
     def chooseResumeIfPossible(self):
@@ -206,8 +212,8 @@ class Linkedin:
         jobDescription = self.getJobDescription()
 
         # First, find the container that holds all the elements.
-        if self.exists(self.driver, By.CLASS_NAME, "job-details-jobs-unified-top-card__primary-description"):
-            primary_description_div = self.driver.find_element(By.CLASS_NAME, "job-details-jobs-unified-top-card__primary-description")
+        if self.exists(self.driver, By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div"):
+            primary_description_div = self.driver.find_element(By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div")
             jobCompany = self.getJobCompany(primary_description_div)
             jobPostedDate = self.getJobPostedDate(primary_description_div)
             jobApplications = self.getJobApplications(primary_description_div)
@@ -305,7 +311,7 @@ class Linkedin:
         return ""
     
 
-    def isJobBlacklisted(self, job):
+    def isJobBlacklisted(self, job: models.Job):
         is_blacklisted = any(blacklistedCompany.strip().lower() == job.company.lower() for blacklistedCompany in config.blacklistCompanies)
         if is_blacklisted:
             return True
@@ -317,29 +323,30 @@ class Linkedin:
         return False
 
     
-    def handleMultiplePages(self, countApplied, jobPage, jobProperties, countJobs):
+    def handleMultiplePages(self, jobPage, jobProperties: models.Job, jobCounter: models.JobCounter):
         utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR, "button[aria-label='Continue to next step']"))
 
         comPercentage = self.driver.find_element(By.XPATH,'html/body/div[3]/div/div/div[2]/div/div/span').text
         percentage = int(comPercentage[0:comPercentage.index("%")])
-        applyPages = math.ceil(100 / percentage) 
+        applyPages = math.ceil(100 / percentage) - 2
         try:
-            for _ in range(applyPages-2):
+            for _ in range(applyPages):
                 self.handleApplicationStep()
                 utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Continue to next step']"))
 
             self.handleApplicationStep()
             utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Review your application']"))
 
-            countApplied = self.handleSubmitPage(countApplied, jobPage, jobProperties, countJobs)
+            jobCounter = self.handleSubmitPage(jobPage, jobProperties, jobCounter)
         except:
+            jobCounter.skipped_unanswered_questions += 1
             # TODO Instead of except, output which questions need to be answered
-            lineToWrite = self.getLogTextForJobProperties(jobProperties, countJobs) + " | " + "* 🥵 " + str(applyPages) + " Pages, couldn't apply to this job! Extra info needed. Link: " + str(jobPage)
+            lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥵 " + str(applyPages) + " Pages, couldn't apply to this job! Extra info needed. Link: " + str(jobPage)
             self.displayWriteResults(lineToWrite)
 
-        return countApplied
+        return jobCounter
         
-    def handleSubmitPage(self, countApplied, jobPage, jobProperties, countJobs):
+    def handleSubmitPage(self, jobPage, jobProperties: models.Job, jobCounter: models.JobCounter):
         followCompany = self.driver.find_element(By.CSS_SELECTOR,"label[for='follow-company-checkbox']")
         # Use JavaScript to check the state of the checkbox
         is_followCompany_checked = self.driver.execute_script("""
@@ -354,10 +361,11 @@ class Linkedin:
             utils.interact(lambda : self.click_button(followCompany))
 
         utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Submit application']"))
-        lineToWrite = self.getLogTextForJobProperties(jobProperties, countJobs) + " | " + "* 🥳 Just Applied to this job: " + str(jobPage)
+        lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter.total) + " | " + "* 🥳 Just Applied to this job: " + str(jobPage)
         self.displayWriteResults(lineToWrite)
-        countApplied += 1
-        return countApplied
+
+        jobCounter.applied += 1
+        return jobCounter
 
     def displayWriteResults(self, lineToWrite: str):
         try:
