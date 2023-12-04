@@ -10,8 +10,8 @@ def main():
         # Copy the current config file to config.py
         subprocess.run(["cp", "-f", str(config_file), "config.py"], check=True)
 
-        # Run the LinkedIn application
-        subprocess.run(["python3", "linkedin.py"], check=True)
+        # Run the LinkedIn Easy Apply bot
+        subprocess.run(["python3", "runner.py"], check=True)
 
         # Wait for a specified number of seconds or implement a random wait time
         sleep_time = random.uniform(constants.botSleepInBetweenSearchesBottom, constants.botSleepInBetweenSearchesTop)

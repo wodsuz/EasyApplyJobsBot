@@ -1,6 +1,7 @@
 import time, math
 import utils, constants, config, repository_wrapper
 from utils import prRed, prYellow, prGreen
+import models
 
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -10,6 +11,7 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
 
 class Linkedin:
     def __init__(self):
@@ -25,11 +27,10 @@ class Linkedin:
         self.wait = WebDriverWait(self.driver, 15)
 
         # Navigate to the LinkedIn home page to check if we're already logged in
-        self.driver.get("https://www.linkedin.com")
-        utils.sleepInBetweenActions(3, 7)
+        self.goToUrl("https://www.linkedin.com")
 
         if not self.checkIfLoggedIn():
-            self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
+            self.goToUrl("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
 
             prYellow("🔄 Trying to log in linkedin...")
             try:    
@@ -45,13 +46,15 @@ class Linkedin:
         
         repository_wrapper.init()
     
+
     def checkIfLoggedIn(self):
         if self.exists(self.driver, By.CSS_SELECTOR, "img.global-nav__me-photo.evi-image.ember-view"):
             prGreen("✅ Logged in Linkedin.")
             return True
         else:
             return False
-        
+
+
     def startApplying(self):
         try:
             countApplied = 0
@@ -60,8 +63,7 @@ class Linkedin:
             urlData = utils.LinkedinUrlGenerate().generateUrlLinks()
 
             for url in urlData:        
-                self.driver.get(url)
-                utils.sleepInBetweenActions()
+                self.goToUrl(url)
 
                 urlWords = utils.urlToKeywords(url)
                 
@@ -77,41 +79,17 @@ class Linkedin:
                     for searchResultPage in range(totalSearchResultPages):
                         currentSearchResultPageJobs = constants.jobsPerPage * searchResultPage
                         url = url + "&start=" + str(currentSearchResultPageJobs)
-                        utils.interact(lambda : self.driver.get(url))
+                        self.goToUrl(url)
 
-                        offersPerPage = self.driver.find_elements(By.XPATH,'//li[@data-occludable-job-id]')
-                        offerIds = []
+                        jobIds = self.getJobIdsFromSearchPage()
 
-                        utils.sleepInBetweenActions()
-
-                        for offer in offersPerPage:
-                            if self.exists(offer, By.XPATH, ".//*[contains(text(), 'Applied')]"):
-                                if config.displayWarnings:
-                                    prYellow("⚠️ Not adding a job id as I already applied to this job")
-                                continue
-                            
-                            offerId = offer.get_attribute("data-occludable-job-id")
-                            offerIds.append(int(offerId.split(":")[-1]))
-
-                        for jobID in offerIds:
-                            offerPage = 'https://www.linkedin.com/jobs/view/' + str(jobID)
-                            utils.interact(lambda : self.driver.get(offerPage))
-
-                            countJobs += 1
-
-                            jobProperties = self.getJobProperties(countJobs)
-                            if "blacklisted" in jobProperties: 
-                                lineToWrite = jobProperties + " | " + "* 🤬 Blacklisted Job, skipped!: " + str(offerPage)
-                                self.displayWriteResults(lineToWrite)
-                                continue
-                            
-                            # TODO Test if countApplied is working
-                            countApplied = self.handleJobPost(countApplied, offerPage, jobProperties)
+                        for jobID in jobIds:
+                            countApplied, countJobs = self.processJob(jobID, countApplied, countJobs)
                                     
                 except TimeoutException:
                     prRed("0 jobs found for: " + urlWords[0] + " in " + urlWords[1])
 
-                prYellow("Category: " + urlWords[0] + "," + urlWords[1]+ " applied: " + str(countApplied) +
+                prYellow("Category: " + urlWords[0] + " in " + urlWords[1]+ " applied: " + str(countApplied) +
                     " jobs out of " + str(countJobs) + ".")
 
         except Exception as e:
@@ -119,9 +97,60 @@ class Linkedin:
             self.driver.save_screenshot("unhandled_exception.png")
             with open("page_source_at_unhandled_exception.html", "w") as file:
                 file.write(self.driver.page_source)
+
+    
+    def goToUrl(self, url):
+        self.driver.get(url)
+        utils.sleepInBetweenActions()
         
 
-    def handleJobPost(self, countApplied, offerPage, jobProperties):
+    def goToJobPage(self, jobID):
+        jobPage = 'https://www.linkedin.com/jobs/view/' + str(jobID)
+        self.goToUrl(jobPage)
+        return jobPage
+
+
+    def processJob(self, jobID, countApplied, countJobs):
+        jobPage = self.goToJobPage(jobID)
+        countJobs += 1
+
+        jobProperties = self.getJobProperties()
+        if self.isJobBlacklisted(jobProperties): 
+            lineToWrite = self.getLogTextForJobProperties(jobProperties, countJobs) + " | " + "* 🤬 Blacklisted Job, skipped!: " + str(jobPage)
+            self.displayWriteResults(lineToWrite)
+
+        else:        
+            # TODO Test if countApplied is working
+            countApplied = self.handleJobPost(countApplied, jobPage, jobProperties, countJobs)
+
+        return countApplied, countJobs
+    
+    
+    def getJobIdsFromSearchPage(self, jobsPerPage):
+        jobsPerPage = self.driver.find_elements(By.XPATH,'//li[@data-occludable-job-id]')
+        jobIds = []
+
+        for jobPage in jobsPerPage:
+            if self.exists(jobPage, By.XPATH, ".//*[contains(text(), 'Applied')]"):
+                if config.displayWarnings:
+                    prYellow("⚠️ Not adding a job id as I already applied to this job")
+                continue
+            
+            jobId = jobPage.get_attribute("data-occludable-job-id")
+            jobIds.append(int(jobId.split(":")[-1]))
+
+        return jobIds
+    
+
+    def getLogTextForJobProperties(self, jobProperties, count):
+        textToWrite = str(count) + " | " + jobProperties.title +  " | " + jobProperties.company +  " | " + jobProperties.location + " | " + jobProperties.work_place_type + " | " + jobProperties.posted_date + " | " + jobProperties.applicants_at_time_of_applying
+        if self.isJobBlacklisted(jobProperties):
+            textToWrite = textToWrite + " | " + "blacklisted"
+
+        return textToWrite
+        
+
+    def handleJobPost(self, countApplied, jobPage, jobProperties, countJobs):
         if self.exists(self.driver, By.CSS_SELECTOR, "button[aria-label*='Easy Apply']"):
             # button = self.driver.find_element(By.XPATH,
             #     '//button[contains(@class, "jobs-apply-button")]')
@@ -131,15 +160,16 @@ class Linkedin:
             
             # Now, the easy apply popup should be open
             if self.exists(self.driver, By.CSS_SELECTOR, "button[aria-label='Submit application']"):
-                countApplied = self.handleSubmitPage(countApplied, offerPage, jobProperties)
+                countApplied = self.handleSubmitPage(countApplied, jobPage, jobProperties, countJobs)
             elif self.exists(self.driver, By.CSS_SELECTOR, "button[aria-label='Continue to next step']"):
-                countApplied = self.handleMultiplePages(countApplied, offerPage, jobProperties)
+                countApplied = self.handleMultiplePages(countApplied, jobPage, jobProperties, countJobs)
 
         else:
-            lineToWrite = jobProperties + " | " + "* 🥳 Already applied! Job: " + str(offerPage)
+            lineToWrite = self.getLogTextForJobProperties(jobProperties, countJobs) + " | " + "* 🥳 Already applied! Job: " + str(jobPage)
             self.displayWriteResults(lineToWrite)
 
         return countApplied
+    
 
     def chooseResumeIfPossible(self):
         if self.isResumePage():
@@ -166,14 +196,14 @@ class Linkedin:
         return upload_button_present and resume_container_present
 
 
-    def getJobProperties(self, count):
-        textToWrite = ""        
+    def getJobProperties(self): 
         jobTitle = self.getJobTitle()
         jobCompany = ""
         jobLocation = self.getJobLocation()
         jobWorkPlaceType = self.getJobWorkPlaceType()
         jobPostedDate = ""
         jobApplications = ""
+        jobDescription = self.getJobDescription()
 
         # First, find the container that holds all the elements.
         if self.exists(self.driver, By.CLASS_NAME, "job-details-jobs-unified-top-card__primary-description"):
@@ -182,8 +212,15 @@ class Linkedin:
             jobPostedDate = self.getJobPostedDate(primary_description_div)
             jobApplications = self.getJobApplications(primary_description_div)
 
-        textToWrite = str(count) + " | " + jobTitle +  " | " + jobCompany +  " | " + jobLocation + " | " + jobWorkPlaceType + " | " + jobPostedDate + " | " + jobApplications
-        return textToWrite
+        return models.Job(
+            title=jobTitle,
+            company=jobCompany,
+            location=jobLocation,
+            description=jobDescription,
+            workplace_type=jobWorkPlaceType,
+            posted_date=jobPostedDate,
+            applicants_at_time_of_applying=jobApplications,
+        )
     
 
     def getJobTitle(self):
@@ -191,9 +228,6 @@ class Linkedin:
 
         try:
             jobTitle = self.driver.find_element(By.XPATH, "//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
-            res = [blItem for blItem in config.blackListTitles if (blItem.lower() in jobTitle.lower())]
-            if (len(res) > 0):
-                jobTitle += " (blacklisted title: " + ' '.join(res) + ")"
         except Exception as e:
             utils.displayWarning(config.displayWarnings, "in getting jobTitle", e)
 
@@ -207,9 +241,6 @@ class Linkedin:
             # Inside this container, find the company name link.
             jobCompanyLink = primary_description_div.find_element(By.CSS_SELECTOR, "a.app-aware-link")
             jobCompany = jobCompanyLink.text.strip()
-            is_blacklisted = any(blItem.strip().lower() == jobCompany.lower() for blItem in config.blacklistCompanies)
-            if is_blacklisted:
-                jobCompany += " (blacklisted company)"
         else:
             utils.displayWarning(config.displayWarnings, "in getting jobCompany")
 
@@ -238,7 +269,7 @@ class Linkedin:
         return jobWorkPlaceType
 
     # TODO Use jobDetail later
-    def getJobDetails(self):
+    def getJobDescription(self):
         jobDescription = ""
 
         try:
@@ -272,9 +303,21 @@ class Linkedin:
         else:
             utils.displayWarning(config.displayWarnings, "in getting jobPostedDate")
         return ""
+    
+
+    def isJobBlacklisted(self, job):
+        is_blacklisted = any(blacklistedCompany.strip().lower() == job.company.lower() for blacklistedCompany in config.blacklistCompanies)
+        if is_blacklisted:
+            return True
+
+        is_blacklisted = any(blacklistedTitle.strip().lower() in job.title.lower() for blacklistedTitle in config.blackListTitles)
+        if is_blacklisted:
+            return True
+
+        return False
 
     
-    def handleMultiplePages(self, countApplied, offerPage, jobProperties):
+    def handleMultiplePages(self, countApplied, jobPage, jobProperties, countJobs):
         utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR, "button[aria-label='Continue to next step']"))
 
         comPercentage = self.driver.find_element(By.XPATH,'html/body/div[3]/div/div/div[2]/div/div/span').text
@@ -288,14 +331,15 @@ class Linkedin:
             self.handleApplicationStep()
             utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Review your application']"))
 
-            countApplied = self.handleSubmitPage(countApplied, offerPage, jobProperties)
+            countApplied = self.handleSubmitPage(countApplied, jobPage, jobProperties, countJobs)
         except:
             # TODO Instead of except, output which questions need to be answered
-            self.displayWriteResults(jobProperties + " | " + "* 🥵 " + str(applyPages) + " Pages, couldn't apply to this job! Extra info needed. Link: " + str(offerPage))
+            lineToWrite = self.getLogTextForJobProperties(jobProperties, countJobs) + " | " + "* 🥵 " + str(applyPages) + " Pages, couldn't apply to this job! Extra info needed. Link: " + str(jobPage)
+            self.displayWriteResults(lineToWrite)
 
         return countApplied
         
-    def handleSubmitPage(self, countApplied, offerPage, jobProperties):
+    def handleSubmitPage(self, countApplied, jobPage, jobProperties, countJobs):
         followCompany = self.driver.find_element(By.CSS_SELECTOR,"label[for='follow-company-checkbox']")
         # Use JavaScript to check the state of the checkbox
         is_followCompany_checked = self.driver.execute_script("""
@@ -310,7 +354,8 @@ class Linkedin:
             utils.interact(lambda : self.click_button(followCompany))
 
         utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Submit application']"))
-        self.displayWriteResults(jobProperties + " | " + "* 🥳 Just Applied to this job: " + str(offerPage))
+        lineToWrite = self.getLogTextForJobProperties(jobProperties, countJobs) + " | " + "* 🥳 Just Applied to this job: " + str(jobPage)
+        self.displayWriteResults(lineToWrite)
         countApplied += 1
         return countApplied
 
@@ -395,6 +440,7 @@ class Linkedin:
             if config.displayWarnings:
                 prYellow(f"The input for '{questionLabel}' has the following value: {inputValue}")
 
+
     def handleRadioInput(self, group, questionLabel, by, value):
         # Check if it's a radio selector question
         radioInputs = group.find_elements(by, value)
@@ -407,14 +453,17 @@ class Linkedin:
             #     prYellow(f"Selecting option: {label}")
             #     radio_input.click()  # Select the radio button if it's the desired option then sleep
 
+
     def logUnhandledQuestion(self, questionLabel):
         # Log or print the unhandled question
         prRed(f"Unhandled question: {questionLabel}")
+
 
     def clickIfExists(self, by, selector):
         if self.exists(self.driver, by, selector):
             clickableElement = self.driver.find_element(by, selector)
             self.click_button(clickableElement)
+
 
     def click_button(self, button):
         try:
@@ -422,9 +471,3 @@ class Linkedin:
         except Exception as e:
             # If click fails, use JavaScript to click on the button
             self.driver.execute_script("arguments[0].click();", button)
-
-
-start = time.time()
-Linkedin().startApplying()
-end = time.time()
-prYellow("---Took: " + str(round((time.time() - start)/60)) + " minute(s).")
