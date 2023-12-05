@@ -362,7 +362,7 @@ class Linkedin:
             utils.interact(lambda : self.click_button(followCompany))
 
         utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Submit application']"))
-        lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter.total) + " | " + "* 🥳 Just Applied to this job: " + str(jobPage)
+        lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥳 Just Applied to this job: " + str(jobPage)
         self.displayWriteResults(lineToWrite)
 
         jobCounter.applied += 1
