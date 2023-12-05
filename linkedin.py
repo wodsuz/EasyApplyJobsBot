@@ -131,7 +131,7 @@ class Linkedin:
         return jobCounter
     
     
-    def getJobIdsFromSearchPage(self, jobsPerPage):
+    def getJobIdsFromSearchPage(self):
         jobsPerPage = self.driver.find_elements(By.XPATH,'//li[@data-occludable-job-id]')
         jobIds = []
 

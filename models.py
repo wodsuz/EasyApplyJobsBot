@@ -18,4 +18,4 @@ class JobCounter:
     applied = 0
     skipped_blacklisted = 0
     skipped_already_applied = 0
-    skipped_already_unanswered_questions = 0
+    skipped_unanswered_questions = 0
