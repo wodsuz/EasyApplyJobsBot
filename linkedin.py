@@ -115,6 +115,7 @@ class Linkedin:
     def processJob(self, jobID: str, jobCounter: models.JobCounter):
         jobPage = self.goToJobPage(jobID)
         jobCounter.total += 1
+        utils.sleepInBetweenBatches(jobCounter.total)
 
         jobProperties = self.getJobProperties()
         if self.isJobBlacklisted(jobProperties): 
