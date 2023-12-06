@@ -120,7 +120,7 @@ class Linkedin:
         jobProperties = self.getJobProperties()
         if self.isJobBlacklisted(jobProperties): 
             jobCounter.skipped_blacklisted += 1
-            lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🤬 Blacklisted Job, skipped!: " + str(jobPage)
+            lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🤬  Blacklisted Job, skipped!: " + str(jobPage)
             self.displayWriteResults(lineToWrite)
 
         else:        
@@ -139,7 +139,7 @@ class Linkedin:
         for jobPage in jobsPerPage:
             if self.exists(jobPage, By.XPATH, ".//*[contains(text(), 'Applied')]"):
                 if config.displayWarnings:
-                    prYellow("⚠️ Not adding a job id as I already applied to this job")
+                    prYellow("⚠️  Not adding a job id as I already applied to this job")
                 continue
             
             jobId = jobPage.get_attribute("data-occludable-job-id")
@@ -342,7 +342,7 @@ class Linkedin:
         except:
             jobCounter.skipped_unanswered_questions += 1
             # TODO Instead of except, output which questions need to be answered
-            lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥵 " + str(applyPages) + " Pages, couldn't apply to this job! Extra info needed. Link: " + str(jobPage)
+            lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥵  " + str(applyPages) + " Pages, couldn't apply to this job! Extra info needed. Link: " + str(jobPage)
             self.displayWriteResults(lineToWrite)
 
         return jobCounter
@@ -362,7 +362,7 @@ class Linkedin:
             utils.interact(lambda : self.click_button(followCompany))
 
         utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Submit application']"))
-        lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥳 Just Applied to this job: " + str(jobPage)
+        lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥳  Just Applied to this job: " + str(jobPage)
         self.displayWriteResults(lineToWrite)
 
         jobCounter.applied += 1
