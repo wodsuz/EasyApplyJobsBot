@@ -5,6 +5,8 @@ password = "YourLinkedinPassword"
 
 # Optional! run browser in headless mode, no browser screen will be shown it will work in background.
 headless = False
+# Chrome driver installed path. Leave empty if you want to install Chrome when you run the bot
+chromeDriverPath = ""
 # If you left above credentials fields empty. For Chrome enter profile dir to run the bot to prevent logging in your account each time
 # get Chrome profile path by typing following url: chrome://version/
 chromeProfilePath = r""
