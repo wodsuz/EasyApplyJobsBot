@@ -17,7 +17,7 @@ NOTE: If you need help setting up or running the bot locally [join our Discord c
    - In the project directory, create 'configs' directory
    - Add your configuration
       - Copy the configs.py template into the 'configs' directory
-      - Enter your linkedin credentials on line 8 and 9 of your_config.py file
+      - Enter your linkedin credentials on the beginning of your_config.py file
       - Add your search preferences. Checkout examples: [CTO in Croatia](https://gist.github.com/GabrielGircenko/fa5cd2200c291096e5fb138677892352) & [Data Scientist in Europe and North America](https://gist.github.com/GabrielGircenko/ec85ae125812b5052da2ed6ea6cdec85)
       - Repeat for various searches
 - Install Docker
@@ -31,8 +31,7 @@ NOTE: If you need help setting up or running the bot locally [join our Discord c
 - Install dependencies with `pip3 install -r requirements.yaml`
 - You have 2 choices
    - SIMPLE: One config.py 
-      - Enter your linkedin credentials on line 8 and 9 of config.py file
-      - Enter your linkedin credentials line 11 and 12 of config.py
+      - Enter your linkedin credentials on the beginning of config.py file
       - Modify config.py according to your preferences. Checkout examples: [CTO in Croatia](https://gist.github.com/GabrielGircenko/fa5cd2200c291096e5fb138677892352) & [Data Scientist in Europe and North America](https://gist.github.com/GabrielGircenko/ec85ae125812b5052da2ed6ea6cdec85)
       - Run `python3 runner.py`
    - MULTIPLE SEARCHES: Multiple configurations
