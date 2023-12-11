@@ -21,9 +21,9 @@ class test_skipping_jobs(unittest.TestCase):
         regular_job = Job(company='Google', title='Data Engineer')
 
         # Checking if the job is blacklisted
-        isJobBlacklistedByCompany = self.processor.isJobBlacklisted(blacklisted_company_job)
-        isJobBlacklistedByTitle = self.processor.isJobBlacklisted(blacklisted_title_job)
-        isJobNotBlacklisted = self.processor.isJobBlacklisted(regular_job)
+        isJobBlacklistedByCompany = self.processor.isJobBlacklisted(company=blacklisted_company_job.company, title=blacklisted_company_job.title)
+        isJobBlacklistedByTitle = self.processor.isJobBlacklisted(company=blacklisted_title_job, title=blacklisted_title_job.title)
+        isJobNotBlacklisted = self.processor.isJobBlacklisted(company=regular_job, title=regular_job.title)
 
         # Asserting the results
         self.assertTrue(isJobBlacklistedByCompany)
@@ -40,7 +40,7 @@ class test_skipping_jobs(unittest.TestCase):
         job_id_should_be_blacklisted_company = "3772904478" 
 
         # Checking if the job is blacklisted
-        isJobBlacklistedByCompany = self.processor.isJobBlacklisted(job_should_be_blacklisted_company)
+        isJobBlacklistedByCompany = self.processor.isJobBlacklisted(company=job_should_be_blacklisted_company, title=job_should_be_blacklisted_company.title)
 
         # Asserting the blacklisting results
         self.assertTrue(isJobBlacklistedByCompany)

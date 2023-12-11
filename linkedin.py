@@ -83,10 +83,11 @@ class Linkedin:
                         url = url + "&start=" + str(currentSearchResultPageJobs)
                         self.goToUrl(url)
 
-                        jobIds = self.getJobIdsFromSearchPage()
+                        jobsForVerification = self.getJobIdsFromSearchPage()
+                        verifiedJobs = repository_wrapper.verify_jobs(jobsForVerification)
 
-                        for jobID in jobIds:
-                            jobCounter = self.processJob(jobID=jobID, jobCounter=jobCounter)
+                        for job in verifiedJobs:
+                            jobCounter = self.processJob(jobID=job.id, jobCounter=jobCounter)
                                     
                 except TimeoutException:
                     prRed("0 jobs found for: " + urlWords[0] + " in " + urlWords[1])
@@ -95,7 +96,7 @@ class Linkedin:
                     " jobs out of " + str(jobCounter.total) + ".")
 
         except Exception as e:
-            utils.displayWarning(config.displayWarnings, "Unhandled exception in startApplying", e, True)
+            utils.logDebugMessage("Unhandled exception in startApplying", utils.MessageTypes.ERROR, e, True)
             self.driver.save_screenshot("unhandled_exception.png")
             with open("page_source_at_unhandled_exception.html", "w") as file:
                 file.write(self.driver.page_source)
@@ -118,7 +119,7 @@ class Linkedin:
         utils.sleepInBetweenBatches(jobCounter.total)
 
         jobProperties = self.getJobProperties()
-        if self.isJobBlacklisted(jobProperties): 
+        if self.isJobBlacklisted(company=jobProperties.company, title=jobProperties.title): 
             jobCounter.skipped_blacklisted += 1
             lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🤬  Blacklisted Job, skipped!: " + str(jobPage)
             self.displayWriteResults(lineToWrite)
@@ -133,24 +134,43 @@ class Linkedin:
     
     
     def getJobIdsFromSearchPage(self):
-        jobsPerPage = self.driver.find_elements(By.XPATH,'//li[@data-occludable-job-id]')
-        jobIds = []
+        jobsListItems = self.driver.find_elements(By.XPATH,'//li[@data-occludable-job-id]')
+        jobsForVerification = []
 
-        for jobPage in jobsPerPage:
-            if self.exists(jobPage, By.XPATH, ".//*[contains(text(), 'Applied')]"):
+        for jobItem in jobsListItems:
+            if self.exists(jobItem, By.XPATH, ".//*[contains(text(), 'Applied')]"):
                 if config.displayWarnings:
                     prYellow("⚠️  Not adding a job id as I already applied to this job")
                 continue
-            
-            jobId = jobPage.get_attribute("data-occludable-job-id")
-            jobIds.append(int(jobId.split(":")[-1]))
 
-        return jobIds
+            companyNameSpan = jobItem.find_elements(By.XPATH, ".//span[contains(@class, 'job-card-container__primary-description')]")
+            if len(companyNameSpan) > 0:
+                companyName = companyNameSpan[0].text.strip()
+                if self.isTitleBlacklisted(companyName):
+                    if config.displayWarnings:
+                        prYellow("⚠️  Not adding a job id as the company name is blacklisted")
+                    continue
+
+            jobTitleAnchor = jobItem.find_elements(By.XPATH, ".//a[contains(@class, 'job-card-container__link job-card-list__title')]")
+            if len(jobTitleAnchor) > 0:
+                jobTitle = jobTitleAnchor[0].text.strip()
+                if self.isTitleBlacklisted(jobTitle):
+                    if config.displayWarnings:
+                        prYellow("⚠️  Not adding a job id as the job title is blacklisted")
+                    continue
+            
+            jobId = jobItem.get_attribute("data-occludable-job-id")
+            jobsForVerification.append(models.JobForVerification(
+                id=int(jobId.split(":")[-1]),
+                title=jobTitle,
+                company=companyName)
+
+        return jobsForVerification
     
 
     def getLogTextForJobProperties(self, jobProperties: models.Job, jobCounter: models.JobCounter):
         textToWrite = str(jobCounter.total) + " | " + jobProperties.title +  " | " + jobProperties.company +  " | " + jobProperties.location + " | " + jobProperties.workplace_type + " | " + jobProperties.posted_date + " | " + jobProperties.applicants_at_time_of_applying
-        if self.isJobBlacklisted(jobProperties):
+        if self.isJobBlacklisted(company=jobProperties.company, title=jobProperties.title):
             textToWrite = textToWrite + " | " + "blacklisted"
 
         return textToWrite
@@ -312,16 +332,24 @@ class Linkedin:
         return ""
     
 
-    def isJobBlacklisted(self, job: models.Job):
-        is_blacklisted = any(blacklistedCompany.strip().lower() == job.company.lower() for blacklistedCompany in config.blacklistCompanies)
+    def isJobBlacklisted(self, company: str, title: str):
+        is_blacklisted = self.isCompanyBlacklisted(company)
         if is_blacklisted:
             return True
 
-        is_blacklisted = any(blacklistedTitle.strip().lower() in job.title.lower() for blacklistedTitle in config.blackListTitles)
+        is_blacklisted = self.isTitleBlacklisted(title)
         if is_blacklisted:
             return True
 
         return False
+    
+
+    def isCompanyBlacklisted(self, company: str):
+        return any(blacklistedCompany.strip().lower() == company.lower() for blacklistedCompany in config.blacklistCompanies)
+    
+
+    def isTitleBlacklisted(self, title: str):
+        return any(blacklistedTitle.strip().lower() in title.lower() for blacklistedTitle in config.blackListTitles)
 
     
     def handleMultiplePages(self, jobPage, jobProperties: models.Job, jobCounter: models.JobCounter):

@@ -1,7 +1,15 @@
-import math, constants, config, time, random, os, traceback 
+import math
+import os
+import random
+import time
+import traceback
+from enum import Enum
 from typing import List
 
+import config
+import constants
 from selenium import webdriver
+
 
 def chromeBrowserOptions():
     options = webdriver.ChromeOptions()
@@ -41,9 +49,27 @@ def prYellow(prt):
 def prBlue(prt):
     print(f"\033[94m{prt}\033[00m")
 
-def displayWarning(shouldDisplay, message, exception=Exception(), displayTraceback = False):
-    if (shouldDisplay):
-        prYellow(f"⚠️ Warning ⚠️ {message}: {str(exception)[0:100]}")
+class MessageTypes(Enum):
+    INFO = 1
+    WARNING = 2
+    ERROR = 3
+    SUCCESS = 4
+
+def printInfoMes(bot:str):
+    prYellow("ℹ️ " +bot+ " is starting soon... ")
+
+def logDebugMessage(message, messageType=MessageTypes.INFO, exception=Exception(), displayTraceback = False):
+    if (config.displayWarnings):
+        match messageType:
+            case MessageTypes.INFO:
+                prBlue(f"ℹ️ {message}")
+            case MessageTypes.WARNING:
+                prYellow(f"⚠️ Warning ⚠️ {message}: {str(exception)[0:100]}")
+            case MessageTypes.ERROR:
+                prRed(f"❌ Error ❌ {message}: {str(exception)[0:100]}")
+            case MessageTypes.SUCCESS:
+                prGreen(f"✅ {message}")
+
         if (displayTraceback):
             traceback.print_exc()
 
@@ -133,9 +159,6 @@ def sleepInBetweenActions(bottom: int = constants.botSleepInBetweenActionsBottom
 def sleepInBetweenBatches(currentBatch: int, bottom: int = constants.botSleepInBetweenBatchesBottom, top: int = constants.botSleepInBetweenBatchesTop):
     if (currentBatch % constants.batchSize == 0):
         time.sleep(random.uniform(bottom, top))
-
-def printInfoMes(bot:str):
-    prYellow("ℹ️ " +bot+ " is starting soon... ")
 
 class LinkedinUrlGenerate:
     def generateUrlLinks(self):

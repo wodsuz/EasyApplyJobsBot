@@ -13,6 +13,14 @@ class Job:
 
 
 @dataclasses.dataclass
+class JobForVerification:
+    id: int
+    title: str
+    company: str
+
+
+
+@dataclasses.dataclass
 class JobCounter:
     total = 0
     applied = 0
