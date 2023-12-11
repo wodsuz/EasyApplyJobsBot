@@ -148,7 +148,7 @@ class Linkedin:
                 companyName = companyNameSpan[0].text.strip()
                 if self.isCompanyBlacklisted(companyName):
                     if config.displayWarnings:
-                        prYellow(f"⚠️  Not adding a job as the company name '{companyName}' is blacklisted")
+                        prYellow(f"⚠️  Not adding a job as the company '{companyName}' is blacklisted")
                     continue
 
             jobTitleAnchor = jobItem.find_elements(By.XPATH, ".//a[contains(@class, 'job-card-container__link job-card-list__title')]")
@@ -156,7 +156,7 @@ class Linkedin:
                 jobTitle = jobTitleAnchor[0].text.strip()
                 if self.isTitleBlacklisted(jobTitle):
                     if config.displayWarnings:
-                        prYellow(f"⚠️  Not adding a job as the job title '{jobTitle}' is blacklisted")
+                        prYellow(f"⚠️  Not adding a job as the title '{jobTitle}' is blacklisted")
                     continue
             
             jobId = jobItem.get_attribute("data-occludable-job-id")
@@ -254,7 +254,8 @@ class Linkedin:
         jobTitle = ""
 
         try:
-            jobTitle = self.driver.find_element(By.XPATH, "//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
+            jobTitleElement = self.driver.find_element(By.XPATH, "//h1[contains(@class, 'job-title')]")
+            jobTitle = jobTitleElement.text.strip()
         except Exception as e:
             utils.displayWarning(config.displayWarnings, "in getting jobTitle", e)
 
