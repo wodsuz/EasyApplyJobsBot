@@ -140,15 +140,15 @@ class Linkedin:
         for jobItem in jobsListItems:
             if self.exists(jobItem, By.XPATH, ".//*[contains(text(), 'Applied')]"):
                 if config.displayWarnings:
-                    prYellow("⚠️  Not adding a job id as I already applied to this job")
+                    prYellow("⚠️  Not adding a job as I already applied to this job")
                 continue
 
             companyNameSpan = jobItem.find_elements(By.XPATH, ".//span[contains(@class, 'job-card-container__primary-description')]")
             if len(companyNameSpan) > 0:
                 companyName = companyNameSpan[0].text.strip()
-                if self.isTitleBlacklisted(companyName):
+                if self.isCompanyBlacklisted(companyName):
                     if config.displayWarnings:
-                        prYellow("⚠️  Not adding a job id as the company name is blacklisted")
+                        prYellow(f"⚠️  Not adding a job as the company name '{companyName}' is blacklisted")
                     continue
 
             jobTitleAnchor = jobItem.find_elements(By.XPATH, ".//a[contains(@class, 'job-card-container__link job-card-list__title')]")
@@ -156,14 +156,14 @@ class Linkedin:
                 jobTitle = jobTitleAnchor[0].text.strip()
                 if self.isTitleBlacklisted(jobTitle):
                     if config.displayWarnings:
-                        prYellow("⚠️  Not adding a job id as the job title is blacklisted")
+                        prYellow(f"⚠️  Not adding a job as the job title '{jobTitle}' is blacklisted")
                     continue
             
             jobId = jobItem.get_attribute("data-occludable-job-id")
             jobsForVerification.append(models.JobForVerification(
                 id=int(jobId.split(":")[-1]),
                 title=jobTitle,
-                company=companyName)
+                company=companyName))
 
         return jobsForVerification
     

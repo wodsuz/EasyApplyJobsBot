@@ -319,7 +319,7 @@ class LinkedinUrlGenerate:
         
     def salary(self):
         salary = ""
-        match config.salary[0]:
+        match config.salary:
             case "$40,000+":
                 salary = "f_SB2=1&"
             case "$60,000+":
