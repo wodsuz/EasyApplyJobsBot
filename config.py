@@ -15,10 +15,7 @@ firefoxProfileRootDir = r""
 # get Chrome profile path by typing following url: chrome://version/
 chromeProfilePath = r""
 
-# These settings are for running Linkedin job apply bot
-# Paaste your easyApply email and key below
-easyApplyEmail = ""
-easyApplyKey = ""
+# These settings are for running Linkedin job apply bot.
 # location you want to search the jobs - ex : ["Poland", "Singapore", "New York City Metropolitan Area", "Monroe County"]
 # continent locations:["Europe", "Asia", "Australia", "NorthAmerica", "SouthAmerica", "Africa", "Australia"]
 location = ["NorthAmerica"]
