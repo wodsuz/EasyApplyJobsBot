@@ -9,6 +9,10 @@ Easy Apply Jobs Bot Pro version running on Linux Firefox Browser
 
 https://github.com/wodsuz/EasyApplyJobsBot/assets/34207598/0de30c7e-a8ab-4fc8-8609-f401e13accca
 
+Easy Apply Jobs Bot Pro version running on Linux Chrome Browser
+
+https://github.com/wodsuz/EasyApplyJobsBot/assets/34207598/93a84271-8edd-4b6b-987d-513e5d0d71c5
+
 - Two options are avalible to use this bot, either with entering password or without fully secure no credentials are stored way.
 - Export all results and offers as txt and csv (PRO FEATURE) file
 - Export unanswered questions to txt file, enter answers there, next time bot will use these values
