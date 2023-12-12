@@ -13,6 +13,8 @@ A python bot to apply all Linkedin Easy Apply jobs based on your preferences.
 To modify, use, get documentation or for you business enquiries kindly contact us via: <br>
 [**help@automated-bots.com**](mailto:help@automated-bots.com?subject=Contact%20Via%20[GitHub]%20EasyApplyJobsBot)
 
+[**Or directly contact us from our website**](https://www.automated-bots.com/contact)<br>
+
 ## Donation and Support 🥳
 
 With your support we build, update and work on this project. You can also purchase additional packages, tutorials and materials explaining how this bot is working. <br>
