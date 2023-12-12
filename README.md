@@ -3,6 +3,12 @@
 ![linkedineasyapplygif](https://user-images.githubusercontent.com/34207598/128695728-6efcb457-0f75-42e2-987a-f7a0c239a235.gif)
 A python bot to apply all Linkedin Easy Apply jobs based on your preferences.
 
+
+# Demo
+Easy Apply Jobs Bot Pro version running on Linux Firefox Browser
+
+https://github.com/wodsuz/EasyApplyJobsBot/assets/34207598/0de30c7e-a8ab-4fc8-8609-f401e13accca
+
 - Two options are avalible to use this bot, either with entering password or without fully secure no credentials are stored way.
 - Export all results and offers as txt and csv (PRO FEATURE) file
 - Export unanswered questions to txt file, enter answers there, next time bot will use these values
