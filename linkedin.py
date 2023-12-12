@@ -3,18 +3,17 @@ import utils,constants,config
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from utils import prRed,prYellow,prGreen
 
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service as ChromeService
 
 class Linkedin:
     def __init__(self):
-            prYellow("🌐 Bot will run in Chrome browser and log in Linkedin for you.")
+            utils.prYellow("🌐 Bot will run in Chrome browser and log in Linkedin for you.")
             self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=utils.chromeBrowserOptions())
             self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
 
-            prYellow("🔄 Trying to log in Linkedin...")
+            utils.prYellow("🔄 Trying to log in Linkedin...")
             try:    
                 self.driver.find_element("id","username").send_keys(config.email)
                 time.sleep(2)
@@ -24,7 +23,7 @@ class Linkedin:
                 time.sleep(5)
                 self.linkJobApply()
             except:
-                prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8.")
+                utils.prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8.")
     
     def generateUrls(self):
         if not os.path.exists('data'):
@@ -34,9 +33,9 @@ class Linkedin:
                 linkedinJobLinks = utils.LinkedinUrlGenerate().generateUrlLinks()
                 for url in linkedinJobLinks:
                     file.write(url+ "\n")
-            prGreen("✅ Apply urls are created successfully, now the bot will visit those urls.")
+            utils.prGreen("✅ Apply urls are created successfully, now the bot will visit those urls.")
         except:
-            prRed("❌ Couldn't generate urls, make sure you have editted config file line 25-39")
+            utils.prRed("❌ Couldn't generate urls, make sure you have editted config file line 25-39")
 
     def linkJobApply(self):
         self.generateUrls()
@@ -114,7 +113,7 @@ class Linkedin:
                             self.displayWriteResults(lineToWrite)
 
 
-            prYellow("Category: " + urlWords[0] + "," +urlWords[1]+ " applied: " + str(countApplied) +
+            utils.prYellow("Category: " + urlWords[0] + "," +urlWords[1]+ " applied: " + str(countApplied) +
                   " jobs out of " + str(countJobs) + ".")
         
         utils.donate(self)
@@ -130,7 +129,7 @@ class Linkedin:
             elif (len(resumes) > 1 and resumes[config.preferredCv-1].get_attribute("aria-label") == "Select this resume"):
                 resumes[config.preferredCv-1].click()
             elif (type(len(resumes)) != int):
-                prRed(
+                utils.prRed(
                     "❌ No resume has been selected please add at least one resume to your Linkedin account.")
         except:
             pass
@@ -147,7 +146,7 @@ class Linkedin:
                 jobTitle += "(blacklisted title: " + ' '.join(res) + ")"
         except Exception as e:
             if (config.displayWarnings):
-                prYellow("⚠️ Warning in getting jobTitle: " + str(e)[0:50])
+                utils.prYellow("⚠️ Warning in getting jobTitle: " + str(e)[0:50])
             jobTitle = ""
 
         try:
@@ -159,7 +158,7 @@ class Linkedin:
         except Exception as e:
             if (config.displayWarnings):
                 print(e)
-                prYellow("⚠️ Warning in getting jobDetail: " + str(e)[0:100])
+                utils.prYellow("⚠️ Warning in getting jobDetail: " + str(e)[0:100])
             jobDetail = ""
 
         try:
@@ -170,7 +169,7 @@ class Linkedin:
         except Exception as e:
             if (config.displayWarnings):
                 print(e)
-                prYellow("⚠️ Warning in getting jobLocation: " + str(e)[0:100])
+                utils.prYellow("⚠️ Warning in getting jobLocation: " + str(e)[0:100])
             jobLocation = ""
 
         textToWrite = str(count) + " | " + jobTitle +" | " + jobDetail + jobLocation
@@ -213,9 +212,9 @@ class Linkedin:
             print(lineToWrite)
             utils.writeResults(lineToWrite)
         except Exception as e:
-            prRed("❌ Error in DisplayWriteResults: " +str(e))
+            utils.prRed("❌ Error in DisplayWriteResults: " +str(e))
 
 start = time.time()
 Linkedin().linkJobApply()
 end = time.time()
-prYellow("---Took: " + str(round((time.time() - start)/60)) + " minute(s).")
+utils.prYellow("---Took: " + str(round((time.time() - start)/60)) + " minute(s).")
