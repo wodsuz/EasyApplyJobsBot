@@ -10,16 +10,14 @@ A python bot to apply all Linkedin Easy Apply jobs based on your preferences.
 - Fully customizable job preferences (advanced filters, search filters)
 - Can be used for many job search websites such as Linkedin, Glassdoor, AngelCo, Greenhouse, Monster, GLobalLogic and Djinni.
 
-To modify, use, get documentation or for you enquiries kindly contact me via: <br>
-**ongun.demirag@gmail.com**
-
-[**Automated Bots - Easy Apply Jobs Settings Document**][https://docs.google.com/document/d/1iqzsfily05ce1amr1ob01zemezzn3va2pbk3momn15g/edit?usp=sharing]
+To modify, use, get documentation or for you business enquiries kindly contact us via: <br>
+[**help@automated-bots.com**](mailto:help@automated-bots.com?subject=Contact%20Via%20[GitHub]%20EasyApplyJobsBot)
 
 ## Donation and Support 🥳
 
-With your support I build, update and work on this project. You can also purchase additional packages, tutorials and materials explaining how this bot is working. <br>
+With your support we build, update and work on this project. You can also purchase additional packages, tutorials and materials explaining how this bot is working. <br>
 
-There are several features and simplifications I'd like to add to this project. For that I need your support to cover costs. Your support is keeping this project alive.
+There are several features and simplifications we'd like to add to this project. For that we need your support to cover costs. Your support is keeping this project alive.
 
 [**Donate & support!**](https://commerce.coinbase.com/checkout/923b8005-792f-4874-9a14-2992d0b30685)
 
@@ -67,7 +65,7 @@ showing how this can be used. To buy, support this project and help me add more 
 | Browser | Mac | Windows | Linux-Ubuntu | Note                          |
 | ------- | --- | ------- | ------------ | ----------------------------- |
 | Chrome  | ✅  | ✅      | ✅           |
-| Firefox | ✅  | ✅      | ❌           | Only avalible for Pro version |
+| Firefox | ✅  | ✅      | ✅           | Only avalible for Pro version |
 
 ## Tests 🔦
 
@@ -142,6 +140,10 @@ This tutorial briefly explains how to set up LinkedIn Easy Apply jobs bot. With 
 | Check yes or no to all checkbox questions                          | ❌           | ✅                 |
 | Output file in txt format                                          | ✅           | ✅                 |
 | Output file in csv(excel) format                                   | ❌           | ✅                 |
+
+## Documentation
+
+[**Automated Bots - Easy Apply Jobs Config file Settings Document**](https://docs.google.com/document/d/1iqzsfily05ce1amr1ob01zemezzn3va2pbk3momn15g/edit?usp=sharing)
 
 ## Frequently Asked Questions
 
