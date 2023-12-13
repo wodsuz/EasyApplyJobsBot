@@ -1,10 +1,10 @@
 import time,math,random,os
 import utils,constants,config
-
+import pickle
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from utils import prRed,prYellow,prGreen
-
+import hashlib
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service as ChromeService
 
@@ -12,20 +12,61 @@ class Linkedin:
     def __init__(self):
             prYellow("🌐 Bot will run in Chrome browser and log in Linkedin for you.")
             self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=utils.chromeBrowserOptions())
-            self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
+            self.cookies_path = f"{os.path.join(os.getcwd(),'cookies')}/{self.getHash(config.email)}.pkl"
+            self.driver.get('https://www.linkedin.com')
+            self.loadCookies()
 
-            prYellow("🔄 Trying to log in Linkedin...")
-            try:    
-                self.driver.find_element("id","username").send_keys(config.email)
-                time.sleep(2)
-                self.driver.find_element("id","password").send_keys(config.password)
-                time.sleep(2)
-                self.driver.find_element("xpath",'//button[@type="submit"]').click()
-                time.sleep(5)
-                self.linkJobApply()
-            except:
-                prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8.")
-    
+            if not self.isLoggedIn():
+                self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
+
+                prYellow("🔄 Trying to log in Linkedin...")
+                try:    
+                    self.driver.find_element("id","username").send_keys(config.email)
+                    time.sleep(2)
+                    self.driver.find_element("id","password").send_keys(config.password)
+                    time.sleep(2)
+                    self.driver.find_element("xpath",'//button[@type="submit"]').click()
+                    time.sleep(30)
+                except:
+                    prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8.")
+
+                self.saveCookies()
+            # start application
+            self.linkJobApply()
+
+    def getHash(self, string):
+        return hashlib.md5(string.encode('utf-8')).hexdigest()
+
+
+    def saveCookies(self):
+        """
+            Save current logged in session cookies
+        """
+        pickle.dump(self.driver.get_cookies() , open(self.cookies_path,"wb"))
+
+    def loadCookies(self):
+        """
+            Load existing cookies stored by user 
+        """
+        if os.path.exists(self.cookies_path):
+            cookies =  pickle.load(open(self.cookies_path, "rb"))
+            self.driver.delete_all_cookies()
+            for cookie in cookies:
+                self.driver.add_cookie(cookie)
+
+    def isLoggedIn(self):
+        """
+            Function to check if the user is logged in or not
+        """
+        self.driver.get('https://www.linkedin.com/feed')
+        try:
+            self.driver.find_element(By.XPATH,'//*[@id="ember14"]')
+            return True
+        except Exception as E:
+            print(E)
+            pass
+        return False 
+
     def generateUrls(self):
         if not os.path.exists('data'):
             os.makedirs('data')
