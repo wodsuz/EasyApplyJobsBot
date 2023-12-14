@@ -1,7 +1,7 @@
-import dataclasses
+from dataclasses import dataclass, asdict
 
 
-@dataclasses.dataclass
+@dataclass
 class Job:
     title: str = ""
     company: str = ""
@@ -12,15 +12,17 @@ class Job:
     applicants_at_time_of_applying: str = ""
 
 
-@dataclasses.dataclass
+@dataclass
 class JobForVerification:
-    id: int
+    linkedinJobId: int
     title: str
     company: str
 
+    def to_dict(self):
+        return asdict(self)
 
 
-@dataclasses.dataclass
+@dataclass
 class JobCounter:
     total = 0
     applied = 0

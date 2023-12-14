@@ -7,17 +7,17 @@ backend_api = None
 
 def init():
     global initialized, backend_api
-    try:
-        utils.logDebugMessage("Initializing repository wrapper...")
-        initialized, backend_api = import_backend_module()
-    except Exception as e:
-        utils.logDebugMessage(f"Error initializing repository wrapper: {e}", utils.MessageTypes.ERROR)
+    utils.logDebugMessage("Initializing repository wrapper...")
+    initialized, backend_api = import_backend_module()
 
 
 def import_backend_module():
     try:
-        from ..frontend.utils import api as backend_api  # Change this line with your backend module
+        from frontend.utils import api as backend_api  # Change this line with your backend module
+        utils.logDebugMessage(f"Successfully imported backend module", utils.MessageTypes.SUCCESS)
+
         return True, backend_api
+    
     except ImportError as e:
         utils.logDebugMessage(f"Could not import backend module: {e}", utils.MessageTypes.WARNING)
         return False, None
@@ -47,3 +47,4 @@ def post_question(question):
     if initialized:
         utils.logDebugMessage(f"Posting question: {question} with answer:")
         # TODO: Implement this
+        

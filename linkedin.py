@@ -83,7 +83,7 @@ class Linkedin:
                         url = url + "&start=" + str(currentSearchResultPageJobs)
                         self.goToUrl(url)
 
-                        jobsForVerification = self.getJobIdsFromSearchPage()
+                        jobsForVerification = self.getJobsFromSearchPage()
                         verifiedJobs = repository_wrapper.verify_jobs(jobsForVerification)
 
                         for job in verifiedJobs:
@@ -133,7 +133,7 @@ class Linkedin:
         return jobCounter
     
     
-    def getJobIdsFromSearchPage(self):
+    def getJobsFromSearchPage(self):
         jobsListItems = self.driver.find_elements(By.XPATH,'//li[@data-occludable-job-id]')
         jobsForVerification = []
 
@@ -161,7 +161,7 @@ class Linkedin:
             
             jobId = jobItem.get_attribute("data-occludable-job-id")
             jobsForVerification.append(models.JobForVerification(
-                id=int(jobId.split(":")[-1]),
+                linkedinJobId=int(jobId.split(":")[-1]),
                 title=jobTitle,
                 company=companyName))
 
@@ -192,7 +192,7 @@ class Linkedin:
 
         else:
             jobCounter.skipped_already_applied += 1
-            lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥳 Already applied! Job: " + str(jobPage)
+            lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥳  Already applied! Job: " + str(jobPage)
             self.displayWriteResults(lineToWrite)
 
         return jobCounter
