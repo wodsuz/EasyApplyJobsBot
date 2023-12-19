@@ -161,7 +161,7 @@ class Linkedin:
             
             jobId = jobItem.get_attribute("data-occludable-job-id")
             jobsForVerification.append(models.JobForVerification(
-                linkedinJobId=int(jobId.split(":")[-1]),
+                linkedinJobId=jobId.split(":")[-1],
                 title=jobTitle,
                 company=companyName))
 
