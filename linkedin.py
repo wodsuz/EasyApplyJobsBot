@@ -120,7 +120,7 @@ class Linkedin:
                         if easyApplybutton is not False:
                             easyApplybutton.click()
                             time.sleep(random.uniform(1, constants.botSpeed))
-                            countApplied += 1
+                            
                             try:
                                 self.chooseResume()
                                 self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
@@ -128,6 +128,7 @@ class Linkedin:
 
                                 lineToWrite = jobProperties + " | " + "* 🥳 Just Applied to this job: "  +str(offerPage)
                                 self.displayWriteResults(lineToWrite)
+                                countApplied += 1
 
                             except:
                                 try:
@@ -153,7 +154,7 @@ class Linkedin:
                   " jobs out of " + str(countJobs) + ".")
         
         utils.donate(self)
-        
+
     def chooseResume(self):
         try:
             self.driver.find_element(
