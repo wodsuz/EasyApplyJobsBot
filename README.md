@@ -214,13 +214,10 @@ We currently support the sites we sell in our shop. Please check our shop in ord
 
 ## Future Implementations
 
-- Headless browser experience (run the bot without launching the browser)
-- Blacklist offers in Linkedin
-- Output not completed fields in Linkedin
-- Add support to other major job seeking websites (Glassdoor, AngelCo https://angel.co/l/2xRADV, Greenhouse, https://cryptocurrencyjobs.co/Monster, GLobalLogic, djinni)
+- Add full support to other major job seeking websites (Glassdoor, AngelCo https://angel.co/l/2xRADV, Greenhouse, https://cryptocurrencyjobs.co/, Monster, GLobalLogic, djinni)
 
 ## Special Thanks
 
 Special thanks to all the contributors who are constantly helping and keeping this repository active. Your contributions, whether they're bug reports, feature suggestions, or code improvements, are greatly appreciated. We couldn't do this without you!
 
-- Thanks a lot @GabrielGircenko for putting his time and huge experince on this project. Please make sure to check his repo https://github.com/GabrielGircenko/EasyApplyJobsBot
+- Thanks a lot [@GabrielGircenko](https://github.com/GabrielGircenko) for putting his time and huge experince on this project. Please make sure to check his repo https://github.com/GabrielGircenko/EasyApplyJobsBot
