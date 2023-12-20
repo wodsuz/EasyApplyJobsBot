@@ -118,10 +118,11 @@ class Linkedin:
         jobCounter.total += 1
         utils.sleepInBetweenBatches(jobCounter.total)
 
-        jobProperties = self.getJobProperties()
+        jobProperties = self.getJobProperties(jobID=jobID)
+        repository_wrapper.update_job(jobProperties)
         if self.isJobBlacklisted(company=jobProperties.company, title=jobProperties.title): 
             jobCounter.skipped_blacklisted += 1
-            lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🤬  Blacklisted Job, skipped!: " + str(jobPage)
+            lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🤬 Blacklisted Job, skipped!: " + str(jobPage)
             self.displayWriteResults(lineToWrite)
 
         else:        
@@ -136,6 +137,8 @@ class Linkedin:
     def getJobsFromSearchPage(self):
         jobsListItems = self.driver.find_elements(By.XPATH,'//li[@data-occludable-job-id]')
         jobsForVerification = []
+        companyName = None
+        jobTitle = None
 
         for jobItem in jobsListItems:
             if self.exists(jobItem, By.XPATH, ".//*[contains(text(), 'Applied')]"):
@@ -160,10 +163,13 @@ class Linkedin:
                     continue
             
             jobId = jobItem.get_attribute("data-occludable-job-id")
-            jobsForVerification.append(models.JobForVerification(
-                linkedinJobId=jobId.split(":")[-1],
-                title=jobTitle,
-                company=companyName))
+            if jobId and jobTitle and companyName:
+                jobsForVerification.append(models.JobForVerification(
+                    linkedinJobId=jobId.split(":")[-1],
+                    title=jobTitle,
+                    company=companyName))
+            else:
+                utils.logDebugMessage("Couldn't find jobID, jobTitle or companyName", utils.MessageTypes.WARNING)
 
         return jobsForVerification
     
@@ -192,7 +198,7 @@ class Linkedin:
 
         else:
             jobCounter.skipped_already_applied += 1
-            lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥳  Already applied! Job: " + str(jobPage)
+            lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥳 Already applied! Job: " + str(jobPage)
             self.displayWriteResults(lineToWrite)
 
         return jobCounter
@@ -213,6 +219,8 @@ class Linkedin:
                     # Check if CV is already selected
                     if 'jobs-document-upload-redesign-card__container--selected' not in container.get_attribute('class'):
                         utils.interact(lambda : self.click_button(cv_name_element))
+
+                    # TODO Update the backend to save the selected CV
                     # exit the loop once the desired CV is found and selected
                     break  
 
@@ -223,7 +231,7 @@ class Linkedin:
         return upload_button_present and resume_container_present
 
 
-    def getJobProperties(self): 
+    def getJobProperties(self, jobID: str): 
         jobTitle = self.getJobTitle()
         jobCompany = ""
         jobLocation = self.getJobLocation()
@@ -247,6 +255,7 @@ class Linkedin:
             workplace_type=jobWorkPlaceType,
             posted_date=jobPostedDate,
             applicants_at_time_of_applying=jobApplications,
+            linkedin_job_id=jobID
         )
     
 
@@ -371,7 +380,7 @@ class Linkedin:
         except:
             jobCounter.skipped_unanswered_questions += 1
             # TODO Instead of except, output which questions need to be answered
-            lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥵  " + str(applyPages) + " Pages, couldn't apply to this job! Extra info needed. Link: " + str(jobPage)
+            lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥵 " + str(applyPages) + " Pages, couldn't apply to this job! Extra info needed. Link: " + str(jobPage)
             self.displayWriteResults(lineToWrite)
 
         return jobCounter
@@ -391,7 +400,8 @@ class Linkedin:
             utils.interact(lambda : self.click_button(followCompany))
 
         utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Submit application']"))
-        lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥳  Just Applied to this job: " + str(jobPage)
+        repository_wrapper.applied_to_job(jobProperties)
+        lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥳 Just Applied to this job: " + str(jobPage)
         self.displayWriteResults(lineToWrite)
 
         jobCounter.applied += 1

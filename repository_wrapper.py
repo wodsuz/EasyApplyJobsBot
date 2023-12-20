@@ -13,7 +13,9 @@ def init():
 
 def import_backend_module():
     try:
-        from frontend.utils import api as backend_api  # Change this line with your backend module
+        from frontend.utils import (
+            api as backend_api,  # Change this line with your backend module
+        )
         utils.logDebugMessage(f"Successfully imported backend module", utils.MessageTypes.SUCCESS)
 
         return True, backend_api
@@ -34,6 +36,16 @@ def verify_jobs(jobs):
     return jobs
     
 
+def update_job(job):
+    if initialized:
+        try:
+            utils.logDebugMessage(f"Updating job: {job}")
+            job = backend_api.update_job_with_job_properties(job)
+        except Exception as e:
+            utils.logDebugMessage(f"Error updating job: {e}", utils.MessageTypes.ERROR)
+
+    return job
+
 def get_answer_by_question(question):
     if initialized:
         try:
@@ -45,6 +57,17 @@ def get_answer_by_question(question):
 
 def post_question(question):
     if initialized:
-        utils.logDebugMessage(f"Posting question: {question} with answer:")
-        # TODO: Implement this
-        
+        try:
+            utils.logDebugMessage(f"Posting question: {question} with answer:")
+            # TODO: Implement this
+        except Exception as e:
+            utils.logDebugMessage(f"Error posting question: {e}", utils.MessageTypes.ERROR)
+
+
+def applied_to_job(job):
+    if initialized:
+        try:
+            utils.logDebugMessage(f"Marking job as applied: {job}")
+            backend_api.applied_to_job(job)
+        except Exception as e:
+            utils.logDebugMessage(f"Error marking job as applied: {e}", utils.MessageTypes.ERROR)

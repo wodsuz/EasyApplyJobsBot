@@ -10,6 +10,7 @@ class Job:
     workplace_type: str = ""
     posted_date: str = ""
     applicants_at_time_of_applying: str = ""
+    linkedin_job_id: str = ""
 
 
 @dataclass
