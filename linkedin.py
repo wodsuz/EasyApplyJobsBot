@@ -87,7 +87,7 @@ class Linkedin:
                         verifiedJobs = repository_wrapper.verify_jobs(jobsForVerification)
 
                         for job in verifiedJobs:
-                            jobCounter = self.processJob(jobID=job.id, jobCounter=jobCounter)
+                            jobCounter = self.processJob(jobID=job.linkedinJobId, jobCounter=jobCounter)
                                     
                 except TimeoutException:
                     prRed("0 jobs found for: " + urlWords[0] + " in " + urlWords[1])
