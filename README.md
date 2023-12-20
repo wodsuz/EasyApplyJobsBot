@@ -218,3 +218,7 @@ We currently support the sites we sell in our shop. Please check our shop in ord
 - Blacklist offers in Linkedin
 - Output not completed fields in Linkedin
 - Add support to other major job seeking websites (Glassdoor, AngelCo https://angel.co/l/2xRADV, Greenhouse, https://cryptocurrencyjobs.co/Monster, GLobalLogic, djinni)
+
+## Special Thanks
+
+Special thanks to
