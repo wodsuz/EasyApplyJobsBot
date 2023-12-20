@@ -3,7 +3,7 @@
 ![linkedineasyapplygif](https://user-images.githubusercontent.com/34207598/128695728-6efcb457-0f75-42e2-987a-f7a0c239a235.gif)
 A python bot to apply all Linkedin Easy Apply jobs based on your preferences.
 
-## Please be aware that there are forked/similar looking versions of this bot using scam, phishing donation links. While purchasing make sure you are on www.automated-bots.com page or have below our logo on each crypto payment site,
+## Please be aware that there are forked/similar looking versions of this bot using scam, phishing donation links. While purchasing make sure you are on www.automated-bots.com page or just like below page have check our logo on each crypto payment site,
 
 ![Copyright image](https://github.com/wodsuz/EasyApplyJobsBot/assets/34207598/ea8ba3e2-1bed-4d80-ae20-9e96d1f5c09f)
 
