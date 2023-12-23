@@ -54,4 +54,4 @@ WORKDIR /app
 CMD Xvfb :99 -screen 0 1024x768x16 & \
     fluxbox & \
     x11vnc -display :99 -N -forever -usepw & \
-    python3 allConfigsRunner.py
+    python3 allConfigsRunner.py .

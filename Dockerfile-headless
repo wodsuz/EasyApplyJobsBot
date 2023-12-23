@@ -22,9 +22,6 @@ RUN mkdir /app && chmod -R 777 /app
 # Copy the application files
 COPY . /app
 
-# Set read/write permissions for the data directory
-RUN chmod -R 777 /app/data
-
 # Set the working directory
 WORKDIR /app
 
@@ -32,4 +29,3 @@ WORKDIR /app
 # RUN adduser -D user
 # USER user
 
-# CMD ["python3", "allConfigsRunner.py"]
