@@ -170,7 +170,6 @@ test.py
 
 # user files
 geckodriver.log
-*.txt
 *.exe
 
 # premium files

@@ -1,0 +1,5 @@
+selenium
+webdriver_manager
+packaging
+pymongo
+python-dotenv
