@@ -1,4 +1,4 @@
-import utils
+import utils, models
 from dotenv import load_dotenv
 
 initialized = False
@@ -38,7 +38,7 @@ def verify_jobs(jobs):
     return jobs
     
 
-def update_job(job):
+def update_job(job: models.Job):
     if initialized:
         try:
             utils.logDebugMessage(f"Updating job: {job}")
@@ -47,6 +47,14 @@ def update_job(job):
             utils.logDebugMessage(f"Error updating job: {e}", utils.MessageTypes.ERROR)
 
     return job
+
+def attached_resume_to_job(job: models.Job, resume: str):
+    if initialized:
+        try:
+            utils.logDebugMessage(f"Attaching resume to job: {job}")
+            backend_api.attached_resume_to_job(job.linkedin_job_id, resume)
+        except Exception as e:
+            utils.logDebugMessage(f"Error attaching resume to job: {e}", utils.MessageTypes.ERROR)
 
 def get_answer_by_question(question):
     if initialized:
@@ -66,10 +74,10 @@ def post_question(question):
             utils.logDebugMessage(f"Error posting question: {e}", utils.MessageTypes.ERROR)
 
 
-def applied_to_job(job):
+def applied_to_job(job: models.Job):
     if initialized:
         try:
             utils.logDebugMessage(f"Marking job as applied: {job}")
-            backend_api.applied_to_job(job)
+            backend_api.applied_to_job(job.linkedin_job_id)
         except Exception as e:
             utils.logDebugMessage(f"Error marking job as applied: {e}", utils.MessageTypes.ERROR)

@@ -204,7 +204,7 @@ class Linkedin:
         return jobCounter
     
 
-    def chooseResumeIfPossible(self):
+    def chooseResumeIfPossible(self, jobProperties: models.Job):
         if self.isResumePage():
             utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR, "button[aria-label='Show more resumes']"))
 
@@ -220,7 +220,8 @@ class Linkedin:
                     if 'jobs-document-upload-redesign-card__container--selected' not in container.get_attribute('class'):
                         utils.interact(lambda : self.click_button(cv_name_element))
 
-                    # TODO Update the backend to save the selected CV
+                    # Update the backend to save the selected CV
+                    repository_wrapper.attached_resume_to_job(jobProperties, cv_name_element.text)
                     # exit the loop once the desired CV is found and selected
                     break  
 
@@ -370,10 +371,10 @@ class Linkedin:
         applyPages = math.ceil(100 / percentage) - 2
         try:
             for _ in range(applyPages):
-                self.handleApplicationStep()
+                self.handleApplicationStep(jobProperties)
                 utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Continue to next step']"))
 
-            self.handleApplicationStep()
+            self.handleApplicationStep(jobProperties)
             utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Review your application']"))
 
             jobCounter = self.handleSubmitPage(jobPage, jobProperties, jobCounter)
@@ -414,8 +415,8 @@ class Linkedin:
         except Exception as e:
             prRed("❌ Error in DisplayWriteResults: " + str(e))
 
-    def handleApplicationStep(self):
-        self.chooseResumeIfPossible()
+    def handleApplicationStep(self, jobProperties: models.Job):
+        self.chooseResumeIfPossible(jobProperties)
         # TODO self.handleQuestions()
 
     def handleQuestions(self):
