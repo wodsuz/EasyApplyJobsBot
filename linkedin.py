@@ -417,9 +417,9 @@ class Linkedin:
 
     def handleApplicationStep(self, jobProperties: models.Job):
         self.chooseResumeIfPossible(jobProperties)
-        # TODO self.handleQuestions()
+        # self.handleQuestions(jobProperties)
 
-    def handleQuestions(self):
+    def handleQuestions(self, jobProperties: models.Job):
         if self.exists(self.driver, By.CSS_SELECTOR, "div.pb4"):
             # Locate the div that contains all the questions
             questionsContainer = self.driver.find_element(By.CSS_SELECTOR, "div.pb4")
