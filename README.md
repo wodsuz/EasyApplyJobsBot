@@ -7,7 +7,7 @@ A python bot to apply all Linkedin Easy Apply jobs based on your preferences.
 
 ## Installation 🔌
 
-NOTE: If you need help setting up or running the bot locally [join our Discord community](https://discord.gg/ab6XPEWN)
+NOTE: If you need help setting up or running the bot locally [join our Discord community](https://discord.gg/y9fC2snanK)
 
 
 ### Run inside a Docker container (recommended)
@@ -77,7 +77,7 @@ NOTE: If you need help setting up or running the bot locally [join our Discord c
 | Output file in txt format                                          | ✅           | 
 | Output file in csv(excel) format                                   | ❌           | https://github.com/GabrielGircenko/EasyApplyJobsBot/issues/10
 
-If you would like to see a specific feature developed, please open an issue or suggest it in our [Discord community](https://discord.gg/ab6XPEWN)
+If you would like to see a specific feature developed, please open an issue or suggest it in our [Discord community](https://discord.gg/y9fC2snanK)
 
 
 ### Demo 🖥
