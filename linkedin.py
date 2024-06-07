@@ -45,6 +45,8 @@ class Linkedin:
                 self.driver.add_cookie(cookie)
 
     def saveCookies(self):
+        if not os.path.exists(os.path.dirname(self.cookies_path)):
+            os.makedirs(os.path.dirname(self.cookies_path))
         pickle.dump(self.driver.get_cookies() , open(self.cookies_path,"wb"))
     
     def isLoggedIn(self):
