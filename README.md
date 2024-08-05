@@ -21,7 +21,7 @@ NOTE: If you need help setting up or running the bot locally [join our Discord c
       - Add your search preferences. Checkout examples: [CTO in Croatia](https://gist.github.com/GabrielGircenko/fa5cd2200c291096e5fb138677892352) & [Data Scientist in Europe and North America](https://gist.github.com/GabrielGircenko/ec85ae125812b5052da2ed6ea6cdec85)
       - Repeat for various searches
 - Install Docker
-- Run `docker build -t easy-apply-bot .`
+- Run `docker-compose up --build -d`
 
 
 ### Run without Docker
