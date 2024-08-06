@@ -267,7 +267,7 @@ class Linkedin:
             jobTitleElement = self.driver.find_element(By.XPATH, "//h1[contains(@class, 'job-title')]")
             jobTitle = jobTitleElement.text.strip()
         except Exception as e:
-            utils.displayWarning(config.displayWarnings, "in getting jobTitle", e)
+            utils.logDebugMessage("in getting jobTitle", utils.MessageTypes.WARNING, e)
 
         return jobTitle
     
@@ -280,7 +280,7 @@ class Linkedin:
             jobCompanyLink = primary_description_div.find_element(By.CSS_SELECTOR, "a.app-aware-link")
             jobCompany = jobCompanyLink.text.strip()
         else:
-            utils.displayWarning(config.displayWarnings, "in getting jobCompany")
+            utils.logDebugMessage("in getting jobCompany", utils.MessageTypes.WARNING)
 
         return jobCompany
     
@@ -291,7 +291,7 @@ class Linkedin:
         try:
             jobLocation = self.driver.find_element(By.XPATH,"//span[contains(@class, 'bullet')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            utils.displayWarning(config.displayWarnings, "in getting jobLocation", e)
+            utils.logDebugMessage("in getting jobLocation", utils.MessageTypes.WARNING, e)
 
         return jobLocation
     
@@ -302,7 +302,7 @@ class Linkedin:
         try:
             jobWorkPlaceType = self.driver.find_element(By.XPATH,"//span[contains(@class, 'workplace-type')]").get_attribute("innerHTML").strip()
         except Exception as e:
-            utils.displayWarning(config.displayWarnings, "in getting jobWorkPlaceType", e)
+            utils.logDebugMessage("in getting jobWorkPlaceType", utils.MessageTypes.WARNING, e)
             
         return jobWorkPlaceType
 
@@ -313,8 +313,7 @@ class Linkedin:
         try:
             jobDescription = self.driver.find_element(By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div").text.replace("·", "|")
         except Exception as e:
-            if (config.displayWarnings):
-                utils.displayWarning("in getting jobDescription: ", e)
+            utils.logDebugMessage("in getting jobDescription: ", utils.MessageTypes.WARNING, e)
 
         return jobDescription        
 
@@ -326,7 +325,7 @@ class Linkedin:
                 if "applicant" in span.text.lower():  # Catches 'applicant' and 'applicants'
                     return span.text.strip()
         else:
-            utils.displayWarning(config.displayWarnings, "in getting jobApplications")
+            utils.logDebugMessage("in getting jobApplications", utils.MessageTypes.WARNING)
         return ""
 
 
@@ -339,7 +338,7 @@ class Linkedin:
                     if date_span:
                         return date_span.text.strip()
         else:
-            utils.displayWarning(config.displayWarnings, "in getting jobPostedDate")
+            utils.logDebugMessage("in getting jobPostedDate", utils.MessageTypes.WARNING)
         return ""
     
 
@@ -519,4 +518,3 @@ class Linkedin:
             button.click()
         except Exception as e:
             # If click fails, use JavaScript to click on the button
-            self.driver.execute_script("arguments[0].click();", button)
