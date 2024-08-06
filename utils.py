@@ -184,6 +184,16 @@ class LinkedinUrlGenerate:
                 jobLoc +=  "&geoId=101452733"
             case "africa":
                 jobLoc += "&geoId=103537801"
+            case "sweden":
+                jobLoc += "&geoId=105117694"
+            case "norway":
+                jobLoc += "&geoId=103819153"
+            case "germany":
+                jobLoc += "&geoId=101282230"
+            case "switzerland":
+                jobLoc += "&geoId=106693272"
+            case "new york":
+                jobLoc += "&geoId=105080838"
 
         return jobLoc
 
