@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # vnc-linkedin-bot:
   #   container_name: vnc-linkedin-easy-apply-bot
@@ -25,6 +23,18 @@ services:
       - PYTHONUNBUFFERED=1
     command: python3 allConfigsRunner.py .
 
+  test:
+    container_name: bot-test
+    build: 
+      context: .
+      dockerfile: Dockerfile-headless
+    volumes:
+      - chrome_data_test:/home/user/chrome_data
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python -m unittest discover -s tests
+
 volumes:
   chrome_data_headless:
   chrome_data_vnc:
+  chrome_data_test:

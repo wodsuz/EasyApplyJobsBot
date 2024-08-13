@@ -1,6 +1,4 @@
 import math
-import time
-
 import config
 import constants
 import models
@@ -14,8 +12,24 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from utils import prGreen, prRed, prYellow
 from webdriver_manager.chrome import ChromeDriverManager
+from typing import List
 
 
+# This class is responsible for handling the LinkedIn job application process
+# It uses the Selenium WebDriver to interact with the LinkedIn website
+# It also uses the repository_wrapper to interact with the backend
+#
+# The class is responsible for:
+# - Logging in to LinkedIn (done in the constructor)
+# - Searching for jobs
+# - Applying to jobs
+# - Handling job posts
+# - Handling questions
+# - Handling multiple pages of the application process
+# - Handling the resume selection
+# - Handling the submission of the application
+# - Handling the follow company checkbox
+# - Handling the application of the job
 class Linkedin:
     def __init__(self):
         prYellow("🌐 The Bot is starting.")
@@ -62,7 +76,7 @@ class Linkedin:
         try:
             jobCounter = models.JobCounter()
 
-            urlData = utils.LinkedinUrlGenerate().generateUrlLinks()
+            urlData = utils.LinkedinUrlGenerator().generateSearchUrls()
 
             for url in urlData:        
                 self.goToUrl(url)
@@ -101,6 +115,12 @@ class Linkedin:
             with open("page_source_at_unhandled_exception.html", "w") as file:
                 file.write(self.driver.page_source)
 
+
+    def goToJobsSearchPage(self):
+        searchUrl = utils.LinkedinUrlGenerator.getGeneralSearchUrl()
+        self.goToUrl(searchUrl)
+        utils.sleepInBetweenActions()
+
     
     def goToUrl(self, url):
         self.driver.get(url)
@@ -118,7 +138,7 @@ class Linkedin:
         jobCounter.total += 1
         utils.sleepInBetweenBatches(jobCounter.total)
 
-        jobProperties = self.getJobProperties(jobID=jobID)
+        jobProperties = self.getJobProperties(jobID)
         repository_wrapper.update_job(jobProperties)
         if self.isJobBlacklisted(company=jobProperties.company, title=jobProperties.title): 
             jobCounter.skipped_blacklisted += 1
@@ -134,7 +154,7 @@ class Linkedin:
         return jobCounter
     
     
-    def getJobsFromSearchPage(self):
+    def getJobsFromSearchPage(self) -> List[models.JobForVerification]:
         jobsListItems = self.driver.find_elements(By.XPATH,'//li[@data-occludable-job-id]')
         jobsForVerification = []
         companyName = None
@@ -156,7 +176,9 @@ class Linkedin:
 
             jobTitleAnchor = jobItem.find_elements(By.XPATH, ".//a[contains(@class, 'job-card-container__link job-card-list__title')]")
             if len(jobTitleAnchor) > 0:
-                jobTitle = jobTitleAnchor[0].text.strip()
+                allTexts = jobTitleAnchor[0].text.split("\n")
+                uniqueTexts = list(dict.fromkeys(allTexts))
+                jobTitle = uniqueTexts[0].strip()
                 if self.isTitleBlacklisted(jobTitle):
                     if config.displayWarnings:
                         prYellow(f"⚠️  Not adding a job as the title '{jobTitle}' is blacklisted")
@@ -232,7 +254,7 @@ class Linkedin:
         return upload_button_present and resume_container_present
 
 
-    def getJobProperties(self, jobID: str): 
+    def getJobProperties(self, jobID: str) -> models.Job: 
         jobTitle = self.getJobTitle()
         jobCompany = ""
         jobLocation = self.getJobLocation()
@@ -264,12 +286,21 @@ class Linkedin:
         jobTitle = ""
 
         try:
-            jobTitleElement = self.driver.find_element(By.XPATH, "//h1[contains(@class, 'job-title')]")
-            jobTitle = jobTitleElement.text.strip()
+            jobTitle = self.getJobTitleMethod2()
         except Exception as e:
             utils.logDebugMessage("in getting jobTitle", utils.MessageTypes.WARNING, e)
 
         return jobTitle
+    
+
+    def getJobTitleMethod1(self):
+        jobTitleElement = self.driver.find_element(By.XPATH, "//h1[contains(@class, 'job-title')]")
+        return jobTitleElement.text.strip()
+    
+
+    def getJobTitleMethod2(self):
+        jobTitleElement = self.driver.find_element(By.CSS_SELECTOR, "h1.t-24.t-bold.inline")
+        return jobTitleElement.text.strip()
     
 
     def getJobCompany(self, primary_description_div):
@@ -518,3 +549,5 @@ class Linkedin:
             button.click()
         except Exception as e:
             # If click fails, use JavaScript to click on the button
+            pass
+

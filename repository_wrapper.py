@@ -13,7 +13,7 @@ def init():
 
 def import_backend_module():
     try:
-        print(load_dotenv(".env"))
+        print(f"Is .env file loaded = {load_dotenv(".env")}")
         
         from frontend.utils import (
             api as backend_api,  # Change this line with your backend module

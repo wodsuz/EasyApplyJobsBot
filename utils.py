@@ -37,17 +37,22 @@ def chromeBrowserOptions():
         options.add_argument(f'--user-data-dir={user_data_dir}')
     return options
 
+
 def prRed(prt):
     print(f"\033[91m{prt}\033[00m")
+
 
 def prGreen(prt):
     print(f"\033[92m{prt}\033[00m")
 
+
 def prYellow(prt):
     print(f"\033[93m{prt}\033[00m")
 
+
 def prBlue(prt):
     print(f"\033[94m{prt}\033[00m")
+
 
 class MessageTypes(Enum):
     INFO = 1
@@ -55,8 +60,10 @@ class MessageTypes(Enum):
     ERROR = 3
     SUCCESS = 4
 
+
 def printInfoMes(bot:str):
     prYellow("ℹ️ " +bot+ " is starting soon... ")
+
 
 def logDebugMessage(message, messageType=MessageTypes.INFO, exception=Exception(), displayTraceback = False):
     if (config.displayWarnings):
@@ -73,6 +80,7 @@ def logDebugMessage(message, messageType=MessageTypes.INFO, exception=Exception(
         if (displayTraceback):
             traceback.print_exc()
 
+
 def jobsToPages(numOfJobs: str) -> int:
   number_of_pages = 1
 
@@ -88,12 +96,14 @@ def jobsToPages(numOfJobs: str) -> int:
 
   return number_of_pages
 
+
 def urlToKeywords(url: str) -> List[str]:
     keywordUrl = url[url.index("keywords=")+9:]
     keyword = keywordUrl[0:keywordUrl.index("&") ] 
     locationUrl = url[url.index("location=")+9:]
     location = locationUrl[0:locationUrl.index("&") ] 
     return [keyword,location]
+
 
 def writeResults(text: str):
     timeStr = time.strftime("%Y%m%d")
@@ -125,6 +135,7 @@ def writeResults(text: str):
     except Exception as e:
         prRed(f"❌ Error in writeResults: {e}")  # Assuming prRed is a function to print errors in red color
 
+
 # def writeResults(text: str):
 #     timeStr = time.strftime("%Y%m%d")
 #     fileName = "Applied Jobs DATA - " +timeStr + ".txt"
@@ -149,25 +160,35 @@ def writeResults(text: str):
 
 #             f.write(text+ "\n")
 
+
 def interact(action):
     action()
     sleepInBetweenActions()
 
+
 def sleepInBetweenActions(bottom: int = constants.botSleepInBetweenActionsBottom, top: int = constants.botSleepInBetweenActionsTop):
     time.sleep(random.uniform(bottom, top))
+
 
 def sleepInBetweenBatches(currentBatch: int, bottom: int = constants.botSleepInBetweenBatchesBottom, top: int = constants.botSleepInBetweenBatchesTop):
     if (currentBatch % constants.batchSize == 0):
         time.sleep(random.uniform(bottom, top))
 
-class LinkedinUrlGenerate:
-    def generateUrlLinks(self):
+
+class LinkedinUrlGenerator:
+    @staticmethod
+    def getGeneralSearchUrl():
+        return constants.searchJobsUrl
+
+
+    def generateSearchUrls(self):
         urls = []
         for location in config.location:
             for keyword in config.keywords:
-                    url = constants.linkJobUrl + "?f_AL=true&keywords=" + keyword + self.jobType() + self.remote() + self.checkJobLocation(location) + self.jobExp() + self.datePosted() + self.jobTitle() + self.salary() + self.sortBy()
+                    url = constants.searchJobsUrl + "?f_AL=true&keywords=" + keyword + self.jobType() + self.remote() + self.checkJobLocation(location) + self.jobExp() + self.datePosted() + self.jobTitle() + self.salary() + self.sortBy()
                     urls.append(url)
         return urls
+
 
     def checkJobLocation(self, job):
         jobLoc = "&location=" + job
@@ -196,6 +217,7 @@ class LinkedinUrlGenerate:
                 jobLoc += "&geoId=105080838"
 
         return jobLoc
+
 
     def jobExp(self):
         jobtExpArray = config.experienceLevels
@@ -231,6 +253,7 @@ class LinkedinUrlGenerate:
 
         return jobExp
 
+
     def datePosted(self):
         datePosted = ""
         match config.datePosted[0]:
@@ -243,6 +266,7 @@ class LinkedinUrlGenerate:
             case "Past 24 hours":
                 datePosted = "&f_TPR=r86400&"
         return datePosted
+
 
     def jobType(self):
         jobTypeArray = config.jobType
@@ -282,6 +306,7 @@ class LinkedinUrlGenerate:
         jobType += "&"
         return jobType
 
+
     def remote(self):
         remoteArray = config.remote
         firstJobRemote = remoteArray[0]
@@ -304,6 +329,7 @@ class LinkedinUrlGenerate:
 
         return jobRemote
     
+
     def jobTitle(self):
         jobTitleArray = config.jobTitles
         
@@ -326,7 +352,8 @@ class LinkedinUrlGenerate:
 
         jobTitle += "&"
         return jobTitle
-        
+
+
     def salary(self):
         salary = ""
         match config.salary:
@@ -349,6 +376,7 @@ class LinkedinUrlGenerate:
             case "$200,000+":
                 salary = "f_SB2=9&"                  
         return salary
+
 
     def sortBy(self):
         sortBy = ""
