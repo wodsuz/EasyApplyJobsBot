@@ -40,6 +40,40 @@ NOTE: If you need help setting up or running the bot locally [join our Discord c
 - Check Applied Jobs DATA .txt file is generate under /data folder
 
 
+### Debug locally in VSCode
+
+- add launch.json to .vscode with the following content:
+```
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+      {
+         "name": "Debug EasyApply With 1 Config",
+         "type": "python",
+         "request": "launch",
+         "program": "${workspaceFolder}/EasyApplyJobsBot/runner.py",
+         "env": {"PYTHONUNBUFFERED": "1"},
+         "console": "integratedTerminal"
+      }
+   ]
+}
+```
+- in config.py
+  - leave chromeDriverPath empty or add your local path to it
+  - add your chromeProfilePath (instructions to find it are in the config.py)
+
+Then you might have issues with chromedriver not having the right permissions. Here is the solution for MacOS. 
+- after starting the debugging at least once, you should have the chromedriver installed
+- add path to that chromedriver in config.py
+- run something like this (adjust the path to your local environment)
+```chmod +x /Users/your_user/.wdm/drivers/chromedriver/mac_version_/version_number/chromedriver-mac-mac_version/chromedriver```
+- extra step is to verify the permissions with something like:
+```ls -l /Users/your_user/.wdm/drivers/chromedriver/mac_version/version_number/chromedriver-mac-mac_version/chromedriver```
+
+
 ## Features 💡
 
 - Ability to filter jobs, by easy apply, by location (Worldwide, Europe, Poland, etc.), by keyword (python, react, node), by experience, position, job type and date posted.

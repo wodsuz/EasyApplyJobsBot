@@ -4,6 +4,7 @@ import constants
 import models
 import repository_wrapper
 import utils
+import warnings
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -167,8 +168,11 @@ class Linkedin:
                 continue
 
             companyNameSpan = jobItem.find_elements(By.XPATH, ".//span[contains(@class, 'job-card-container__primary-description')]")
-            if len(companyNameSpan) > 0:
-                companyName = companyNameSpan[0].text.strip()
+            if companyNameSpan:
+                full_description = companyNameSpan[0].text.strip()
+                # Split the description to extract the company name before the '·' character
+                companyName = full_description.split('·')[0].strip() if '·' in full_description else full_description
+
                 if self.isCompanyBlacklisted(companyName):
                     if config.displayWarnings:
                         prYellow(f"⚠️  Not adding a job as the company '{companyName}' is blacklisted")
@@ -266,7 +270,7 @@ class Linkedin:
         # First, find the container that holds all the elements.
         if self.exists(self.driver, By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div"):
             primary_description_div = self.driver.find_element(By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div")
-            jobCompany = self.getJobCompany(primary_description_div)
+            jobCompany = self.getJobCompany()
             jobPostedDate = self.getJobPostedDate(primary_description_div)
             jobApplications = self.getJobApplications(primary_description_div)
 
@@ -294,6 +298,9 @@ class Linkedin:
     
 
     def getJobTitleMethod1(self):
+        warnings.warn("This method is deprecated due to changes in LinkedIn's HTML structure. Use getJobTitleMethod2 instead.",
+                      DeprecationWarning, stacklevel=2)
+
         jobTitleElement = self.driver.find_element(By.XPATH, "//h1[contains(@class, 'job-title')]")
         return jobTitleElement.text.strip()
     
@@ -303,7 +310,13 @@ class Linkedin:
         return jobTitleElement.text.strip()
     
 
-    def getJobCompany(self, primary_description_div):
+    def getJobCompany(self):
+        return self.getJobCompanyMethod2()
+    
+
+    def getJobCompanyMethod1(self, primary_description_div):
+        warnings.warn("This method is deprecated due to changes in LinkedIn's HTML structure. Use getJobCompanyMethod2 instead.",
+                        DeprecationWarning, stacklevel=2)
         jobCompany = ""
 
         if self.exists(primary_description_div, By.CSS_SELECTOR, "a.app-aware-link"):
@@ -312,6 +325,20 @@ class Linkedin:
             jobCompany = jobCompanyLink.text.strip()
         else:
             utils.logDebugMessage("in getting jobCompany", utils.MessageTypes.WARNING)
+
+        return jobCompany
+    
+
+    def getJobCompanyMethod2(self):
+        jobCompany = ""
+
+        if self.exists(self.driver, By.XPATH, "//div[contains(@class, 'job-details-jobs-unified-top-card__company-name')]//a"):
+            # Inside this container, find the company name link.
+            jobCompanyElement = self.driver.find_element(By.XPATH, "//div[contains(@class, 'job-details-jobs-unified-top-card__company-name')]//a")
+            jobCompany = jobCompanyElement.text.strip()
+            
+        else:
+            utils.logDebugMessage("in getting jobCompany card", utils.MessageTypes.WARNING)
 
         return jobCompany
     
@@ -336,6 +363,7 @@ class Linkedin:
             utils.logDebugMessage("in getting jobWorkPlaceType", utils.MessageTypes.WARNING, e)
             
         return jobWorkPlaceType
+
 
     # TODO Use jobDetail later
     def getJobDescription(self):
@@ -416,6 +444,7 @@ class Linkedin:
 
         return jobCounter
         
+
     def handleSubmitPage(self, jobPage, jobProperties: models.Job, jobCounter: models.JobCounter):
         followCompany = self.driver.find_element(By.CSS_SELECTOR,"label[for='follow-company-checkbox']")
         # Use JavaScript to check the state of the checkbox
@@ -438,6 +467,7 @@ class Linkedin:
         jobCounter.applied += 1
         return jobCounter
 
+
     def displayWriteResults(self, lineToWrite: str):
         try:
             prYellow(lineToWrite)
@@ -445,9 +475,11 @@ class Linkedin:
         except Exception as e:
             prRed("❌ Error in DisplayWriteResults: " + str(e))
 
+
     def handleApplicationStep(self, jobProperties: models.Job):
         self.chooseResumeIfPossible(jobProperties)
         # self.handleQuestions(jobProperties)
+
 
     def handleQuestions(self, jobProperties: models.Job):
         if self.exists(self.driver, By.CSS_SELECTOR, "div.pb4"):
@@ -493,10 +525,12 @@ class Linkedin:
                         else:
                             self.logUnhandledQuestion(questionLabel)
 
+
     def exists(self, parent, by, value):
         # Check if an element exists on the page
         return len(parent.find_elements(by, value)) > 0
-        
+
+
     def handleTextInput(self, group, questionLabel, by, value):
         # Locate the input element  
         inputElement = group.find_element(by, value)
