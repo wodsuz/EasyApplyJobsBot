@@ -200,6 +200,7 @@ class Linkedin:
         return jobsForVerification
     
 
+    # TODO Move to logger.py (after splitting utils.py)
     def getLogTextForJobProperties(self, jobProperties: models.Job, jobCounter: models.JobCounter):
         textToWrite = str(jobCounter.total) + " | " + jobProperties.title +  " | " + jobProperties.company +  " | " + jobProperties.location + " | " + jobProperties.workplace_type + " | " + jobProperties.posted_date + " | " + jobProperties.applicants_at_time_of_applying
         if self.isJobBlacklisted(company=jobProperties.company, title=jobProperties.title):
@@ -260,19 +261,21 @@ class Linkedin:
 
     def getJobProperties(self, jobID: str) -> models.Job: 
         jobTitle = self.getJobTitle()
-        jobCompany = ""
-        jobLocation = self.getJobLocation()
-        jobWorkPlaceType = self.getJobWorkPlaceType()
+        jobCompany = self.getJobCompany()
+        jobLocation = ""
         jobPostedDate = ""
-        jobApplications = ""
+        numberOfApplicants = ""
+        jobWorkPlaceType = self.getJobWorkPlaceType()
         jobDescription = self.getJobDescription()
 
         # First, find the container that holds all the elements.
-        if self.exists(self.driver, By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div"):
-            primary_description_div = self.driver.find_element(By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div")
-            jobCompany = self.getJobCompany()
+        if self.exists(self.driver, By.XPATH, "//div[contains(@class, 'job-details-jobs-unified-top-card__primary-description-container')]//div"):
+            primary_description_div = self.driver.find_element(By.XPATH, "//div[contains(@class, 'job-details-jobs-unified-top-card__primary-description-container')]//div")
+            jobLocation = self.getJobLocation(primary_description_div)
             jobPostedDate = self.getJobPostedDate(primary_description_div)
-            jobApplications = self.getJobApplications(primary_description_div)
+            numberOfApplicants = self.getNumberOfApplicants(primary_description_div)
+        else:
+            utils.logDebugMessage("in getting primary_description_div", utils.MessageTypes.WARNING)
 
         return models.Job(
             title=jobTitle,
@@ -281,7 +284,7 @@ class Linkedin:
             description=jobDescription,
             workplace_type=jobWorkPlaceType,
             posted_date=jobPostedDate,
-            applicants_at_time_of_applying=jobApplications,
+            applicants_at_time_of_applying=numberOfApplicants,
             linkedin_job_id=jobID
         )
     
@@ -343,16 +346,41 @@ class Linkedin:
         return jobCompany
     
     
-    def getJobLocation(self):
+    def getJobLocation(self, primary_description_div):
         jobLocation = ""
 
         try:
-            jobLocation = self.driver.find_element(By.XPATH,"//span[contains(@class, 'bullet')]").get_attribute("innerHTML").strip()
+            jobLocationSpan = primary_description_div.find_element(By.XPATH, ".//span[contains(@class, 'tvm__text--low-emphasis')][1]")
+            jobLocation = jobLocationSpan.text.strip()
         except Exception as e:
             utils.logDebugMessage("in getting jobLocation", utils.MessageTypes.WARNING, e)
 
         return jobLocation
-    
+
+
+    def getJobPostedDate(self, primary_description_div):
+        jobPostedDate = ""
+
+        try:
+            postedDateSpan = primary_description_div.find_element(By.XPATH, ".//span[contains(@class, 'tvm__text--low-emphasis')][3]")
+            jobPostedDate = postedDateSpan.text.strip()
+        except Exception as e:
+            utils.logDebugMessage("Error in getting jobPostedDate", utils.MessageTypes.WARNING, e)
+
+        return jobPostedDate
+
+
+    def getNumberOfApplicants(self, primary_description_div):
+        jobApplications = ""
+
+        try:
+            applicationsSpan = primary_description_div.find_element(By.XPATH, ".//span[contains(@class, 'tvm__text--low-emphasis')][5]")
+            jobApplications = applicationsSpan.text.strip()
+        except Exception as e:
+            utils.logDebugMessage("Error in getting jobApplications", utils.MessageTypes.WARNING, e)
+
+        return jobApplications
+
 
     def getJobWorkPlaceType(self):
         jobWorkPlaceType = ""
@@ -374,31 +402,7 @@ class Linkedin:
         except Exception as e:
             utils.logDebugMessage("in getting jobDescription: ", utils.MessageTypes.WARNING, e)
 
-        return jobDescription        
-
-
-    def getJobApplications(self, primary_description_div):
-        if self.exists(primary_description_div, By.CSS_SELECTOR, "span.tvm__text--neutral"):
-            neutral_text_spans = primary_description_div.find_elements(By.CSS_SELECTOR, "span.tvm__text--neutral")
-            for span in neutral_text_spans:
-                if "applicant" in span.text.lower():  # Catches 'applicant' and 'applicants'
-                    return span.text.strip()
-        else:
-            utils.logDebugMessage("in getting jobApplications", utils.MessageTypes.WARNING)
-        return ""
-
-
-    def getJobPostedDate(self, primary_description_div):
-        if self.exists(primary_description_div, By.CSS_SELECTOR, "span.tvm__text--neutral"):
-            neutral_text_spans = primary_description_div.find_elements(By.CSS_SELECTOR, "span.tvm__text--neutral")
-            for span in neutral_text_spans:
-                if self.exists(span, By.TAG_NAME, 'span'):
-                    date_span = span.find_element(By.TAG_NAME, 'span')
-                    if date_span:
-                        return date_span.text.strip()
-        else:
-            utils.logDebugMessage("in getting jobPostedDate", utils.MessageTypes.WARNING)
-        return ""
+        return jobDescription   
     
 
     def isJobBlacklisted(self, company: str, title: str):
