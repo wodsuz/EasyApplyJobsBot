@@ -4,7 +4,6 @@ A python bot to apply all Linkedin Easy Apply jobs based on your preferences.
 
 ![linkedineasyapplygif](https://user-images.githubusercontent.com/34207598/128695728-6efcb457-0f75-42e2-987a-f7a0c239a235.gif)
 
-
 ## Installation 🔌
 
 NOTE: If you need help setting up or running the bot locally [join our Discord community](https://discord.gg/y9fC2snanK)
@@ -113,7 +112,6 @@ Then you might have issues with chromedriver not having the right permissions. H
 
 If you would like to see a specific feature developed, please open an issue or suggest it in our [Discord community](https://discord.gg/y9fC2snanK)
 
-
 ### Demo 🖥
 
 ![banner](https://user-images.githubusercontent.com/34207598/189535377-98ca5bfc-8f4e-4f68-9b3c-59e259d4fe5f.png)
@@ -122,6 +120,22 @@ If you would like to see a specific feature developed, please open an issue or s
 ![2022-09-11_18-08](https://user-images.githubusercontent.com/34207598/189535397-2673d603-9489-4104-a066-dd66aca624fd.png)
 ![2022-09-11_18-09](https://user-images.githubusercontent.com/34207598/189535410-2131a9d0-fd63-419f-a5ea-c663103877d2.png)
 
+## Motivation for this fork
+
+It started out as few fixes to the out-dated functionality (due to LinkedIn's HTML changes). 
+
+Now, the main motivation is to make it very easy to use for tech savvy individuals with basic knowledge of python and Docker. The secondary motivation is to add answering to questions as part of the free functionality compared to the original repo.
+
+Additionally, @GabeGiro is developing a user friendly, closed-source solution. If you want to be one of the first ones to try it out, [join the Discord community](https://discord.gg/y9fC2snanK).
+
+## Contribution
+
+- Fork the repository
+- Pick (or create) an issue you want to work on. Assign yourself to the issue (or ask to be assigned to)
+- Create a branch
+- Link the branch to the issue
+- When you are done, open a PR (pull request) - add @GabeGiro as a reviewer
+- We might go back and fourth few times and after your PR is approved, you will use "Squash and merge"
 
 ## Frequently Asked Questions
 
