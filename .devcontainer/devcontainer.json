@@ -1,0 +1,25 @@
+{
+    "name": "EasyApply Bot Test",
+    "build": {
+        "dockerfile": "../Dockerfile-headless",
+        "context": ".."
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-vscode-remote.remote-containers"
+            ]
+        }
+    },
+    "workspaceFolder": "/app",
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached"
+    ],
+    "runArgs": [
+        "--cap-add=SYS_PTRACE",
+        "--security-opt",
+        "seccomp=unconfined"
+    ],
+    "postCreateCommand": "echo 'Container ready!'"
+}

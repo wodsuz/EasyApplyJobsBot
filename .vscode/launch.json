@@ -1,0 +1,59 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch EasyApply With All Configs",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "allConfigsRunner.py",
+            "env": {"PYTHONUNBUFFERED": "1"},
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug EasyApply With 1 Config",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "runner.py",
+            "env": {"PYTHONUNBUFFERED": "1"},
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Test importing frontend module into EasyApply",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "repository_wrapper.py",
+            "env": {"PYTHONUNBUFFERED": "1"},
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug All EasyApply Tests",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                "-s", "tests", // Path to the tests directory
+                "-p", "test_*.py"  // Pattern to match test files
+            ],
+            "env": {
+                "PYTHONUNBUFFERED": "1",
+            },
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug test_getting_job_details",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                "-s", "tests", 
+                "-p", "test_getting_job_details.py" 
+            ],
+            "env": {
+                "PYTHONUNBUFFERED": "1",
+            },
+            "console": "integratedTerminal"
+        }
+    ]
+}

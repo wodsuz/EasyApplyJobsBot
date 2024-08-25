@@ -1,10 +1,11 @@
 import math
+from typing import List
+
 import config
 import constants
 import models
 import repository_wrapper
 import utils
-import warnings
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -13,7 +14,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from utils import prGreen, prRed, prYellow
 from webdriver_manager.chrome import ChromeDriverManager
-from typing import List
 
 
 # This class is responsible for handling the LinkedIn job application process
@@ -102,7 +102,7 @@ class Linkedin:
                         verifiedJobs = repository_wrapper.verify_jobs(jobsForVerification)
 
                         for job in verifiedJobs:
-                            jobCounter = self.processJob(jobID=job.linkedinJobId, jobCounter=jobCounter)
+                            jobCounter = self.processJob(jobID=job.linkedin_job_id, jobCounter=jobCounter)
                                     
                 except TimeoutException:
                     prRed("0 jobs found for: " + urlWords[0] + " in " + urlWords[1])
@@ -160,6 +160,7 @@ class Linkedin:
         jobsForVerification = []
         companyName = None
         jobTitle = None
+        workPlaceType = None
 
         for jobItem in jobsListItems:
             if self.exists(jobItem, By.XPATH, ".//*[contains(text(), 'Applied')]"):
@@ -178,24 +179,42 @@ class Linkedin:
                         prYellow(f"⚠️  Not adding a job as the company '{companyName}' is blacklisted")
                     continue
 
+            if companyName is None:
+                utils.logDebugMessage("Couldn't find companyName", utils.MessageTypes.WARNING)
+                continue
+
             jobTitleAnchor = jobItem.find_elements(By.XPATH, ".//a[contains(@class, 'job-card-container__link job-card-list__title')]")
             if len(jobTitleAnchor) > 0:
                 allTexts = jobTitleAnchor[0].text.split("\n")
                 uniqueTexts = list(dict.fromkeys(allTexts))
                 jobTitle = uniqueTexts[0].strip()
+
                 if self.isTitleBlacklisted(jobTitle):
                     if config.displayWarnings:
                         prYellow(f"⚠️  Not adding a job as the title '{jobTitle}' is blacklisted")
                     continue
             
+            if jobTitle is None:
+                utils.logDebugMessage("Couldn't find jobTitle", utils.MessageTypes.WARNING)
+                continue
+
+            workPlaceTypeSpan = jobItem.find_elements(By.XPATH, ".//li[contains(@class, 'job-card-container__metadata-item')]")
+            if len(workPlaceTypeSpan) > 0:
+                firstSpanText = workPlaceTypeSpan[0].text.strip()
+                textWithinParentheses = utils.extractTextWithinParentheses(firstSpanText)
+                workPlaceType = self.verifyWorkPlaceType(textWithinParentheses)
+            
             jobId = jobItem.get_attribute("data-occludable-job-id")
-            if jobId and jobTitle and companyName:
-                jobsForVerification.append(models.JobForVerification(
-                    linkedinJobId=jobId.split(":")[-1],
-                    title=jobTitle,
-                    company=companyName))
-            else:
-                utils.logDebugMessage("Couldn't find jobID, jobTitle or companyName", utils.MessageTypes.WARNING)
+
+            if jobId is None:
+                utils.logDebugMessage("Couldn't find jobID", utils.MessageTypes.WARNING)
+                continue
+
+            jobsForVerification.append(models.JobForVerification(
+                linkedin_job_id=jobId.split(":")[-1],
+                title=jobTitle,
+                company=companyName,
+                workplace_type=workPlaceType))
 
         return jobsForVerification
     
@@ -293,46 +312,15 @@ class Linkedin:
         jobTitle = ""
 
         try:
-            jobTitle = self.getJobTitleMethod2()
+            jobTitleElement = self.driver.find_element(By.CSS_SELECTOR, "h1.t-24.t-bold.inline")
+            jobTitle = jobTitleElement.text.strip()
         except Exception as e:
             utils.logDebugMessage("in getting jobTitle", utils.MessageTypes.WARNING, e)
 
         return jobTitle
     
 
-    def getJobTitleMethod1(self):
-        warnings.warn("This method is deprecated due to changes in LinkedIn's HTML structure. Use getJobTitleMethod2 instead.",
-                      DeprecationWarning, stacklevel=2)
-
-        jobTitleElement = self.driver.find_element(By.XPATH, "//h1[contains(@class, 'job-title')]")
-        return jobTitleElement.text.strip()
-    
-
-    def getJobTitleMethod2(self):
-        jobTitleElement = self.driver.find_element(By.CSS_SELECTOR, "h1.t-24.t-bold.inline")
-        return jobTitleElement.text.strip()
-    
-
     def getJobCompany(self):
-        return self.getJobCompanyMethod2()
-    
-
-    def getJobCompanyMethod1(self, primary_description_div):
-        warnings.warn("This method is deprecated due to changes in LinkedIn's HTML structure. Use getJobCompanyMethod2 instead.",
-                        DeprecationWarning, stacklevel=2)
-        jobCompany = ""
-
-        if self.exists(primary_description_div, By.CSS_SELECTOR, "a.app-aware-link"):
-            # Inside this container, find the company name link.
-            jobCompanyLink = primary_description_div.find_element(By.CSS_SELECTOR, "a.app-aware-link")
-            jobCompany = jobCompanyLink.text.strip()
-        else:
-            utils.logDebugMessage("in getting jobCompany", utils.MessageTypes.WARNING)
-
-        return jobCompany
-    
-
-    def getJobCompanyMethod2(self):
         jobCompany = ""
 
         if self.exists(self.driver, By.XPATH, "//div[contains(@class, 'job-details-jobs-unified-top-card__company-name')]//a"):
@@ -343,7 +331,7 @@ class Linkedin:
         else:
             utils.logDebugMessage("in getting jobCompany card", utils.MessageTypes.WARNING)
 
-        return jobCompany
+        return jobCompany        
     
     
     def getJobLocation(self, primary_description_div):
@@ -386,11 +374,20 @@ class Linkedin:
         jobWorkPlaceType = ""
 
         try:
-            jobWorkPlaceType = self.driver.find_element(By.XPATH,"//span[contains(@class, 'workplace-type')]").get_attribute("innerHTML").strip()
+            jobWorkPlaceTypeElement = self.driver.find_element(By.XPATH, "//li[contains(@class, 'job-details-jobs-unified-top-card__job-insight')]/span/span")
+            firstSpanText = jobWorkPlaceTypeElement.text.strip()
+            jobWorkPlaceType = self.verifyWorkPlaceType(firstSpanText)
         except Exception as e:
             utils.logDebugMessage("in getting jobWorkPlaceType", utils.MessageTypes.WARNING, e)
             
         return jobWorkPlaceType
+    
+
+    def verifyWorkPlaceType(self, text: str):
+        if "Remote" or "On-site" or "Hybrid" in text:
+            return text
+        else:
+            return None
 
 
     # TODO Use jobDetail later
@@ -472,6 +469,7 @@ class Linkedin:
         return jobCounter
 
 
+    # TODO Move to logger.py (after splitting utils.py)
     def displayWriteResults(self, lineToWrite: str):
         try:
             prYellow(lineToWrite)

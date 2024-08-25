@@ -3,6 +3,7 @@ import os
 import random
 import time
 import traceback
+import re
 from enum import Enum
 from typing import List
 
@@ -173,6 +174,18 @@ def sleepInBetweenActions(bottom: int = constants.botSleepInBetweenActionsBottom
 def sleepInBetweenBatches(currentBatch: int, bottom: int = constants.botSleepInBetweenBatchesBottom, top: int = constants.botSleepInBetweenBatchesTop):
     if (currentBatch % constants.batchSize == 0):
         time.sleep(random.uniform(bottom, top))
+
+
+def extractTextWithinParentheses(text):
+    # Pattern to match text within parentheses
+    pattern = r"\((.*?)\)"
+    match = re.search(pattern, text)
+    
+    if match:
+        # Return the content within the first set of parentheses
+        return match.group(1)  # `group(1)` returns the content within the parentheses
+    else:
+        return ""
 
 
 class LinkedinUrlGenerator:
