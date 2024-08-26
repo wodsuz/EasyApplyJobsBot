@@ -59,8 +59,8 @@ class test_getting_job_details_from_linkedin_job_post(unittest.TestCase):
         job_title_from_search_page = job_details_from_search_page.title
 
         # Open page with a job with a title property
-        self.processor.goToJobPage(job_details_from_search_page.linkedin_job_id)
-        job_details_from_job_page = self.processor.getJobProperties(job_details_from_search_page.linkedin_job_id)
+        self.processor.goToJobPage(job_details_from_search_page.linkedinJobId)
+        job_details_from_job_page = self.processor.getJobPropertiesFromJobPage(job_details_from_search_page.linkedinJobId)
 
         # Getting the job title
         job_title_from_job_page = job_details_from_job_page.title
@@ -93,8 +93,8 @@ class test_getting_job_details_from_linkedin_job_post(unittest.TestCase):
         job_company_from_search_page = job_details_from_search_page.company
 
         # Open page with a job with a company property
-        self.processor.goToJobPage(job_details_from_search_page.linkedin_job_id)
-        job_details_from_job_page = self.processor.getJobProperties(job_details_from_search_page.linkedin_job_id)
+        self.processor.goToJobPage(job_details_from_search_page.linkedinJobId)
+        job_details_from_job_page = self.processor.getJobPropertiesFromJobPage(job_details_from_search_page.linkedinJobId)
 
         # Getting the job company
         job_company_from_job_page = job_details_from_job_page.company
@@ -113,8 +113,8 @@ class test_getting_job_details_from_linkedin_job_post(unittest.TestCase):
         job_details_from_search_page = self.find_job_with_title()
 
         # Open page with a job with a title property
-        self.processor.goToJobPage(job_details_from_search_page.linkedin_job_id)
-        job_details_from_job_page = self.processor.getJobProperties(job_details_from_search_page.linkedin_job_id)
+        self.processor.goToJobPage(job_details_from_search_page.linkedinJobId)
+        job_details_from_job_page = self.processor.getJobPropertiesFromJobPage(job_details_from_search_page.linkedinJobId)
 
         # Getting the job location
         job_location_from_job_page = job_details_from_job_page.location
@@ -128,8 +128,8 @@ class test_getting_job_details_from_linkedin_job_post(unittest.TestCase):
         job_details_from_search_page = self.find_job_with_title()
 
         # Open page with a job with a title property
-        self.processor.goToJobPage(job_details_from_search_page.linkedin_job_id)
-        job_details_from_job_page = self.processor.getJobProperties(job_details_from_search_page.linkedin_job_id)
+        self.processor.goToJobPage(job_details_from_search_page.linkedinJobId)
+        job_details_from_job_page = self.processor.getJobPropertiesFromJobPage(job_details_from_search_page.linkedinJobId)
 
         # Getting the job posted date
         job_posted_date_from_job_page = job_details_from_job_page.posted_date
@@ -157,8 +157,8 @@ class test_getting_job_details_from_linkedin_job_post(unittest.TestCase):
         job_details_from_search_page = self.find_job_with_title()
 
         # Open page with a job with a title property
-        self.processor.goToJobPage(job_details_from_search_page.linkedin_job_id)
-        job_details_from_job_page = self.processor.getJobProperties(job_details_from_search_page.linkedin_job_id)
+        self.processor.goToJobPage(job_details_from_search_page.linkedinJobId)
+        job_details_from_job_page = self.processor.getJobPropertiesFromJobPage(job_details_from_search_page.linkedinJobId)
 
         # Getting the job number of applicants
         number_of_applicants_from_job_page = job_details_from_job_page.applicants_at_time_of_applying
@@ -179,6 +179,11 @@ class test_getting_job_details_from_linkedin_job_post(unittest.TestCase):
             f"The number of applicants string should contain 'applicant' or 'people'."
             f"Got: {number_of_applicants_from_job_page}"
         )
+
+
+    def test_getting_number_of_applicants_from_job_post_page_when_workplace_type_is_empty(self):
+        # TODO: Implement this test
+        pass
     
 
     def test_getting_job_workplace_type_from_search_page(self):
@@ -202,6 +207,11 @@ class test_getting_job_details_from_linkedin_job_post(unittest.TestCase):
         )
 
 
+    def test_getting_empty_job_workplace_type_from_search_page(self):
+        # TODO: Implement this test
+        pass
+
+
     def test_getting_job_workplace_type_from_job_post_page(self):
         # Find the first job that contains non-empty title
         job_details_from_search_page = self.find_job_with_workplace_type()
@@ -209,7 +219,7 @@ class test_getting_job_details_from_linkedin_job_post(unittest.TestCase):
 
         # Open page with a job with a title property
         self.processor.goToJobPage(job_details_from_search_page.linkedinJobId)
-        job_details_from_job_page = self.processor.getJobProperties(job_details_from_search_page.linkedinJobId)
+        job_details_from_job_page = self.processor.getJobPropertiesFromJobPage(job_details_from_search_page.linkedinJobId)
 
         # Getting the job workplace type
         job_workplace_type_from_job_page = job_details_from_job_page.workplace_type
@@ -231,3 +241,13 @@ class test_getting_job_details_from_linkedin_job_post(unittest.TestCase):
             f"The workplace type should be the same on job search page and job post page."
             f"Got {job_workplace_type_from_search_page} from search page and {job_workplace_type_from_job_page} from job post page."
         )
+
+
+    def test_getting_empty_job_workplace_type_from_job_post_page(self):
+        # TODO: Implement this test
+        pass
+
+    
+    def test_getting_job_description_from_job_post_page(self):
+        # TODO: Implement this test
+        pass

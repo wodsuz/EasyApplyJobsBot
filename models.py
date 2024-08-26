@@ -1,5 +1,4 @@
 from dataclasses import asdict, dataclass
-from dataclasses import asdict, dataclass
 
 
 @dataclass
@@ -16,11 +15,10 @@ class Job:
 
 @dataclass
 class JobForVerification:
-    linkedin_job_id: str
+    linkedinJobId: str
     title: str
     company: str
     workplaceType: str
-    workplace_type: str
 
     def to_dict(self):
         return asdict(self)
