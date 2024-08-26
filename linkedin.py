@@ -1,6 +1,8 @@
 import math
 from typing import List
 
+from typing import List
+
 import config
 import constants
 import models
@@ -204,6 +206,16 @@ class Linkedin:
                 textWithinParentheses = utils.extractTextWithinParentheses(firstSpanText)
                 workPlaceType = self.verifyWorkPlaceType(textWithinParentheses)
             
+            if jobTitle is None:
+                utils.logDebugMessage("Couldn't find jobTitle", utils.MessageTypes.WARNING)
+                continue
+
+            workPlaceTypeSpan = jobItem.find_elements(By.XPATH, ".//li[contains(@class, 'job-card-container__metadata-item')]")
+            if len(workPlaceTypeSpan) > 0:
+                firstSpanText = workPlaceTypeSpan[0].text.strip()
+                textWithinParentheses = utils.extractTextWithinParentheses(firstSpanText)
+                workPlaceType = self.verifyWorkPlaceType(textWithinParentheses)
+            
             jobId = jobItem.get_attribute("data-occludable-job-id")
 
             if jobId is None:
@@ -211,10 +223,10 @@ class Linkedin:
                 continue
 
             jobsForVerification.append(models.JobForVerification(
-                linkedin_job_id=jobId.split(":")[-1],
+                linkedinJobId=jobId.split(":")[-1],
                 title=jobTitle,
                 company=companyName,
-                workplace_type=workPlaceType))
+                workplaceType=workPlaceType))
 
         return jobsForVerification
     
@@ -314,6 +326,8 @@ class Linkedin:
         try:
             jobTitleElement = self.driver.find_element(By.CSS_SELECTOR, "h1.t-24.t-bold.inline")
             jobTitle = jobTitleElement.text.strip()
+            jobTitleElement = self.driver.find_element(By.CSS_SELECTOR, "h1.t-24.t-bold.inline")
+            jobTitle = jobTitleElement.text.strip()
         except Exception as e:
             utils.logDebugMessage("in getting jobTitle", utils.MessageTypes.WARNING, e)
 
@@ -377,10 +391,20 @@ class Linkedin:
             jobWorkPlaceTypeElement = self.driver.find_element(By.XPATH, "//li[contains(@class, 'job-details-jobs-unified-top-card__job-insight')]/span/span")
             firstSpanText = jobWorkPlaceTypeElement.text.strip()
             jobWorkPlaceType = self.verifyWorkPlaceType(firstSpanText)
+            jobWorkPlaceTypeElement = self.driver.find_element(By.XPATH, "//li[contains(@class, 'job-details-jobs-unified-top-card__job-insight')]/span/span")
+            firstSpanText = jobWorkPlaceTypeElement.text.strip()
+            jobWorkPlaceType = self.verifyWorkPlaceType(firstSpanText)
         except Exception as e:
             utils.logDebugMessage("in getting jobWorkPlaceType", utils.MessageTypes.WARNING, e)
             
         return jobWorkPlaceType
+    
+
+    def verifyWorkPlaceType(self, text: str):
+        if "Remote" or "On-site" or "Hybrid" in text:
+            return text
+        else:
+            return None
     
 
     def verifyWorkPlaceType(self, text: str):
@@ -469,6 +493,7 @@ class Linkedin:
         return jobCounter
 
 
+    # TODO Move to logger.py (after splitting utils.py)
     # TODO Move to logger.py (after splitting utils.py)
     def displayWriteResults(self, lineToWrite: str):
         try:

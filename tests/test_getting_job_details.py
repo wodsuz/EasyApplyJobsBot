@@ -40,7 +40,7 @@ class test_getting_job_details_from_linkedin_job_post(unittest.TestCase):
 
     def find_job_with_workplace_type(self) -> JobForVerification:
         # Find the first job that contains non-empty workplace type
-        job_with_workplace_type = next((job for job in self.jobs_from_search_page if job.workplace_type), None)
+        job_with_workplace_type = next((job for job in self.jobs_from_search_page if job.workplaceType), None)
         return job_with_workplace_type
     
 
@@ -189,7 +189,7 @@ class test_getting_job_details_from_linkedin_job_post(unittest.TestCase):
         self.assertTrue(job_details_from_search_page, "The job details should not be empty, there should be at least one job with workplace type.")
 
         # Getting the job workplace type
-        job_workplace_type_from_search_page = job_details_from_search_page.workplace_type
+        job_workplace_type_from_search_page = job_details_from_search_page.workplaceType
 
         # Assert that the string is not empty
         self.assertTrue(job_workplace_type_from_search_page, "The workplace type should not be empty.")
@@ -205,11 +205,11 @@ class test_getting_job_details_from_linkedin_job_post(unittest.TestCase):
     def test_getting_job_workplace_type_from_job_post_page(self):
         # Find the first job that contains non-empty title
         job_details_from_search_page = self.find_job_with_workplace_type()
-        job_workplace_type_from_search_page = job_details_from_search_page.workplace_type
+        job_workplace_type_from_search_page = job_details_from_search_page.workplaceType
 
         # Open page with a job with a title property
-        self.processor.goToJobPage(job_details_from_search_page.linkedin_job_id)
-        job_details_from_job_page = self.processor.getJobProperties(job_details_from_search_page.linkedin_job_id)
+        self.processor.goToJobPage(job_details_from_search_page.linkedinJobId)
+        job_details_from_job_page = self.processor.getJobProperties(job_details_from_search_page.linkedinJobId)
 
         # Getting the job workplace type
         job_workplace_type_from_job_page = job_details_from_job_page.workplace_type

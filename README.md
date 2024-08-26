@@ -27,6 +27,12 @@ NOTE: If you need help setting up or running the bot locally [join our Discord c
 - Run `docker-compose up --build -d test`
 
 
+### Debug with Dev Containers in VSCode
+
+- Install Dev Containers VSCode extension
+- In the VSCode's search bar find Dev Containers' command "Rebuild without cache and reopen in a container"
+
+
 ### Run without Docker
 
 - clone the repo `git clone https://github.com/GabrielGircenko/EasyApplyJobsBot`
@@ -43,10 +49,20 @@ NOTE: If you need help setting up or running the bot locally [join our Discord c
 - Check Applied Jobs DATA .txt file is generate under /data folder
 
 
-### Debug with Dev Containers in VSCode
+### Debug locally in VSCode
 
-- Install Dev Containers VSCode extension
-- In the VSCode's search bar find Dev Containers' command "Rebuild without cache and reopen in a container"
+- in config.py
+  - leave chromeDriverPath empty or add your local path to it
+  - add your chromeProfilePath (instructions to find it are in the config.py)
+- under 'Run and Debug' use 'Debug EasyApply With 1 Config'
+- after the first run, add your chromeDriverPath to config.py
+- Then you might have issues with chromedriver not having the right permissions. Here is the solution for MacOS. 
+   - after starting the debugging at least once, you should have the chromedriver installed
+   - add path to that chromedriver in config.py
+   - run something like this (adjust the path to your local environment)
+   ```chmod +x /Users/your_user/.wdm/drivers/chromedriver/mac_version_/version_number/chromedriver-mac-mac_version/chromedriver```
+   - extra step is to verify the permissions with something like:
+   ```ls -l /Users/your_user/.wdm/drivers/chromedriver/mac_version/version_number/chromedriver-mac-mac_version/chromedriver```
 
 
 ## Features 💡

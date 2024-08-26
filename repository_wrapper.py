@@ -1,4 +1,5 @@
 import utils, models
+from typing import List
 from dotenv import load_dotenv
 
 initialized = False
@@ -28,7 +29,7 @@ def import_backend_module():
         return False, None
     
 
-def verify_jobs(jobs):
+def verify_jobs(jobs: models.JobForVerification) -> List[models.JobForVerification]:
     if initialized:
         try:
             utils.logDebugMessage(f"Verifying jobs: {jobs}")
