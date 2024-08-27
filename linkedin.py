@@ -406,7 +406,7 @@ class Linkedin:
         if any(text in keyword for keyword in keywords):
             return text
         else:
-            return None
+            return ""
 
 
     # TODO Use jobDetail later
