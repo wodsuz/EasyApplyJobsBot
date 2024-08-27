@@ -6,10 +6,11 @@ import traceback
 import re
 from enum import Enum
 from typing import List
+from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 
 import config
 import constants
-from selenium import webdriver
 
 
 def chromeBrowserOptions():
@@ -189,9 +190,16 @@ def extractTextWithinParentheses(text):
 
 
 class LinkedinUrlGenerator:
+
+
     @staticmethod
     def getGeneralSearchUrl():
         return constants.searchJobsUrl
+    
+
+    @staticmethod
+    def getEasyApplySearchUrl():
+        return constants.searchEasyApplyJobsUrl
 
 
     def generateSearchUrls(self):

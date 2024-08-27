@@ -119,16 +119,20 @@ class Linkedin:
     def goToJobsSearchPage(self):
         searchUrl = utils.LinkedinUrlGenerator.getGeneralSearchUrl()
         self.goToUrl(searchUrl)
-        utils.sleepInBetweenActions()
+
+
+    def goToEasyApplyJobsSearchPage(self):
+        searchUrl = utils.LinkedinUrlGenerator.getEasyApplySearchUrl()
+        self.goToUrl(searchUrl)
 
     
-    def goToUrl(self, url):
+    def goToUrl(self, url: str):
         self.driver.get(url)
         utils.sleepInBetweenActions()
         
 
-    def goToJobPage(self, jobID):
-        jobPage = 'https://www.linkedin.com/jobs/view/' + str(jobID)
+    def goToJobPage(self, jobID: str):
+        jobPage = 'https://www.linkedin.com/jobs/view/' + jobID
         self.goToUrl(jobPage)
         return jobPage
 
@@ -237,18 +241,15 @@ class Linkedin:
         
 
     def handleJobPost(self, jobPage, jobProperties: models.Job, jobCounter: models.JobCounter):
-        if self.exists(self.driver, By.CSS_SELECTOR, "button[aria-label*='Easy Apply']"):
-            # button = self.driver.find_element(By.XPATH,
-            #     '//button[contains(@class, "jobs-apply-button")]')
-            # button = self.driver.find_element(By.CSS_SELECTOR, "button:contains('Easy Apply')")
-            button = self.driver.find_element(By.CSS_SELECTOR, "button[aria-label*='Easy Apply']")
-            utils.interact(lambda : self.click_button(button))
+        if self.isEasyApplyButtonDisplayed():
+            self.clickEasyApplyButton()
             
-            # Now, the easy apply popup should be open
-            if self.exists(self.driver, By.CSS_SELECTOR, "button[aria-label='Submit application']"):
-                jobCounter = self.handleSubmitPage(jobPage, jobProperties, jobCounter)
-            elif self.exists(self.driver, By.CSS_SELECTOR, "button[aria-label='Continue to next step']"):
-                jobCounter = self.handleMultiplePages(jobPage, jobProperties, jobCounter)
+            if self.isApplicationPopupDisplayed():
+                # Now, the easy apply popup should be open
+                if self.exists(self.driver, By.CSS_SELECTOR, constants.submitApplicationButtonCSS):
+                    jobCounter = self.handleSubmitPage(jobPage, jobProperties, jobCounter)
+                elif self.exists(self.driver, By.CSS_SELECTOR, constants.nextPageButtonCSS):
+                    jobCounter = self.handleMultiplePages(jobPage, jobProperties, jobCounter)
 
         else:
             jobCounter.skipped_already_applied += 1
@@ -441,7 +442,7 @@ class Linkedin:
 
     
     def handleMultiplePages(self, jobPage, jobProperties: models.Job, jobCounter: models.JobCounter):
-        utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR, "button[aria-label='Continue to next step']"))
+        self.clickNextButton()
 
         comPercentage = self.driver.find_element(By.XPATH,'html/body/div[3]/div/div/div[2]/div/div/span').text
         percentage = int(comPercentage[0:comPercentage.index("%")])
@@ -449,10 +450,12 @@ class Linkedin:
         try:
             for _ in range(applyPages):
                 self.handleApplicationStep(jobProperties)
-                utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Continue to next step']"))
+                if self.isApplicationStepDisplayed():
+                    self.clickNextButton()
 
             self.handleApplicationStep(jobProperties)
-            utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Review your application']"))
+            if self.isLastApplicationStepDisplayed():
+                self.clickReviewApplicationButton()
 
             jobCounter = self.handleSubmitPage(jobPage, jobProperties, jobCounter)
         except:
@@ -478,12 +481,15 @@ class Linkedin:
         if config.followCompanies != is_followCompany_checked:
             utils.interact(lambda : self.click_button(followCompany))
 
-        utils.interact(lambda : self.clickIfExists(By.CSS_SELECTOR,"button[aria-label='Submit application']"))
-        repository_wrapper.applied_to_job(jobProperties)
-        lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥳 Just Applied to this job: " + str(jobPage)
-        self.displayWriteResults(lineToWrite)
+        if self.isReviewApplicationStepDisplayed():
+            self.clickSubmitApplicationButton()
+            if self.isApplicationSubmittedDialogDisplayed():
+                repository_wrapper.applied_to_job(jobProperties)
+                lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥳 Just Applied to this job: " + str(jobPage)
+                self.displayWriteResults(lineToWrite)
 
-        jobCounter.applied += 1
+                jobCounter.applied += 1
+
         return jobCounter
 
 
@@ -551,6 +557,52 @@ class Linkedin:
         return len(parent.find_elements(by, value)) > 0
 
 
+    def isEasyApplyButtonDisplayed(self):
+        return self.exists(self.driver, By.CSS_SELECTOR, constants.easyApplyButtonCSS)
+
+
+    def clickEasyApplyButton(self):
+        button = self.driver.find_element(By.CSS_SELECTOR, constants.easyApplyButtonCSS)
+        utils.interact(lambda : self.click_button(button))
+
+
+    def isApplicationPopupDisplayed(self):
+        return self.exists(self.driver, By.XPATH, constants.jobApplicationHeaderXPATH)
+
+
+    def isApplicationStepDisplayed(self):
+        return self.exists(self.driver, By.CSS_SELECTOR, constants.nextPageButtonCSS)
+    
+
+    def clickNextButton(self):
+        button = self.driver.find_element(By.CSS_SELECTOR, constants.nextPageButtonCSS)
+        utils.interact(lambda : self.click_button(button))
+    
+
+    def isLastApplicationStepDisplayed(self):
+        return self.exists(self.driver, By.CSS_SELECTOR, constants.reviewApplicationButtonCSS)
+    
+
+    def clickReviewApplicationButton(self):
+        button = self.driver.find_element(By.CSS_SELECTOR, constants.reviewApplicationButtonCSS)
+        utils.interact(lambda : self.click_button(button))
+    
+
+    def isReviewApplicationStepDisplayed(self):
+        return self.exists(self.driver, By.CSS_SELECTOR, constants.submitApplicationButtonCSS)
+    
+
+    def clickSubmitApplicationButton(self):
+        button = self.driver.find_element(By.CSS_SELECTOR, constants.submitApplicationButtonCSS)
+        utils.interact(lambda : self.click_button(button))
+
+
+    def isApplicationSubmittedDialogDisplayed(self):
+        dialog = self.driver.find_element(By.CSS_SELECTOR, "div[data-test-modal][role='dialog']")
+        dismiss_button_present = self.exists(dialog, By.CSS_SELECTOR, "button[aria-label='Dismiss']")
+        return dismiss_button_present
+
+
     def handleTextInput(self, group, questionLabel, by, value):
         # Locate the input element  
         inputElement = group.find_element(by, value)
@@ -603,5 +655,5 @@ class Linkedin:
             button.click()
         except Exception as e:
             # If click fails, use JavaScript to click on the button
-            pass
+            self.driver.execute_script("arguments[0].click();", button)
 

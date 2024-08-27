@@ -54,6 +54,21 @@
                 "PYTHONUNBUFFERED": "1",
             },
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug test_easy_apply",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "discover",
+                "-s", "tests", 
+                "-p", "test_easy_apply.py" 
+            ],
+            "env": {
+                "PYTHONUNBUFFERED": "1",
+            },
+            "console": "integratedTerminal"
         }
     ]
 }

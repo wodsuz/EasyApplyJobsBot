@@ -2,6 +2,7 @@ websiteUrl = "www.automated-bots.com"
 contactUrl = "https://www.automated-bots.com/contact"
 
 searchJobsUrl = "https://www.linkedin.com/jobs/search/"
+searchEasyApplyJobsUrl = "https://www.linkedin.com/jobs/search/?f_AL=true"
 angelCoUrl = "https://angel.co/login"
 globalLogicUrl = "https://www.globallogic.com/career-search-page/"
 
@@ -21,14 +22,27 @@ batchSize = 10
 botSleepInBetweenSearchesBottom = 60
 botSleepInBetweenSearchesTop = 180
 
+
 # Webdriver Elements 
 jobsPageUrl = "https://www.linkedin.com/jobs"
-jobsPageCareerClass = "//div[contains(@class, 'careers')]"
 testJobUrl = "https://www.linkedin.com/jobs/search/?currentJobId=3577461385&distance=25&f_AL=true&f_E=2&f_JT=F%2CP%2CC&f_SB2=3&f_WT=1%2C2%2C3&geoId=102221843&keywords=frontend"
-totalJobs = "//small"
 testPageUrl = testJobUrl +"&start="+ str(2)
-offersPerPage = "//li[@data-occludable-job-id]"
-easyApplyButton = '//button[contains(@class, "jobs-apply-button")]'
+
+
+# Xpath Selectors
+offersPerPageXPATH = "//li[@data-occludable-job-id]"
+jobsPageCareerClassXPATH = "//div[contains(@class, 'careers')]"
+totalJobsXPATH = "//small"
+jobApplicationHeaderXPATH = "//h2[@id='jobs-apply-header']"
+
+
+
+# CSS Selectors
+easyApplyButtonCSS = "button[aria-label*='Easy Apply']"
+nextPageButtonCSS = "button[aria-label='Continue to next step']"
+reviewApplicationButtonCSS = "button[aria-label*='Review']"
+submitApplicationButtonCSS = "button[aria-label='Submit application']"
+
 
 # TO DO ADD OTHER PRINT CONSTANTS
 

@@ -180,3 +180,6 @@ configs/
 
 # data folder
 data/
+
+# test debug
+debug/
