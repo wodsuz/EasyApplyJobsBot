@@ -447,7 +447,7 @@ class Linkedin:
 
         # TODO Change the logic when answering to questions is implemented
         if self.isErrorMessageDisplayed():
-            jobCounter = self.cannotApply(jobProperties, jobCounter)
+            jobCounter = self.cannotApply(jobPage, jobProperties, jobCounter)
             return jobCounter
         
         comPercentage = self.driver.find_element(By.XPATH,'html/body/div[3]/div/div/div[2]/div/div/span').text
@@ -465,12 +465,12 @@ class Linkedin:
 
             jobCounter = self.handleSubmitPage(jobPage, jobProperties, jobCounter)
         except:
-            jobCounter = self.cannotApply(jobProperties, jobCounter)
+            jobCounter = self.cannotApply(jobPage, jobProperties, jobCounter)
 
         return jobCounter
     
 
-    def cannotApply(self, jobProperties: models.Job, jobCounter: models.JobCounter) -> models.JobCounter:
+    def cannotApply(self, jobPage, jobProperties: models.Job, jobCounter: models.JobCounter) -> models.JobCounter:
         jobCounter.skipped_unanswered_questions += 1
         # TODO Instead of except, output which questions need to be answered
         lineToWrite = self.getLogTextForJobProperties(jobProperties, jobCounter) + " | " + "* 🥵 Couldn't apply to this job! Extra info needed. Link: " + str(jobPage)
