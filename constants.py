@@ -36,12 +36,12 @@ totalJobsXPATH = "//small"
 jobApplicationHeaderXPATH = "//h2[@id='jobs-apply-header']"
 
 
-
 # CSS Selectors
 easyApplyButtonCSS = "button[aria-label*='Easy Apply']"
 nextPageButtonCSS = "button[aria-label='Continue to next step']"
 reviewApplicationButtonCSS = "button[aria-label*='Review']"
 submitApplicationButtonCSS = "button[aria-label='Submit application']"
+errorMessageForNecessaryFiledCSS = "div.artdeco-inline-feedback.artdeco-inline-feedback--error[data-test-form-element-error-messages]"
 
 
 # TO DO ADD OTHER PRINT CONSTANTS
