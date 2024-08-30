@@ -178,6 +178,9 @@ class Linkedin:
             companyNameSpan = jobItem.find_elements(By.XPATH, ".//span[contains(@class, 'job-card-container__primary-description')]")
             if companyNameSpan:
                 full_description = companyNameSpan[0].text.strip()
+                
+                textWithinParentheses = utils.extractTextWithinParentheses(full_description)
+                workPlaceType = self.verifyWorkPlaceType(textWithinParentheses)
 
                 if '·' in full_description:
                     companyName = full_description.split('·')[0].strip()
@@ -207,12 +210,6 @@ class Linkedin:
             if jobTitle is None:
                 utils.logDebugMessage("Couldn't find jobTitle", utils.MessageTypes.WARNING)
                 continue
-
-            workPlaceTypeSpan = jobItem.find_elements(By.XPATH, ".//li[contains(@class, 'job-card-container__metadata-item')]")
-            if len(workPlaceTypeSpan) > 0:
-                firstSpanText = workPlaceTypeSpan[0].text.strip()
-                textWithinParentheses = utils.extractTextWithinParentheses(firstSpanText)
-                workPlaceType = self.verifyWorkPlaceType(textWithinParentheses)
             
             if jobTitle is None:
                 utils.logDebugMessage("Couldn't find jobTitle", utils.MessageTypes.WARNING)
