@@ -6,6 +6,7 @@ import constants
 import models
 import repository_wrapper
 import utils
+import re
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -360,8 +361,12 @@ class Linkedin:
         jobPostedDate = ""
 
         try:
-            postedDateSpan = primary_description_div.find_element(By.XPATH, ".//span[contains(@class, 'tvm__text--low-emphasis')][3]")
-            jobPostedDate = postedDateSpan.text.strip()
+            primary_description_text = primary_description_div.text  # Get all text from the div
+            # Regex pattern to find patterns like '6 hours ago', '2 days ago', etc.
+            match = re.search(r'\b\d+\s+(seconds?|minutes?|hours?|days?|weeks?|months?)\s+ago\b', primary_description_text)
+            if match:
+                jobPostedDate = match.group(0)  # The whole matched text is the date
+
         except Exception as e:
             utils.logDebugMessage("Error in getting jobPostedDate", utils.MessageTypes.WARNING, e)
 
@@ -373,14 +378,15 @@ class Linkedin:
 
         try:
             # Find all spans with the class 'tvm__text--low-emphasis'
-            applicationsSpans = primary_description_div.find_elements(By.XPATH, ".//span[contains(@class, 'tvm__text--low-emphasis')]")
+            primaryDescriptionSpans = primary_description_div.find_elements(By.XPATH, ".//span[contains(@class, 'tvm__text--low-emphasis')]")
             # Loop through all found spans in reverse order because the number of applicants is usually the last one
-            for span in reversed(applicationsSpans):
+            for span in reversed(primaryDescriptionSpans):
                 span_text = span.text.strip()
-                # Check if the text contains a number and the keyword 'appl' (from 'applicants' or 'applications')
-                if any(char.isdigit() for char in span_text) and 'appl' in span_text.lower():
+                # Check if the text contains the keyword 'appl' (from 'applicants' or 'applications') and a number 
+                if 'appl' in span_text.lower() and any(char.isdigit() for char in span_text):
                     jobApplications = span_text
                     break
+
         except Exception as e:
             utils.logDebugMessage("Error in getting jobApplications", utils.MessageTypes.WARNING, e)
 
