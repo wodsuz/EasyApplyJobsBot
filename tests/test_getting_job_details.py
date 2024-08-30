@@ -249,5 +249,22 @@ class test_getting_job_details_from_linkedin_job_post(unittest.TestCase):
 
     
     def test_getting_job_description_from_job_post_page(self):
-        # TODO: Implement this test
-        pass
+        # Find the first job that contains non-empty title
+        job_details_from_search_page = self.find_job_with_title()
+
+        # Open page with a job with a title property
+        self.processor.goToJobPage(job_details_from_search_page.linkedinJobId)
+        job_details_from_job_page = self.processor.getJobPropertiesFromJobPage(job_details_from_search_page.linkedinJobId)
+
+        # Getting the job description
+        job_description_from_job_page = job_details_from_job_page.description
+
+        # Assert that the string is not empty
+        self.assertTrue(job_description_from_job_page, "The job description should not be empty.")
+
+        # Assert that the string contains multiple lines
+        self.assertTrue(
+            "\n" in job_description_from_job_page, 
+            f"The job description should contain multiple lines."
+            f"Got: {job_description_from_job_page}"
+        )

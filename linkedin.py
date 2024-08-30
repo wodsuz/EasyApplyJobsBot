@@ -385,7 +385,7 @@ class Linkedin:
                     break
 
         except Exception as e:
-            utils.logDebugMessage("Error in getting jobApplications", utils.MessageTypes.WARNING, e)
+            utils.logDebugMessage("in getting jobApplications", utils.MessageTypes.WARNING, e)
 
         return jobApplications
 
@@ -418,11 +418,13 @@ class Linkedin:
         jobDescription = ""
 
         try:
-            jobDescription = self.driver.find_element(By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div").text.replace("·", "|")
+            # Directly target the div with the specific ID that contains the job description
+            descriptionContainer = self.driver.find_element(By.ID, "job-details")
+            jobDescription = descriptionContainer.text  # This should get all text within, including nested spans and divs
         except Exception as e:
             utils.logDebugMessage("in getting jobDescription: ", utils.MessageTypes.WARNING, e)
 
-        return jobDescription   
+        return jobDescription
     
 
     def isJobBlacklisted(self, company: str, title: str):
