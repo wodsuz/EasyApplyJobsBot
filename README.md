@@ -11,13 +11,13 @@ NOTE: If you need help setting up or running the bot locally [join our Discord c
 
 ### Run inside a Docker container (recommended)
 
-- Clone the repo `git clone https://github.com/GabrielGircenko/EasyApplyJobsBot`
+- Clone the repo `git clone https://github.com/GabeGiro/EasyApplyJobsBot`
 - Setup configs
    - In the project directory, create 'configs' directory
    - Add your configuration
       - Copy the configs.py template into the 'configs' directory
       - Enter your linkedin credentials on the beginning of your_config.py file
-      - Add your search preferences. Checkout examples: [CTO in Croatia](https://gist.github.com/GabrielGircenko/fa5cd2200c291096e5fb138677892352) & [Data Scientist in Europe and North America](https://gist.github.com/GabrielGircenko/ec85ae125812b5052da2ed6ea6cdec85)
+      - Add your search preferences. Checkout examples: [CTO in Croatia](https://gist.github.com/GabeGiro/fa5cd2200c291096e5fb138677892352) & [Data Scientist in Europe and North America](https://gist.github.com/GabeGiro/ec85ae125812b5052da2ed6ea6cdec85)
       - Repeat for various searches
 - Install Docker
 - Run `docker-compose up --build -d`
@@ -35,13 +35,13 @@ NOTE: If you need help setting up or running the bot locally [join our Discord c
 
 ### Run without Docker
 
-- clone the repo `git clone https://github.com/GabrielGircenko/EasyApplyJobsBot`
+- clone the repo `git clone https://github.com/GabeGiro/EasyApplyJobsBot`
 - Make sure Python and pip is installed
 - Install dependencies with `pip3 install -r requirements.yaml`
 - You have 2 choices
    - SIMPLE: One config.py 
       - Enter your linkedin credentials on the beginning of config.py file
-      - Modify config.py according to your preferences. Checkout examples: [CTO in Croatia](https://gist.github.com/GabrielGircenko/fa5cd2200c291096e5fb138677892352) & [Data Scientist in Europe and North America](https://gist.github.com/GabrielGircenko/ec85ae125812b5052da2ed6ea6cdec85)
+      - Modify config.py according to your preferences. Checkout examples: [CTO in Croatia](https://gist.github.com/GabeGiro/fa5cd2200c291096e5fb138677892352) & [Data Scientist in Europe and North America](https://gist.github.com/GabeGiro/ec85ae125812b5052da2ed6ea6cdec85)
       - Run `python3 runner.py`
    - MULTIPLE SEARCHES: Multiple configurations
       - Follow the steps described in 'Add your configuration' step of the 'Docker Setup' explained above
@@ -96,11 +96,11 @@ NOTE: If you need help setting up or running the bot locally [join our Discord c
 | Blacklist companies that you don't want to apply                   | ✅           |
 | Blacklist offer titles that you don't want to apply                | ✅           |
 | Follow or unfollow companies after application                     | ✅           |
-| Answer skipped unanswered questions                                | ❌           | https://github.com/GabrielGircenko/EasyApplyJobsBot/issues/9
-| Use AI to fill and answer skipped unanswered questions             | ❌           | https://github.com/GabrielGircenko/EasyApplyJobsBot/issues/12
-| Don't apply to jobs posted by a Hiring member                      | ❌           | https://github.com/GabrielGircenko/EasyApplyJobsBot/issues/11
+| Answer skipped unanswered questions                                | ❌           | https://github.com/GabeGiro/EasyApplyJobsBot/issues/9
+| Use AI to fill and answer skipped unanswered questions             | ❌           | https://github.com/GabeGiro/EasyApplyJobsBot/issues/12
+| Don't apply to jobs posted by a Hiring member                      | ❌           | https://github.com/GabeGiro/EasyApplyJobsBot/issues/11
 | Output file in txt format                                          | ✅           | 
-| Output file in csv(excel) format                                   | ❌           | https://github.com/GabrielGircenko/EasyApplyJobsBot/issues/10
+| Output file in csv(excel) format                                   | ❌           | https://github.com/GabeGiro/EasyApplyJobsBot/issues/10
 
 If you would like to see a specific feature developed, please open an issue or suggest it in our [Discord community](https://discord.gg/y9fC2snanK)
 
