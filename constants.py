@@ -34,7 +34,7 @@ offersPerPageXPATH = "//li[@data-occludable-job-id]"
 jobsPageCareerClassXPATH = "//div[contains(@class, 'careers')]"
 totalJobsXPATH = "//small"
 jobApplicationHeaderXPATH = "//h2[@id='jobs-apply-header']"
-
+multiplePagePercentageXPATH = "//progress[contains(@class, 'artdeco-completeness-meter-linear__progress-element')]"
 
 # CSS Selectors
 easyApplyButtonCSS = "button[aria-label*='Easy Apply']"

@@ -390,7 +390,6 @@ class Linkedin:
         return jobApplications
 
 
-
     def getJobWorkPlaceTypeFromJobPage(self) -> str:
         jobWorkPlaceType = ""
 
@@ -455,8 +454,9 @@ class Linkedin:
             jobCounter = self.cannotApply(jobPage, jobProperties, jobCounter)
             return jobCounter
         
-        comPercentage = self.driver.find_element(By.XPATH,'html/body/div[3]/div/div/div[2]/div/div/span').text
-        percentage = int(comPercentage[0:comPercentage.index("%")])
+        percentageElement = self.driver.find_element(By.XPATH, constants.multiplePagePercentageXPATH)
+        comPercentage = percentageElement.get_attribute("value")
+        percentage = int(comPercentage)
         applyPages = math.ceil(100 / percentage) - 2
         try:
             for _ in range(applyPages):
