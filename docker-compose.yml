@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  easyapply-bot:
+    build: .
+    container_name: easyapply-jobs-bot
+    volumes:
+      # Mount data directory to persist job application results
+      - ./data:/app/data
+      # Mount cookies directory to persist login sessions
+      - ./cookies:/app/cookies
+      # Mount config file so users can edit it without rebuilding
+      - ./config.py:/app/config.py
+      # Mount additional questions file
+      - ./additionalQuestions.yaml:/app/additionalQuestions.yaml
+    environment:
+      - DISPLAY=:99
+    # Uncomment the following lines if you want to run in headless mode by default
+    # environment:
+    #   - DISPLAY=:99
+    #   - HEADLESS=true
+    restart: unless-stopped
+    # Remove stdin_open and tty if you want to run in detached mode
+    stdin_open: true
+    tty: true

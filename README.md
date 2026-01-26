@@ -93,6 +93,68 @@ showing how this can be used. To buy, support this project and help me add more 
 
 ## Installation 🔌
 
+### Option 1: Docker Installation (Recommended) 🐳
+
+The easiest way to run the bot is using Docker. This method handles all dependencies automatically.
+
+**Prerequisites:**
+- Docker and Docker Compose installed on your system
+- [Install Docker](https://docs.docker.com/get-docker/) if you haven't already
+
+**Steps:**
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/wodsuz/EasyApplyJobsBot
+   cd EasyApplyJobsBot
+   ```
+
+2. Configure your settings:
+   - Edit `config.py` and enter your LinkedIn credentials (email and password) on lines 7 and 8
+   - Modify other settings in `config.py` according to your preferences
+   - Optionally edit `additionalQuestions.yaml` for custom question answers
+
+3. Build and run with Docker Compose:
+   ```bash
+   docker-compose up --build
+   ```
+
+   Or run in detached mode (background):
+   ```bash
+   docker-compose up -d --build
+   ```
+
+4. View logs:
+   ```bash
+   docker-compose logs -f
+   ```
+
+5. Stop the bot:
+   ```bash
+   docker-compose down
+   ```
+
+**Alternative: Using Docker directly (without docker-compose):**
+
+1. Build the Docker image:
+   ```bash
+   docker build -t easyapply-bot .
+   ```
+
+2. Run the container:
+   ```bash
+   docker run -it --rm \
+     -v $(pwd)/data:/app/data \
+     -v $(pwd)/cookies:/app/cookies \
+     -v $(pwd)/config.py:/app/config.py \
+     -v $(pwd)/additionalQuestions.yaml:/app/additionalQuestions.yaml \
+     easyapply-bot
+   ```
+
+**Note:** The `data/` and `cookies/` directories will be created automatically and persist your job application results and login sessions.
+
+### Option 2: Manual Installation
+
 - clone the repo `git clone https://github.com/wodsuz/EasyApplyJobsBot`
 - Make sure Python and pip is installed
 - Install dependencies with `pip3 install -r requirements.yaml` (Note: If pip doesn't recognize .yaml, you may need to install packages manually: `pip3 install selenium webdriver_manager selenium-stealth`)

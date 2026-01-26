@@ -1,0 +1,48 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Python cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info
+dist
+build
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Data and cookies (will be mounted as volumes)
+data/
+cookies/
+
+# Documentation
+*.md
+!README.md
+
+# License
+LICENSE
+
+# Docker files (don't need to copy these into the image)
+docker-compose.yml
+Dockerfile
+.dockerignore
