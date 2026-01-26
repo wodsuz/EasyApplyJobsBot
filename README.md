@@ -1,7 +1,46 @@
-# Automated Bots - Easy Apply Jobs Bot 🤖 - https://www.automated-bots.com/
+# Automated Bots > is now Apllie 🤖 - https://www.apllie..com/
 
 ![linkedineasyapplygif](https://user-images.githubusercontent.com/34207598/128695728-6efcb457-0f75-42e2-987a-f7a0c239a235.gif)
 A python bot to apply all Linkedin Easy Apply jobs based on your preferences.
+
+## 🚀 Introducing Apllie - Smart Application Tracker
+
+**We have rebranded!** Please note that **automated-bots.com is NOW Apllie.com**. Apllie is our new smart application tracking system that helps you apply smarter and manage your job search more efficiently.
+
+### ✨ Apllie Features
+
+Apllie supports many powerful features to enhance your job search experience:
+
+- **📊 Centralized Application Tracking** - Monitor all your job applications from a single dashboard. Track application status, responses, and maintain a complete history of where you've applied.
+
+- **🤖 Auto-Fill Custom Questions** - Automatically fill out and manage additional custom questions on job applications. Save your responses for future applications and speed up the process.
+
+- **📈 Real-Time Analytics & Reports** - View detailed statistics about your application success rate and performance trends. Download comprehensive reports in CSV or PDF format with daily, weekly, monthly, or custom date filters.
+
+- **🎯 AI-Powered Resume Enhancement** - Get tailored AI-powered recommendations to enhance your resume based on your job applications. Receive personalized suggestions for skills, experience, and summary sections.
+
+- **💼 Interview Preparation** - Get tailored interview preparation based on your Apllie applications. Focus on mastering key skills, practice with relevant technologies, and receive insights on soft skills.
+
+- **📱 Cross-Platform Compatibility** - Works with popular job boards and professional networking sites including LinkedIn, Indeed, Glassdoor, Monster, Meta, and ZipRecruiter.
+
+- **🔍 Advanced Organization Tools** - Use customizable filters to organize applications by company, position, location, and status. Create whitelists and blacklists to focus on opportunities that align with your goals.
+
+- **📧 Automated Follow-Ups** - Send reminders to follow up on applications automatically. Stay organized and never miss an opportunity.
+
+- **🔒 Privacy-Focused** - Your data remains secure and private. The extension only accesses pages when you actively use it, and sensitive information is stored locally on your device.
+
+### 🎁 Limited Time Offer
+
+**For a limited time, users can get 20 Free Credits on sign up to Apllie and test it for free!**
+
+### 📥 Download Apllie Extension
+
+Download our Chrome extension from the Chrome Web Store:
+**[Download Apllie - Smart Application Tracker](https://chromewebstore.google.com/detail/apllie-smart-application/imiidglhhjloioihlhmnojbopkgccijc?hl=en&authuser=1)**
+
+### 📧 Support
+
+For further support, reach out to us at: **help@apllie.com**
 
 ## Please be aware that there are forked/similar looking versions of this bot using scam, phishing donation links. While purchasing make sure you are on www.automated-bots.com page or just like below page have check our logo on each crypto payment site,
 
@@ -26,10 +65,14 @@ https://github.com/wodsuz/EasyApplyJobsBot/assets/34207598/6fa36b64-742f-4fb2-82
 - Fully customizable job preferences (advanced filters, search filters)
 - Can be used for many job search websites such as Linkedin, Glassdoor, AngelCo, Greenhouse, Monster, GLobalLogic and Djinni.
 
-To modify, use, get documentation or for you business enquiries kindly contact us via: <br>
+**Important:** We have rebranded! **automated-bots.com is NOT Apllie.com**. This repository (Automated Bots - Easy Apply Jobs Bot) is separate from Apllie.
+
+To modify, use, get documentation or for your business enquiries regarding this bot, kindly contact us via: <br>
 [**help@automated-bots.com**](mailto:help@automated-bots.com?subject=Contact%20Via%20[GitHub]%20EasyApplyJobsBot)
 
 [**Or directly contact us from our website**](https://www.automated-bots.com/contact)<br>
+
+**For Apllie support and inquiries, please contact:** [**help@apllie.com**](mailto:help@apllie.com)<br>
 
 ## Donation and Support 🥳
 
