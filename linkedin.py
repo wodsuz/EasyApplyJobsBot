@@ -21,7 +21,19 @@ class Linkedin:
     def __init__(self):
             utils.prYellow("🤖 Thanks for using Easy Apply Jobs bot, for more information you can visit our site - www.automated-bots.com")
             utils.prYellow("🌐 Bot will run in Chrome browser and log in Linkedin for you.")
-            self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=utils.chromeBrowserOptions())
+            
+            # Fix for WinError 193: Explicitly construct chromedriver path
+            try:
+                chrome_install = ChromeDriverManager().install()
+                folder = os.path.dirname(chrome_install)
+                chromedriver_path = os.path.join(folder, "chromedriver.exe")
+                service = ChromeService(chromedriver_path)
+                self.driver = webdriver.Chrome(service=service, options=utils.chromeBrowserOptions())
+            except Exception as e:
+                # Fallback to original method if explicit path fails
+                if config.displayWarnings:
+                    utils.prYellow(f"⚠️ Warning: Could not use explicit chromedriver path, using default: {str(e)[0:50]}")
+                self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=utils.chromeBrowserOptions())
             
             # Apply stealth mode if available
             if STEALTH_AVAILABLE:
