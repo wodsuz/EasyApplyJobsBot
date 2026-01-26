@@ -21,10 +21,24 @@ def chromeBrowserOptions():
     options.add_experimental_option('useAutomationExtension', False)
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     if(len(config.chromeProfilePath)>0):
-        initialPath = config.chromeProfilePath[0:config.chromeProfilePath.rfind("/")]
-        profileDir = config.chromeProfilePath[config.chromeProfilePath.rfind("/")+1:]
-        options.add_argument('--user-data-dir=' +initialPath)
-        options.add_argument("--profile-directory=" +profileDir)
+        # Handle both Windows (\) and Unix (/) path separators
+        # Normalize path separators to handle mixed separators
+        normalized_path = config.chromeProfilePath.replace('\\', os.sep).replace('/', os.sep)
+        
+        # Find the last path separator (works for both Windows and Unix)
+        last_sep_index = normalized_path.rfind(os.sep)
+        
+        if last_sep_index != -1:
+            initialPath = normalized_path[:last_sep_index]
+            profileDir = normalized_path[last_sep_index + 1:]
+        else:
+            # If no separator found, treat entire path as profile directory
+            # and use parent directory as user-data-dir
+            initialPath = os.path.dirname(normalized_path)
+            profileDir = os.path.basename(normalized_path)
+        
+        options.add_argument('--user-data-dir=' + initialPath)
+        options.add_argument("--profile-directory=" + profileDir)
     else:
         options.add_argument("--incognito")
     return options
