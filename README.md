@@ -1,4 +1,4 @@
-# Automated Bots > is now Apllie 🤖 - https://www.apllie.com/
+# Automated Bots is now Apllie 🤖 - https://www.apllie.com/
 
 Download our Chrome extension from the Chrome Web Store:
 **[Download Apllie - Smart Application Tracker](https://chromewebstore.google.com/detail/apllie-smart-application/imiidglhhjloioihlhmnojbopkgccijc?hl=en&authuser=1)**
@@ -37,20 +37,15 @@ Apllie supports many powerful features to enhance your job search experience:
 
 **For a limited time, users can get 20 Free Credits on sign up to Apllie and test it for free!**
 
-### 📥 Download Apllie Extension
-
-Download our Chrome extension from the Chrome Web Store:
-**[Download Apllie - Smart Application Tracker](https://chromewebstore.google.com/detail/apllie-smart-application/imiidglhhjloioihlhmnojbopkgccijc?hl=en&authuser=1)**
-
 ### 📧 Support
 
 For further support, reach out to us at: **help@apllie.com**
 
-## Please be aware that there are forked/similar looking versions of this bot using scam, phishing donation links. While purchasing make sure you are on www.automated-bots.com page or just like below page have check our logo on each crypto payment site,
+## Please be aware that there are forked/similar looking versions of this bot using scam, phishing donation links. While purchasing make sure you are on www.apllie.com page or just like below page have check our logo on each crypto payment site,
 
 ![Copyright image](https://github.com/wodsuz/EasyApplyJobsBot/assets/34207598/ea8ba3e2-1bed-4d80-ae20-9e96d1f5c09f)
 
-## This is the free version of the bot, you can fork & modifty it by crediting us and without changing the donation links. To use the pro version you can visit our site www.automated-bots.com
+## This is the free version of the bot, you can fork & modifty it by crediting us and without changing the donation links. To use the pro version you can visit our site www.apllie.com
 
 # Demo
 
@@ -69,14 +64,12 @@ https://github.com/wodsuz/EasyApplyJobsBot/assets/34207598/6fa36b64-742f-4fb2-82
 - Fully customizable job preferences (advanced filters, search filters)
 - Can be used for many job search websites such as Linkedin, Glassdoor, AngelCo, Greenhouse, Monster, GLobalLogic and Djinni.
 
-**Important:** We have rebranded! **automated-bots.com is NOT Apllie.com**. This repository (Automated Bots - Easy Apply Jobs Bot) is separate from Apllie.
+**Important:** We have rebranded! **automated-bots.com is NOW Apllie.com**. This repository (Automated Bots - Easy Apply Jobs Bot) is now part of the Apllie ecosystem.
 
 To modify, use, get documentation or for your business enquiries regarding this bot, kindly contact us via: <br>
-[**help@automated-bots.com**](mailto:help@automated-bots.com?subject=Contact%20Via%20[GitHub]%20EasyApplyJobsBot)
+[**help@apllie.com**](mailto:help@apllie.com?subject=Contact%20Via%20[GitHub]%20EasyApplyJobsBot)
 
-[**Or directly contact us from our website**](https://www.automated-bots.com/contact)<br>
-
-**For Apllie support and inquiries, please contact:** [**help@apllie.com**](mailto:help@apllie.com)<br>
+[**Or directly contact us from our website**](https://www.apllie.com/contact)<br>
 
 ## Donation and Support 🥳
 
