@@ -1,5 +1,9 @@
 # Automated Bots > is now Apllie 🤖 - https://www.apllie.com/
 
+Download our Chrome extension from the Chrome Web Store:
+**[Download Apllie - Smart Application Tracker](https://chromewebstore.google.com/detail/apllie-smart-application/imiidglhhjloioihlhmnojbopkgccijc?hl=en&authuser=1)**
+
+
 ![linkedineasyapplygif](https://user-images.githubusercontent.com/34207598/128695728-6efcb457-0f75-42e2-987a-f7a0c239a235.gif)
 A python bot to apply all Linkedin Easy Apply jobs based on your preferences.
 
