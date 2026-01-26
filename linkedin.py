@@ -194,6 +194,8 @@ class Linkedin:
                             
                             try:
                                 self.chooseResume()
+                                # Fill phone number before submitting
+                                self.fillPhoneNumber()
                                 self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
                                 time.sleep(random.uniform(1, constants.botSpeed))
 
@@ -203,6 +205,8 @@ class Linkedin:
 
                             except:
                                 try:
+                                    # Fill phone number before continuing
+                                    self.fillPhoneNumber()
                                     self.driver.find_element(By.CSS_SELECTOR,"button[aria-label='Continue to next step']").click()
                                     time.sleep(random.uniform(1, constants.botSpeed))
                                     self.chooseResume()
@@ -293,12 +297,114 @@ class Linkedin:
 
         return EasyApplyButton
 
+    def fillPhoneNumber(self):
+        """Fill phone number fields if they exist and are empty"""
+        try:
+            # Get phone number from config or additionalQuestions.yaml
+            phone_number = ""
+            
+            # Try to get from config.Phone first
+            if hasattr(config, 'Phone') and config.Phone and config.Phone.strip():
+                phone_number = config.Phone.strip()
+            else:
+                # Try to read from additionalQuestions.yaml if available
+                try:
+                    import yaml
+                    if os.path.exists('additionalQuestions.yaml'):
+                        with open('additionalQuestions.yaml', 'r', encoding='utf-8') as f:
+                            questions = yaml.safe_load(f)
+                            if questions and 'inputField' in questions:
+                                phone_number = questions['inputField'].get('Phone Number', '').strip()
+                except Exception:
+                    pass
+            
+            if not phone_number:
+                return  # No phone number configured, skip filling
+            
+            # Try multiple selectors to find phone number input fields
+            phone_selectors = [
+                "input[type='tel']",
+                "input[name*='phone']",
+                "input[id*='phone']",
+                "input[aria-label*='phone']",
+                "input[placeholder*='phone']",
+                "input[data-test-single-line-text-input]",
+                "input[class*='phone']"
+            ]
+            
+            phone_filled = False
+            
+            # Also try XPath selectors for case-insensitive matching
+            xpath_selectors = [
+                "//input[contains(translate(@name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'phone')]",
+                "//input[contains(translate(@id, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'phone')]",
+                "//input[contains(translate(@aria-label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'phone')]",
+                "//input[contains(translate(@placeholder, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'phone')]"
+            ]
+            
+            # Try CSS selectors first
+            for selector in phone_selectors:
+                try:
+                    phone_inputs = self.driver.find_elements(By.CSS_SELECTOR, selector)
+                    for phone_input in phone_inputs:
+                        try:
+                            # Check if field is visible and empty
+                            if phone_input.is_displayed():
+                                current_value = phone_input.get_attribute("value") or ""
+                                if current_value == "":
+                                    phone_input.clear()
+                                    phone_input.send_keys(phone_number)
+                                    time.sleep(0.5)
+                                    phone_filled = True
+                                    if config.displayWarnings:
+                                        utils.prYellow(f"✅ Filled phone number: {phone_number}")
+                                    break
+                        except Exception:
+                            continue
+                    if phone_filled:
+                        break
+                except Exception:
+                    continue
+            
+            # Try XPath selectors if CSS didn't work
+            if not phone_filled:
+                for xpath in xpath_selectors:
+                    try:
+                        phone_inputs = self.driver.find_elements(By.XPATH, xpath)
+                        for phone_input in phone_inputs:
+                            try:
+                                if phone_input.is_displayed():
+                                    current_value = phone_input.get_attribute("value") or ""
+                                    if current_value == "":
+                                        phone_input.clear()
+                                        phone_input.send_keys(phone_number)
+                                        time.sleep(0.5)
+                                        phone_filled = True
+                                        if config.displayWarnings:
+                                            utils.prYellow(f"✅ Filled phone number: {phone_number}")
+                                        break
+                            except Exception:
+                                continue
+                        if phone_filled:
+                            break
+                    except Exception:
+                        continue
+                
+        except Exception as e:
+            if config.displayWarnings:
+                utils.prYellow(f"⚠️ Warning: Error in fillPhoneNumber: {str(e)[0:50]}")
+
     def applyProcess(self, percentage, offerPage):
         applyPages = math.floor(100 / percentage) - 2 
         result = ""
-        for pages in range(applyPages):  
+        for pages in range(applyPages):
+            # Fill phone number before continuing to next step
+            self.fillPhoneNumber()
             self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Continue to next step']").click()
+            time.sleep(random.uniform(1, constants.botSpeed))
 
+        # Fill phone number before review
+        self.fillPhoneNumber()
         self.driver.find_element( By.CSS_SELECTOR, "button[aria-label='Review your application']").click()
         time.sleep(random.uniform(1, constants.botSpeed))
 
