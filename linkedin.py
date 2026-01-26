@@ -118,14 +118,38 @@ class Linkedin:
                 time.sleep(random.uniform(1, constants.botSpeed))
 
                 offersPerPage = self.driver.find_elements(By.XPATH, '//li[@data-occludable-job-id]')
-                offerIds = [(offer.get_attribute(
-                    "data-occludable-job-id").split(":")[-1]) for offer in offersPerPage]
-                time.sleep(random.uniform(1, constants.botSpeed))
-
+                offerIds = []
+                
+                # Extract all offer IDs immediately to avoid stale element references
                 for offer in offersPerPage:
-                    if not self.element_exists(offer, By.XPATH, ".//*[contains(text(), 'Applied')]"):
+                    try:
                         offerId = offer.get_attribute("data-occludable-job-id")
-                        offerIds.append(int(offerId.split(":")[-1]))
+                        if offerId:
+                            offerIds.append(int(offerId.split(":")[-1]))
+                    except Exception as e:
+                        if config.displayWarnings:
+                            utils.prYellow(f"⚠️ Warning: Could not get offer ID: {str(e)[0:50]}")
+                        continue
+                
+                time.sleep(random.uniform(1, constants.botSpeed))
+                
+                # Check for "Applied" status by re-finding elements to avoid stale references
+                try:
+                    offersPerPage = self.driver.find_elements(By.XPATH, '//li[@data-occludable-job-id]')
+                    appliedOfferIds = []
+                    for offer in offersPerPage:
+                        try:
+                            if self.element_exists(offer, By.XPATH, ".//*[contains(text(), 'Applied')]"):
+                                offerId = offer.get_attribute("data-occludable-job-id")
+                                if offerId:
+                                    appliedOfferIds.append(int(offerId.split(":")[-1]))
+                        except Exception:
+                            continue
+                    # Remove already applied jobs from the list
+                    offerIds = [jobId for jobId in offerIds if jobId not in appliedOfferIds]
+                except Exception as e:
+                    if config.displayWarnings:
+                        utils.prYellow(f"⚠️ Warning: Could not check applied status: {str(e)[0:50]}")
 
                 for jobID in offerIds:
                     offerPage = 'https://www.linkedin.com/jobs/view/' + str(jobID)
