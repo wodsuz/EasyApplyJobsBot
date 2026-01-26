@@ -80,9 +80,20 @@ class Linkedin:
                 self.driver.add_cookie(cookie)
 
     def saveCookies(self):
-        if not os.path.exists(os.path.dirname(self.cookies_path)):
-            os.makedirs(os.path.dirname(self.cookies_path))
-        pickle.dump(self.driver.get_cookies() , open(self.cookies_path,"wb"))
+        try:
+            # Get the directory path for cookies
+            cookies_dir = os.path.dirname(self.cookies_path)
+            
+            # Create cookies directory if it doesn't exist
+            if cookies_dir and not os.path.exists(cookies_dir):
+                os.makedirs(cookies_dir, exist_ok=True)
+            
+            # Save cookies to file
+            pickle.dump(self.driver.get_cookies(), open(self.cookies_path, "wb"))
+        except Exception as e:
+            if config.displayWarnings:
+                utils.prYellow(f"⚠️ Warning: Could not save cookies: {str(e)[0:100]}")
+            # Don't raise the exception - cookie saving is not critical for bot operation
     
     def isLoggedIn(self):
         self.driver.get('https://www.linkedin.com/feed')
@@ -191,6 +202,16 @@ class Linkedin:
                         if easyApplybutton is not False:
                             easyApplybutton.click()
                             time.sleep(random.uniform(1, constants.botSpeed))
+                            
+                            # Fix for issue #72: LinkedIn added an extra "Continue to next step" button after Easy Apply
+                            try:
+                                continue_button = self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Continue to next step']")
+                                if continue_button.is_displayed():
+                                    continue_button.click()
+                                    time.sleep(random.uniform(1, constants.botSpeed))
+                            except:
+                                # If button doesn't exist, continue normally
+                                pass
                             
                             try:
                                 self.chooseResume()
