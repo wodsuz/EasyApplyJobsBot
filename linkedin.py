@@ -116,7 +116,17 @@ class Linkedin:
             self.driver.get(url)
             time.sleep(random.uniform(1, constants.botSpeed))
 
-            totalJobs = self.driver.find_element(By.XPATH,'//small').text 
+            # Handle case where no jobs are found (//small element doesn't exist)
+            try:
+                totalJobs = self.driver.find_element(By.XPATH,'//small').text 
+            except Exception as e:
+                urlWords = utils.urlToKeywords(url)
+                lineToWrite = "\n Category: " + urlWords[0] + ", Location: " + urlWords[1] + ", No jobs found for this search criteria. Skipping..."
+                self.displayWriteResults(lineToWrite)
+                if config.displayWarnings:
+                    utils.prYellow(f"⚠️ Warning: No jobs found for {urlWords[0]} in {urlWords[1]}. The //small element was not found.")
+                continue  # Skip to next URL
+
             totalPages = utils.jobsToPages(totalJobs)
 
             urlWords =  utils.urlToKeywords(url)
