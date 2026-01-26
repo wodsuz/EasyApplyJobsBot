@@ -1,6 +1,9 @@
 import time,math,random,os
+import sys
 import utils,constants,config
 import pickle, hashlib
+
+sys.stdout.reconfigure(encoding='utf-8')
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By

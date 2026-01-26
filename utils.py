@@ -1,5 +1,8 @@
 import math,constants,config,time
+import sys
 from typing import List
+
+sys.stdout.reconfigure(encoding='utf-8')
 
 from selenium import webdriver
 
