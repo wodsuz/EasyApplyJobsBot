@@ -217,12 +217,19 @@ class Linkedin:
                                 self.chooseResume()
                                 # Fill phone number before submitting
                                 self.fillPhoneNumber()
-                                self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
-                                time.sleep(random.uniform(1, constants.botSpeed))
 
-                                lineToWrite = jobProperties + " | " + "* 🥳 Just Applied to this job: "  +str(offerPage)
-                                self.displayWriteResults(lineToWrite)
-                                countApplied += 1
+                                if config.dryRun:
+                                    # In dry-run mode, do not submit the application,
+                                    # just log that we would have applied.
+                                    lineToWrite = jobProperties + " | " + "* 🧪 DRY RUN - Would apply to this job: "  + str(offerPage)
+                                    self.displayWriteResults(lineToWrite)
+                                else:
+                                    self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
+                                    time.sleep(random.uniform(1, constants.botSpeed))
+
+                                    lineToWrite = jobProperties + " | " + "* 🥳 Just Applied to this job: "  + str(offerPage)
+                                    self.displayWriteResults(lineToWrite)
+                                    countApplied += 1
 
                             except:
                                 try:
@@ -233,7 +240,13 @@ class Linkedin:
                                     self.chooseResume()
                                     comPercentage = self.driver.find_element(By.XPATH,'html/body/div[3]/div/div/div[2]/div/div/span').text
                                     percenNumber = int(comPercentage[0:comPercentage.index("%")])
-                                    result = self.applyProcess(percenNumber,offerPage)
+                                    
+                                    # For multi-step forms, respect dry-run as well.
+                                    if config.dryRun:
+                                        result = "* 🧪 DRY RUN - Would go through multi-step application: " + str(offerPage)
+                                    else:
+                                        result = self.applyProcess(percenNumber,offerPage)
+
                                     lineToWrite = jobProperties + " | " + result
                                     self.displayWriteResults(lineToWrite)
                                 
@@ -426,6 +439,12 @@ class Linkedin:
 
         # Fill phone number before review
         self.fillPhoneNumber()
+
+        if config.dryRun:
+            # In dry-run mode, navigate up to this point but do not submit.
+            result = "* 🧪 DRY RUN - Would apply to this job: " + str(offerPage)
+            return result
+
         self.driver.find_element( By.CSS_SELECTOR, "button[aria-label='Review your application']").click()
         time.sleep(random.uniform(1, constants.botSpeed))
 

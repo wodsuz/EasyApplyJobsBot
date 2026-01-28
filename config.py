@@ -123,3 +123,8 @@ ConsiderMeForFutureOffers = True #true = yes, false = no
 
  # Testing & Debugging features
 displayWarnings = False
+
+# Safety / simulation features
+# If True, the bot will NOT submit any applications.
+# Instead, it will navigate as usual but only log which jobs it *would* apply to.
+dryRun = False

@@ -164,6 +164,28 @@ The easiest way to run the bot is using Docker. This method handles all dependen
 - Run `python3 linkedin.py`
 - Check Applied Jobs DATA .txt file is generated under /data folder
 
+### Dry-Run Mode (Safe Simulation) 🧪
+
+If you want to see what the bot *would* do without actually submitting any applications, you can enable **dry-run mode**.
+
+1. Open `config.py`
+2. Find the setting:
+   ```python
+   dryRun = False
+   ```
+3. Change it to:
+   ```python
+   dryRun = True
+   ```
+4. Run the bot as usual (Docker or manual).
+
+In dry-run mode:
+- The bot will browse job listings and open Easy Apply forms.
+- It will **not** click the final "Submit application" button.
+- The output file in the `data/` folder will contain lines like:
+  - `* 🧪 DRY RUN - Would apply to this job: https://www.linkedin.com/jobs/view/...`
+  - `* 🧪 DRY RUN - Would go through multi-step application: https://www.linkedin.com/jobs/view/...`
+
 ## Features 💡
 
 - Ability to filter jobs, by easy apply, by location (Worldwide, Europe, Poland, etc.), by keyword (python, react, node), by experience, position, job type and date posted.
