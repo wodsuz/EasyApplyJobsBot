@@ -120,6 +120,10 @@ class Linkedin:
         self.generateUrls()
         countApplied = 0
         countJobs = 0
+        countBlacklisted = 0
+        countAlreadyApplied = 0
+        countCannotApply = 0
+        startTime = time.time()
 
         urlData = utils.getUrlDataFile()
 
@@ -193,6 +197,7 @@ class Linkedin:
 
                     jobProperties = self.getJobProperties(countJobs)
                     if "blacklisted" in jobProperties: 
+                        countBlacklisted += 1
                         lineToWrite = jobProperties + " | " + "* 🤬 Blacklisted Job, skipped!: " +str(offerPage)
                         self.displayWriteResults(lineToWrite)
                     
@@ -249,12 +254,16 @@ class Linkedin:
 
                                     lineToWrite = jobProperties + " | " + result
                                     self.displayWriteResults(lineToWrite)
+                                    if "Just Applied" in result and not config.dryRun:
+                                        countApplied += 1
                                 
                                 except Exception: 
+                                    countCannotApply += 1
                                     self.chooseResume()
                                     lineToWrite = jobProperties + " | " + "* 🥵 Cannot apply to this Job! " +str(offerPage)
                                     self.displayWriteResults(lineToWrite)
                         else:
+                            countAlreadyApplied += 1
                             lineToWrite = jobProperties + " | " + "* 🥳 Already applied! Job: " +str(offerPage)
                             self.displayWriteResults(lineToWrite)
 
@@ -262,6 +271,10 @@ class Linkedin:
             utils.prYellow("Category: " + urlWords[0] + "," +urlWords[1]+ " applied: " + str(countApplied) +
                   " jobs out of " + str(countJobs) + ".")
         
+        durationSec = time.time() - startTime
+        utils.printSessionSummary(
+            countJobs, countApplied, countBlacklisted, countAlreadyApplied, countCannotApply, durationSec
+        )
         utils.donate(self)
 
     def chooseResume(self):

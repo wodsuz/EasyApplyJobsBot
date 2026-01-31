@@ -1,4 +1,4 @@
-import math,constants,config,time
+import math,constants,config,time,os
 import sys
 from typing import List
 
@@ -110,6 +110,45 @@ def writeResults(text: str):
 
 def printInfoMes(bot:str):
     prYellow("ℹ️ " +bot+ " is starting soon... ")
+
+
+def printSessionSummary(
+    count_jobs: int,
+    count_applied: int,
+    count_blacklisted: int,
+    count_already_applied: int,
+    count_cannot_apply: int,
+    duration_sec: float,
+):
+    """Print and write a session summary to the data file."""
+    duration_min = round(duration_sec / 60, 1)
+    prGreen("\n" + "=" * 60)
+    prGreen("📊 SESSION SUMMARY")
+    prGreen("=" * 60)
+    prGreen(f"   Jobs processed:     {count_jobs}")
+    prGreen(f"   ✅ Applied:         {count_applied}")
+    prGreen(f"   🤬 Blacklisted:     {count_blacklisted}")
+    prGreen(f"   🥳 Already applied: {count_already_applied}")
+    prGreen(f"   🥵 Could not apply: {count_cannot_apply}")
+    prGreen(f"   ⏱ Duration:         {duration_min} minute(s)")
+    prGreen("=" * 60 + "\n")
+
+    time_str = time.strftime("%Y%m%d")
+    file_name = "Applied Jobs DATA - " + time_str + ".txt"
+    summary_lines = [
+        "",
+        "---- Session Summary ----",
+        f"Jobs processed: {count_jobs} | Applied: {count_applied} | Blacklisted: {count_blacklisted} | Already applied: {count_already_applied} | Could not apply: {count_cannot_apply} | Duration: {duration_min} min",
+    ]
+    try:
+        data_dir = "data"
+        if not os.path.exists(data_dir):
+            os.makedirs(data_dir)
+        file_path = os.path.join(data_dir, file_name)
+        with open(file_path, "a", encoding="utf-8") as f:
+            f.write("\n".join(summary_lines) + "\n")
+    except Exception as e:
+        prRed("❌ Could not write session summary to file: " + str(e)[:80])
 
 def donate(self):
     prYellow('If you like the project, please support me so that i can make more such projects, thanks!')

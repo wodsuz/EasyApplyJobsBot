@@ -188,6 +188,7 @@ In dry-run mode:
 
 ## Features 💡
 
+- **Session summary** – At the end of each run, the bot prints and saves a summary: jobs processed, applied, blacklisted, already applied, could not apply, and run duration. The summary is appended to the day's data file (`data/Applied Jobs DATA - YYYYMMDD.txt`).
 - Ability to filter jobs, by easy apply, by location (Worldwide, Europe, Poland, etc.), by keyword (python, react, node), by experience, position, job type and date posted.
 - Apply based on your salary preferance (works best for job offers from States)
 - Automatically apply single page jobs in which you need to send your up-to-date CV and contact.
