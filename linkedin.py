@@ -124,6 +124,7 @@ class Linkedin:
         countAlreadyApplied = 0
         countCannotApply = 0
         startTime = time.time()
+        reachedCap = False
 
         urlData = utils.getUrlDataFile()
 
@@ -235,6 +236,8 @@ class Linkedin:
                                     lineToWrite = jobProperties + " | " + "* 🥳 Just Applied to this job: "  + str(offerPage)
                                     self.displayWriteResults(lineToWrite)
                                     countApplied += 1
+                                    if config.maxApplicationsPerRun and countApplied >= config.maxApplicationsPerRun:
+                                        reachedCap = True
 
                             except:
                                 try:
@@ -256,6 +259,8 @@ class Linkedin:
                                     self.displayWriteResults(lineToWrite)
                                     if "Just Applied" in result and not config.dryRun:
                                         countApplied += 1
+                                        if config.maxApplicationsPerRun and countApplied >= config.maxApplicationsPerRun:
+                                            reachedCap = True
                                 
                                 except Exception: 
                                     countCannotApply += 1
@@ -267,10 +272,18 @@ class Linkedin:
                             lineToWrite = jobProperties + " | " + "* 🥳 Already applied! Job: " +str(offerPage)
                             self.displayWriteResults(lineToWrite)
 
+                    if reachedCap:
+                        break
+                if reachedCap:
+                    break
+            if reachedCap:
+                break
 
             utils.prYellow("Category: " + urlWords[0] + "," +urlWords[1]+ " applied: " + str(countApplied) +
                   " jobs out of " + str(countJobs) + ".")
         
+        if reachedCap:
+            utils.prYellow("🛑 Reached max applications per run limit (" + str(config.maxApplicationsPerRun) + "). Stopping.")
         durationSec = time.time() - startTime
         utils.printSessionSummary(
             countJobs, countApplied, countBlacklisted, countAlreadyApplied, countCannotApply, durationSec

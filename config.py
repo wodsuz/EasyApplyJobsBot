@@ -128,3 +128,6 @@ displayWarnings = False
 # If True, the bot will NOT submit any applications.
 # Instead, it will navigate as usual but only log which jobs it *would* apply to.
 dryRun = False
+# Optional cap: stop after this many successful applications in one run. 0 = no limit.
+# Example: 50 or 100 to avoid applying too many jobs in a single session (LinkedIn recommends under 200/day).
+maxApplicationsPerRun = 0

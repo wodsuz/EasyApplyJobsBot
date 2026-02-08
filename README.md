@@ -189,6 +189,7 @@ In dry-run mode:
 ## Features 💡
 
 - **Session summary** – At the end of each run, the bot prints and saves a summary: jobs processed, applied, blacklisted, already applied, could not apply, and run duration. The summary is appended to the day's data file (`data/Applied Jobs DATA - YYYYMMDD.txt`).
+- **Max applications per run** – In `config.py`, set `maxApplicationsPerRun` (e.g. `50` or `100`) to stop after that many successful applications in one run. Use `0` for no limit. Helps stay under LinkedIn’s recommended daily volume (~200/day).
 - Ability to filter jobs, by easy apply, by location (Worldwide, Europe, Poland, etc.), by keyword (python, react, node), by experience, position, job type and date posted.
 - Apply based on your salary preferance (works best for job offers from States)
 - Automatically apply single page jobs in which you need to send your up-to-date CV and contact.
