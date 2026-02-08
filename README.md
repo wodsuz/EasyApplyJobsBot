@@ -1,11 +1,11 @@
 # Automated Bots is now Apllie 🤖 - https://www.apllie.com/
 
 Download our Chrome extension from the Chrome Web Store:
-**[Download Apllie - Smart Application Tracker](https://chromewebstore.google.com/detail/apllie-smart-application/imiidglhhjloioihlhmnojbopkgccijc?hl=en&authuser=1)**
 
+## **[Download Apllie - Smart Application Tracker](https://chromewebstore.google.com/detail/apllie-smart-application/imiidglhhjloioihlhmnojbopkgccijc?hl=en&authuser=1)**
 
-![linkedineasyapplygif](https://user-images.githubusercontent.com/34207598/128695728-6efcb457-0f75-42e2-987a-f7a0c239a235.gif)
-A python bot to apply all Linkedin Easy Apply jobs based on your preferences.
+![ApllieGif](https://raw.githubusercontent.com/Apllie/public-assets/refs/heads/main/AnimationApllieGif.gif)
+With our extension you can apply report and follow-up your job hunt way faster.
 
 ## 🚀 Introducing Apllie - Smart Application Tracker
 
@@ -98,12 +98,14 @@ showing how this can be used. To buy, support this project and help me add more 
 The easiest way to run the bot is using Docker. This method handles all dependencies automatically.
 
 **Prerequisites:**
+
 - Docker and Docker Compose installed on your system
 - [Install Docker](https://docs.docker.com/get-docker/) if you haven't already
 
 **Steps:**
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/wodsuz/EasyApplyJobsBot
    cd EasyApplyJobsBot
@@ -115,16 +117,19 @@ The easiest way to run the bot is using Docker. This method handles all dependen
    - Optionally edit `additionalQuestions.yaml` for custom question answers
 
 3. Build and run with Docker Compose:
+
    ```bash
    docker-compose up --build
    ```
 
    Or run in detached mode (background):
+
    ```bash
    docker-compose up -d --build
    ```
 
 4. View logs:
+
    ```bash
    docker-compose logs -f
    ```
@@ -137,6 +142,7 @@ The easiest way to run the bot is using Docker. This method handles all dependen
 **Alternative: Using Docker directly (without docker-compose):**
 
 1. Build the Docker image:
+
    ```bash
    docker build -t easyapply-bot .
    ```
@@ -166,7 +172,7 @@ The easiest way to run the bot is using Docker. This method handles all dependen
 
 ### Dry-Run Mode (Safe Simulation) 🧪
 
-If you want to see what the bot *would* do without actually submitting any applications, you can enable **dry-run mode**.
+If you want to see what the bot _would_ do without actually submitting any applications, you can enable **dry-run mode**.
 
 1. Open `config.py`
 2. Find the setting:
@@ -180,6 +186,7 @@ If you want to see what the bot *would* do without actually submitting any appli
 4. Run the bot as usual (Docker or manual).
 
 In dry-run mode:
+
 - The bot will browse job listings and open Easy Apply forms.
 - It will **not** click the final "Submit application" button.
 - The output file in the `data/` folder will contain lines like:
