@@ -1,11 +1,10 @@
 # Automated Bots is now Apllie 🤖 - https://www.apllie.com/
 
 Download our Chrome extension from the Chrome Web Store:
+**[Download Apllie - Smart Application Tracker](https://chromewebstore.google.com/detail/apllie-smart-application/imiidglhhjloioihlhmnojbopkgccijc?hl=en&authuser=1)**
 
-## **[Download Apllie - Smart Application Tracker](https://chromewebstore.google.com/detail/apllie-smart-application/imiidglhhjloioihlhmnojbopkgccijc?hl=en&authuser=1)**
-
-![ApllieGif](https://raw.githubusercontent.com/Apllie/public-assets/refs/heads/main/AnimationApllieGif.gif)
-With our extension you can apply report and follow-up your job hunt way faster.
+![linkedineasyapplygif](https://user-images.githubusercontent.com/34207598/128695728-6efcb457-0f75-42e2-987a-f7a0c239a235.gif)
+A python bot to apply all Linkedin Easy Apply jobs based on your preferences.
 
 ## 🚀 Introducing Apllie - Smart Application Tracker
 
@@ -196,7 +195,6 @@ In dry-run mode:
 ## Features 💡
 
 - **Session summary** – At the end of each run, the bot prints and saves a summary: jobs processed, applied, blacklisted, already applied, could not apply, and run duration. The summary is appended to the day's data file (`data/Applied Jobs DATA - YYYYMMDD.txt`).
-- **Max applications per run** – In `config.py`, set `maxApplicationsPerRun` (e.g. `50` or `100`) to stop after that many successful applications in one run. Use `0` for no limit. Helps stay under LinkedIn’s recommended daily volume (~200/day).
 - Ability to filter jobs, by easy apply, by location (Worldwide, Europe, Poland, etc.), by keyword (python, react, node), by experience, position, job type and date posted.
 - Apply based on your salary preferance (works best for job offers from States)
 - Automatically apply single page jobs in which you need to send your up-to-date CV and contact.
