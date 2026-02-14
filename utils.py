@@ -52,11 +52,16 @@ def prGreen(prt):
 def prYellow(prt):
     print(f"\033[93m{prt}\033[00m")
 
-def getUrlDataFile():
-    urlData = ""
+def getUrlDataFile() -> List[str]:
+    """Read generated job search URLs from the data file.
+
+    Returns a list of URL strings with whitespace stripped.
+    Returns an empty list if the file is missing.
+    """
+    urlData: List[str] = []
     try:
         with open('data/urlData.txt', 'r') as file:
-            urlData = file.readlines()
+            urlData = [line.strip() for line in file if line.strip()]
     except FileNotFoundError:
         text = "FileNotFound:urlData.txt file is not found. Please run ./data folder exists and check config.py values of yours. Then run the bot again"
         prRed(text)
