@@ -159,6 +159,9 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+# Cursor IDE
+.cursor/
+
 #pytransform
 pytransform/
 
@@ -177,3 +180,7 @@ geckodriver.log
 angelco.py
 globalLogicCode.py
 linkedinProCode.py
+
+# local automation (do not push)
+scripts/daily-improve.ps1
+docs/DAILY_IMPROVE_SETUP.md

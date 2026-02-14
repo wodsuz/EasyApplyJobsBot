@@ -74,7 +74,8 @@ class Linkedin:
 
     def loadCookies(self):
         if os.path.exists(self.cookies_path):
-            cookies =  pickle.load(open(self.cookies_path, "rb"))
+            with open(self.cookies_path, "rb") as f:
+                cookies = pickle.load(f)
             self.driver.delete_all_cookies()
             for cookie in cookies:
                 self.driver.add_cookie(cookie)
@@ -89,7 +90,8 @@ class Linkedin:
                 os.makedirs(cookies_dir, exist_ok=True)
             
             # Save cookies to file
-            pickle.dump(self.driver.get_cookies(), open(self.cookies_path, "wb"))
+            with open(self.cookies_path, "wb") as f:
+                pickle.dump(self.driver.get_cookies(), f)
         except Exception as e:
             if config.displayWarnings:
                 utils.prYellow(f"⚠️ Warning: Could not save cookies: {str(e)[0:100]}")

@@ -55,8 +55,8 @@ def prYellow(prt):
 def getUrlDataFile():
     urlData = ""
     try:
-        file = open('data/urlData.txt', 'r')
-        urlData = file.readlines()
+        with open('data/urlData.txt', 'r') as file:
+            urlData = file.readlines()
     except FileNotFoundError:
         text = "FileNotFound:urlData.txt file is not found. Please run ./data folder exists and check config.py values of yours. Then run the bot again"
         prRed(text)
