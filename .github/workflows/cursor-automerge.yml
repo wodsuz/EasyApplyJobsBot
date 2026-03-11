@@ -1,0 +1,19 @@
+name: Auto merge Cursor PRs
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    # Only for PRs actually opened by Cursor's GitHub App (cannot be impersonated by branch name)
+    if: github.actor == 'cursor[bot]'
+
+    steps:
+      - name: Enable auto merge
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          merge-method: squash
+
