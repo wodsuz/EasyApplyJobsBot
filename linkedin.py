@@ -297,7 +297,7 @@ class Linkedin:
         utils.printSessionSummary(
             countJobs, countApplied, countBlacklisted, countAlreadyApplied, countCannotApply, durationSec
         )
-        utils.donate(self)
+        utils.donate()
 
     def chooseResume(self):
         try:
