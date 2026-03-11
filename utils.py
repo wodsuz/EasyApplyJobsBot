@@ -111,7 +111,7 @@ def writeResults(text: str):
                 f.write(line)
             f.write(text+ "\n")
             
-    except:
+    except Exception:
         with open("data/" +fileName, 'w', encoding="utf-8") as f:
             f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )
             f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
@@ -160,12 +160,8 @@ def printSessionSummary(
     except Exception as e:
         prRed("❌ Could not write session summary to file: " + str(e)[:80])
 
-def donate(self):
+def donate():
     prYellow('If you like the project, please support me so that i can make more such projects, thanks!')
-    try:
-        self.driver.get('https://www.automated-bots.com/')
-    except Exception as e:
-        prRed("Error in donate: " +str(e))
 
 class LinkedinUrlGenerate:
     def generateUrlLinks(self):
