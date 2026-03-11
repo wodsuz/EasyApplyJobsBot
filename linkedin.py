@@ -1,7 +1,14 @@
-import time,math,random,os
+import hashlib
+import math
+import os
+import pickle
+import random
 import sys
-import utils,constants,config
-import pickle, hashlib
+import time
+
+import config
+import constants
+import utils
 
 sys.stdout.reconfigure(encoding='utf-8')
 

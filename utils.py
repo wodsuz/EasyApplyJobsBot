@@ -1,6 +1,11 @@
-import math,constants,config,time,os
+import math
+import os
 import sys
+import time
 from typing import List
+
+import config
+import constants
 
 sys.stdout.reconfigure(encoding='utf-8')
 
