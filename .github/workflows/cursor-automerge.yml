@@ -21,9 +21,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ github.event.pull_request.html_url }}
         run: |
-          # If Cursor opened the PR as a draft, mark it ready first
-          if gh pr view "$PR_URL" --json isDraft --jq '.isDraft' | grep -q true; then
-            gh pr ready "$PR_URL"
+          # If Cursor opened the PR as a draft, mark it ready first via GraphQL
+          PR_IS_DRAFT=$(gh api graphql -f query='query($url: URI!){ resource(url:$url){ ... on PullRequest { isDraft }}}' -f url="$PR_URL" --jq '.data.resource.isDraft')
+          if [ "$PR_IS_DRAFT" = "true" ]; then
+            PR_ID=$(gh api graphql -f query='query($url: URI!){ resource(url:$url){ ... on PullRequest { id }}}' -f url="$PR_URL" --jq '.data.resource.id')
+            gh api graphql -f query='mutation($id:ID!){ markPullRequestReadyForReview(input:{pullRequestId:$id}){ clientMutationId }}' -f id="$PR_ID"
           fi
           gh pr merge --squash --auto "$PR_URL"
 
