@@ -21,5 +21,9 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ github.event.pull_request.html_url }}
         run: |
+          # If Cursor opened the PR as a draft, mark it ready first
+          if gh pr view "$PR_URL" --json isDraft --jq '.isDraft' | grep -q true; then
+            gh pr ready "$PR_URL"
+          fi
           gh pr merge --squash --auto "$PR_URL"
 
