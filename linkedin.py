@@ -69,7 +69,7 @@ class Linkedin:
                     time.sleep(2)
                     self.driver.find_element("xpath",'//button[@type="submit"]').click()
                     time.sleep(30)
-                except:
+                except Exception:
                     utils.prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8.")
 
                 self.saveCookies()
@@ -109,7 +109,7 @@ class Linkedin:
         try:
             self.driver.find_element(By.XPATH,'//*[@id="ember14"]')
             return True
-        except:
+        except Exception:
             pass
         return False 
     
@@ -122,7 +122,7 @@ class Linkedin:
                 for url in linkedinJobLinks:
                     file.write(url+ "\n")
             utils.prGreen("✅ Apply urls are created successfully, now the bot will visit those urls.")
-        except:
+        except Exception:
             utils.prRed("❌ Couldn't generate urls, make sure you have editted config file line 25-39")
 
     def linkJobApply(self):
@@ -224,7 +224,7 @@ class Linkedin:
                                 if continue_button.is_displayed():
                                     continue_button.click()
                                     time.sleep(random.uniform(1, constants.botSpeed))
-                            except:
+                            except Exception:
                                 # If button doesn't exist, continue normally
                                 pass
                             
@@ -248,7 +248,7 @@ class Linkedin:
                                     if config.maxApplicationsPerRun and countApplied >= config.maxApplicationsPerRun:
                                         reachedCap = True
 
-                            except:
+                            except Exception:
                                 try:
                                     # Fill phone number before continuing
                                     self.fillPhoneNumber()
@@ -312,7 +312,7 @@ class Linkedin:
             elif (type(len(resumes)) != int):
                 utils.prRed(
                     "❌ No resume has been selected please add at least one resume to your Linkedin account.")
-        except:
+        except Exception:
             pass
 
     def getJobProperties(self, count):
@@ -361,7 +361,7 @@ class Linkedin:
             time.sleep(random.uniform(1, constants.botSpeed))
             button = self.driver.find_element(By.XPATH, "//div[contains(@class,'jobs-apply-button--top-card')]//button[contains(@class, 'jobs-apply-button')]")
             EasyApplyButton = button
-        except: 
+        except Exception:
             EasyApplyButton = False
 
         return EasyApplyButton
@@ -486,7 +486,7 @@ class Linkedin:
         if config.followCompanies is False:
             try:
                 self.driver.find_element(By.CSS_SELECTOR, "label[for='follow-company-checkbox']").click()
-            except:
+            except Exception:
                 pass
 
         self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
