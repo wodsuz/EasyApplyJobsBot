@@ -1,0 +1,4 @@
+selenium>=4.0.0
+webdriver_manager>=3.8.0
+selenium-stealth>=1.0.0
+pyyaml>=5.1

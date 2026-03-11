@@ -173,8 +173,8 @@ test.py
 
 # user files
 geckodriver.log
-*.txt
 *.exe
+!requirements.txt
 
 # premium files
 angelco.py
