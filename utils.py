@@ -11,7 +11,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 from selenium import webdriver
 
-def chromeBrowserOptions():
+def chromeBrowserOptions() -> webdriver.ChromeOptions:
     options = webdriver.ChromeOptions()
     options.add_argument('--no-sandbox')
     options.add_argument("--ignore-certificate-errors")
@@ -48,13 +48,13 @@ def chromeBrowserOptions():
         options.add_argument("--incognito")
     return options
 
-def prRed(prt):
+def prRed(prt: str) -> None:
     print(f"\033[91m{prt}\033[00m")
 
-def prGreen(prt):
+def prGreen(prt: str) -> None:
     print(f"\033[92m{prt}\033[00m")
 
-def prYellow(prt):
+def prYellow(prt: str) -> None:
     print(f"\033[93m{prt}\033[00m")
 
 def getUrlDataFile() -> List[str]:
@@ -89,12 +89,12 @@ def jobsToPages(numOfJobs: str) -> int:
 
 def urlToKeywords(url: str) -> List[str]:
     keywordUrl = url[url.index("keywords=")+9:]
-    keyword = keywordUrl[0:keywordUrl.index("&") ] 
-    locationUrl =  url[url.index("location=")+9:]
-    location = locationUrl[0:locationUrl.index("&") ] 
-    return [keyword,location]
+    keyword = keywordUrl[0:keywordUrl.index("&")]
+    locationUrl = url[url.index("location=")+9:]
+    location = locationUrl[0:locationUrl.index("&")]
+    return [keyword, location]
 
-def writeResults(text: str):
+def writeResults(text: str) -> None:
     timeStr = time.strftime("%Y%m%d")
     fileName = "Applied Jobs DATA - " +timeStr + ".txt"
     try:
@@ -118,8 +118,8 @@ def writeResults(text: str):
 
             f.write(text+ "\n")
 
-def printInfoMes(bot:str):
-    prYellow("ℹ️ " +bot+ " is starting soon... ")
+def printInfoMes(bot: str) -> None:
+    prYellow("ℹ️ " + bot + " is starting soon... ")
 
 
 def printSessionSummary(
