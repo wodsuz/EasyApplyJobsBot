@@ -14,6 +14,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.exception import TimeoutException, NoSuchElementException, StaleElementReferenceException, ElementNotInteractableException
 
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -36,7 +37,7 @@ class Linkedin:
                 chromedriver_path = os.path.join(folder, "chromedriver.exe")
                 service = ChromeService(chromedriver_path)
                 self.driver = webdriver.Chrome(service=service, options=utils.chromeBrowserOptions())
-            except Exception as e:
+            except (OSError, FileNotFoundError, ValueError) as e:
                 # Fallback to original method if explicit path fails
                 if config.displayWarnings:
                     utils.prYellow(f"⚠️ Warning: Could not use explicit chromedriver path, using default: {str(e)[0:50]}")
@@ -69,7 +70,7 @@ class Linkedin:
                     time.sleep(2)
                     self.driver.find_element("xpath",'//button[@type="submit"]').click()
                     time.sleep(30)
-                except Exception:
+                except (TimeoutException, NoSuchElementException):
                     utils.prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8.")
 
                 self.saveCookies()
@@ -99,7 +100,7 @@ class Linkedin:
             # Save cookies to file
             with open(self.cookies_path, "wb") as f:
                 pickle.dump(self.driver.get_cookies(), f)
-        except Exception as e:
+        except (OSError, IOError, pickle.UnpicklingError) as e:
             if config.displayWarnings:
                 utils.prYellow(f"⚠️ Warning: Could not save cookies: {str(e)[0:100]}")
             # Don't raise the exception - cookie saving is not critical for bot operation
@@ -109,7 +110,7 @@ class Linkedin:
         try:
             self.driver.find_element(By.XPATH,'//*[@id="ember14"]')
             return True
-        except Exception:
+        except NoSuchElementException:
             pass
         return False 
     
@@ -122,7 +123,7 @@ class Linkedin:
                 for url in linkedinJobLinks:
                     file.write(url+ "\n")
             utils.prGreen("✅ Apply urls are created successfully, now the bot will visit those urls.")
-        except Exception:
+        except (OSError, IOError, AttributeError):
             utils.prRed("❌ Couldn't generate urls, make sure you have editted config file line 25-39")
 
     def linkJobApply(self):
@@ -144,7 +145,7 @@ class Linkedin:
             # Handle case where no jobs are found (//small element doesn't exist)
             try:
                 totalJobs = self.driver.find_element(By.XPATH,'//small').text 
-            except Exception as e:
+            except NoSuchElementException as e:
                 urlWords = utils.urlToKeywords(url)
                 lineToWrite = "\n Category: " + urlWords[0] + ", Location: " + urlWords[1] + ", No jobs found for this search criteria. Skipping..."
                 self.displayWriteResults(lineToWrite)
@@ -173,7 +174,7 @@ class Linkedin:
                         offerId = offer.get_attribute("data-occludable-job-id")
                         if offerId:
                             offerIds.append(int(offerId.split(":")[-1]))
-                    except Exception as e:
+                    except (AttributeError, ValueError, IndexError) as e:
                         if config.displayWarnings:
                             utils.prYellow(f"⚠️ Warning: Could not get offer ID: {str(e)[0:50]}")
                         continue
@@ -190,11 +191,11 @@ class Linkedin:
                                 offerId = offer.get_attribute("data-occludable-job-id")
                                 if offerId:
                                     appliedOfferIds.append(int(offerId.split(":")[-1]))
-                        except Exception:
+                        except (AttributeError, ValueError, IndexError):
                             continue
                     # Remove already applied jobs from the list
                     offerIds = [jobId for jobId in offerIds if jobId not in appliedOfferIds]
-                except Exception as e:
+                except (NoSuchElementException, TimeoutException, AttributeError) as e:
                     if config.displayWarnings:
                         utils.prYellow(f"⚠️ Warning: Could not check applied status: {str(e)[0:50]}")
 
@@ -224,7 +225,7 @@ class Linkedin:
                                 if continue_button.is_displayed():
                                     continue_button.click()
                                     time.sleep(random.uniform(1, constants.botSpeed))
-                            except Exception:
+                            except NoSuchElementException:
                                 # If button doesn't exist, continue normally
                                 pass
                             
@@ -248,7 +249,7 @@ class Linkedin:
                                     if config.maxApplicationsPerRun and countApplied >= config.maxApplicationsPerRun:
                                         reachedCap = True
 
-                            except Exception:
+                            except (NoSuchElementException, TimeoutException, AttributeError):
                                 try:
                                     # Fill phone number before continuing
                                     self.fillPhoneNumber()
@@ -271,7 +272,7 @@ class Linkedin:
                                         if config.maxApplicationsPerRun and countApplied >= config.maxApplicationsPerRun:
                                             reachedCap = True
                                 
-                                except Exception: 
+                                except (NoSuchElementException, TimeoutException, AttributeError, ValueError): 
                                     countCannotApply += 1
                                     self.chooseResume()
                                     lineToWrite = jobProperties + " | " + "* 🥵 Cannot apply to this Job! " +str(offerPage)
@@ -312,7 +313,7 @@ class Linkedin:
             elif (type(len(resumes)) != int):
                 utils.prRed(
                     "❌ No resume has been selected please add at least one resume to your Linkedin account.")
-        except Exception:
+        except (NoSuchElementException, IndexError, AttributeError):
             pass
 
     def getJobProperties(self, count):
@@ -325,7 +326,7 @@ class Linkedin:
             res = [blItem for blItem in config.blackListTitles if (blItem.lower() in jobTitle.lower())]
             if (len(res) > 0):
                 jobTitle += "(blacklisted title: " + ' '.join(res) + ")"
-        except Exception as e:
+        except (NoSuchElementException, AttributeError) as e:
             if (config.displayWarnings):
                 utils.prYellow("⚠️ Warning in getting jobTitle: " + str(e)[0:50])
             jobTitle = ""
@@ -336,7 +337,7 @@ class Linkedin:
             res = [blItem for blItem in config.blacklistCompanies if (blItem.lower() in jobTitle.lower())]
             if (len(res) > 0):
                 jobDetail += "(blacklisted company: " + ' '.join(res) + ")"
-        except Exception as e:
+        except (NoSuchElementException, AttributeError) as e:
             if (config.displayWarnings):
                 print(e)
                 utils.prYellow("⚠️ Warning in getting jobDetail: " + str(e)[0:100])
@@ -347,7 +348,7 @@ class Linkedin:
             for span in jobWorkStatusSpans:
                 jobLocation = jobLocation + " | " + span.text
 
-        except Exception as e:
+        except (NoSuchElementException, AttributeError) as e:
             if (config.displayWarnings):
                 print(e)
                 utils.prYellow("⚠️ Warning in getting jobLocation: " + str(e)[0:100])
@@ -361,7 +362,7 @@ class Linkedin:
             time.sleep(random.uniform(1, constants.botSpeed))
             button = self.driver.find_element(By.XPATH, "//div[contains(@class,'jobs-apply-button--top-card')]//button[contains(@class, 'jobs-apply-button')]")
             EasyApplyButton = button
-        except Exception:
+        except NoSuchElementException:
             EasyApplyButton = False
 
         return EasyApplyButton
@@ -384,7 +385,7 @@ class Linkedin:
                             questions = yaml.safe_load(f)
                             if questions and 'inputField' in questions:
                                 phone_number = questions['inputField'].get('Phone Number', '').strip()
-                except Exception:
+                except (FileNotFoundError, OSError, AttributeError, KeyError):
                     pass
             
             if not phone_number:
@@ -428,11 +429,11 @@ class Linkedin:
                                     if config.displayWarnings:
                                         utils.prYellow(f"✅ Filled phone number: {phone_number}")
                                     break
-                        except Exception:
+                        except (AttributeError, StaleElementReferenceException, ElementNotInteractableException):
                             continue
                     if phone_filled:
                         break
-                except Exception:
+                except (NoSuchElementException, TimeoutException):
                     continue
             
             # Try XPath selectors if CSS didn't work
@@ -452,14 +453,14 @@ class Linkedin:
                                         if config.displayWarnings:
                                             utils.prYellow(f"✅ Filled phone number: {phone_number}")
                                         break
-                            except Exception:
+                            except (AttributeError, StaleElementReferenceException, ElementNotInteractableException):
                                 continue
                         if phone_filled:
                             break
-                    except Exception:
+                    except (NoSuchElementException, TimeoutException):
                         continue
                 
-        except Exception as e:
+        except (OSError, IOError, AttributeError) as e:
             if config.displayWarnings:
                 utils.prYellow(f"⚠️ Warning: Error in fillPhoneNumber: {str(e)[0:50]}")
 
@@ -486,7 +487,7 @@ class Linkedin:
         if config.followCompanies is False:
             try:
                 self.driver.find_element(By.CSS_SELECTOR, "label[for='follow-company-checkbox']").click()
-            except Exception:
+            except NoSuchElementException:
                 pass
 
         self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
@@ -500,7 +501,7 @@ class Linkedin:
         try:
             print(lineToWrite)
             utils.writeResults(lineToWrite)
-        except Exception as e:
+        except (OSError, IOError, AttributeError) as e:
             utils.prRed("❌ Error in DisplayWriteResults: " +str(e))
 
     def element_exists(self, parent, by, selector):
