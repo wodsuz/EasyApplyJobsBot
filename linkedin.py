@@ -338,7 +338,6 @@ class Linkedin:
                 jobDetail += "(blacklisted company: " + ' '.join(res) + ")"
         except Exception as e:
             if (config.displayWarnings):
-                print(e)
                 utils.prYellow("⚠️ Warning in getting jobDetail: " + str(e)[0:100])
             jobDetail = ""
 
@@ -349,7 +348,6 @@ class Linkedin:
 
         except Exception as e:
             if (config.displayWarnings):
-                print(e)
                 utils.prYellow("⚠️ Warning in getting jobLocation: " + str(e)[0:100])
             jobLocation = ""
 
