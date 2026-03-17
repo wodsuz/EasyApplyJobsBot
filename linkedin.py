@@ -6,6 +6,8 @@ import random
 import sys
 import time
 
+import yaml
+
 import config
 import constants
 import utils
@@ -309,7 +311,7 @@ class Linkedin:
                 resumes[0].click()
             elif (len(resumes) > 1 and resumes[config.preferredCv-1].get_attribute("aria-label") == "Select this resume"):
                 resumes[config.preferredCv-1].click()
-            elif (type(len(resumes)) != int):
+            elif (len(resumes) == 0):
                 utils.prRed(
                     "❌ No resume has been selected please add at least one resume to your Linkedin account.")
         except Exception:
@@ -378,7 +380,6 @@ class Linkedin:
             else:
                 # Try to read from additionalQuestions.yaml if available
                 try:
-                    import yaml
                     if os.path.exists('additionalQuestions.yaml'):
                         with open('additionalQuestions.yaml', 'r', encoding='utf-8') as f:
                             questions = yaml.safe_load(f)
