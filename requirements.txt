@@ -1,3 +1,4 @@
 selenium
 webdriver_manager
 selenium-stealth
+PyYAML
