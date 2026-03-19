@@ -10,8 +10,9 @@ import constants
 sys.stdout.reconfigure(encoding='utf-8')
 
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
-def chromeBrowserOptions():
+def chromeBrowserOptions() -> Options:
     options = webdriver.ChromeOptions()
     options.add_argument('--no-sandbox')
     options.add_argument("--ignore-certificate-errors")
@@ -48,13 +49,13 @@ def chromeBrowserOptions():
         options.add_argument("--incognito")
     return options
 
-def prRed(prt):
+def prRed(prt: str) -> None:
     print(f"\033[91m{prt}\033[00m")
 
-def prGreen(prt):
+def prGreen(prt: str) -> None:
     print(f"\033[92m{prt}\033[00m")
 
-def prYellow(prt):
+def prYellow(prt: str) -> None:
     print(f"\033[93m{prt}\033[00m")
 
 def getUrlDataFile() -> List[str]:
@@ -73,53 +74,52 @@ def getUrlDataFile() -> List[str]:
     return urlData
 
 def jobsToPages(numOfJobs: str) -> int:
-  number_of_pages = 1
+    number_of_pages = 1
 
-  if (' ' in numOfJobs):
-    spaceIndex = numOfJobs.index(' ')
-    totalJobs = (numOfJobs[0:spaceIndex])
-    totalJobs_int = int(totalJobs.replace(',', ''))
-    number_of_pages = math.ceil(totalJobs_int/constants.jobsPerPage)
-    if (number_of_pages > 40 ): number_of_pages = 40
+    if ' ' in numOfJobs:
+        spaceIndex = numOfJobs.index(' ')
+        totalJobs = numOfJobs[0:spaceIndex]
+        totalJobs_int = int(totalJobs.replace(',', ''))
+        number_of_pages = math.ceil(totalJobs_int / constants.jobsPerPage)
+        if number_of_pages > 40:
+            number_of_pages = 40
+    else:
+        number_of_pages = int(numOfJobs)
 
-  else:
-      number_of_pages = int(numOfJobs)
-
-  return number_of_pages
+    return number_of_pages
 
 def urlToKeywords(url: str) -> List[str]:
-    keywordUrl = url[url.index("keywords=")+9:]
-    keyword = keywordUrl[0:keywordUrl.index("&") ] 
-    locationUrl =  url[url.index("location=")+9:]
-    location = locationUrl[0:locationUrl.index("&") ] 
-    return [keyword,location]
+    keywordUrl = url[url.index("keywords=") + 9:]
+    keyword = keywordUrl[0:keywordUrl.index("&")]
+    locationUrl = url[url.index("location=") + 9:]
+    location = locationUrl[0:locationUrl.index("&")]
+    return [keyword, location]
 
-def writeResults(text: str):
+def writeResults(text: str) -> None:
     timeStr = time.strftime("%Y%m%d")
-    fileName = "Applied Jobs DATA - " +timeStr + ".txt"
+    fileName = "Applied Jobs DATA - " + timeStr + ".txt"
     try:
-        with open("data/" +fileName, encoding="utf-8" ) as file:
+        with open("data/" + fileName, encoding="utf-8") as file:
             lines = []
             for line in file:
                 if "----" not in line:
                     lines.append(line)
-                
-        with open("data/" +fileName, 'w' ,encoding="utf-8") as f:
-            f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )
-            f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
-            for line in lines: 
+
+        with open("data/" + fileName, 'w', encoding="utf-8") as f:
+            f.write("---- Applied Jobs Data ---- created at: " + timeStr + "\n")
+            f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result " + "\n")
+            for line in lines:
                 f.write(line)
-            f.write(text+ "\n")
-            
+            f.write(text + "\n")
+
     except Exception:
-        with open("data/" +fileName, 'w', encoding="utf-8") as f:
-            f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )
-            f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
+        with open("data/" + fileName, 'w', encoding="utf-8") as f:
+            f.write("---- Applied Jobs Data ---- created at: " + timeStr + "\n")
+            f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result " + "\n")
+            f.write(text + "\n")
 
-            f.write(text+ "\n")
-
-def printInfoMes(bot:str):
-    prYellow("ℹ️ " +bot+ " is starting soon... ")
+def printInfoMes(bot: str) -> None:
+    prYellow("ℹ️ " + bot + " is starting soon... ")
 
 
 def printSessionSummary(
