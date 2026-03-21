@@ -48,13 +48,13 @@ def chromeBrowserOptions():
         options.add_argument("--incognito")
     return options
 
-def prRed(prt):
+def prRed(prt: str) -> None:
     print(f"\033[91m{prt}\033[00m")
 
-def prGreen(prt):
+def prGreen(prt: str) -> None:
     print(f"\033[92m{prt}\033[00m")
 
-def prYellow(prt):
+def prYellow(prt: str) -> None:
     print(f"\033[93m{prt}\033[00m")
 
 def getUrlDataFile() -> List[str]:
@@ -160,7 +160,7 @@ def printSessionSummary(
     except Exception as e:
         prRed("❌ Could not write session summary to file: " + str(e)[:80])
 
-def donate():
+def donate() -> None:
     prYellow('If you like the project, please support me so that i can make more such projects, thanks!')
 
 class LinkedinUrlGenerate:
