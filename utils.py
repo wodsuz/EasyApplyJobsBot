@@ -18,14 +18,14 @@ def chromeBrowserOptions():
     options.add_argument("--disable-extensions")
     options.add_argument('--disable-gpu')
     options.add_argument('--disable-dev-shm-usage')
-    if(config.headless):
+    if config.headless:
         options.add_argument("--headless")
     options.add_argument("--start-maximized")
     options.add_argument("--disable-blink-features")
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_experimental_option('useAutomationExtension', False)
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    if(len(config.chromeProfilePath)>0):
+    if len(config.chromeProfilePath) > 0:
         # Handle both Windows (\) and Unix (/) path separators
         # Normalize path separators to handle mixed separators
         normalized_path = config.chromeProfilePath.replace('\\', os.sep).replace('/', os.sep)
@@ -73,26 +73,26 @@ def getUrlDataFile() -> List[str]:
     return urlData
 
 def jobsToPages(numOfJobs: str) -> int:
-  number_of_pages = 1
+    number_of_pages = 1
 
-  if (' ' in numOfJobs):
-    spaceIndex = numOfJobs.index(' ')
-    totalJobs = (numOfJobs[0:spaceIndex])
-    totalJobs_int = int(totalJobs.replace(',', ''))
-    number_of_pages = math.ceil(totalJobs_int/constants.jobsPerPage)
-    if (number_of_pages > 40 ): number_of_pages = 40
+    if ' ' in numOfJobs:
+        space_index = numOfJobs.index(' ')
+        total_jobs = numOfJobs[0:space_index]
+        total_jobs_int = int(total_jobs.replace(',', ''))
+        number_of_pages = math.ceil(total_jobs_int / constants.jobsPerPage)
+        if number_of_pages > 40:
+            number_of_pages = 40
+    else:
+        number_of_pages = int(numOfJobs)
 
-  else:
-      number_of_pages = int(numOfJobs)
-
-  return number_of_pages
+    return number_of_pages
 
 def urlToKeywords(url: str) -> List[str]:
-    keywordUrl = url[url.index("keywords=")+9:]
-    keyword = keywordUrl[0:keywordUrl.index("&") ] 
-    locationUrl =  url[url.index("location=")+9:]
-    location = locationUrl[0:locationUrl.index("&") ] 
-    return [keyword,location]
+    keyword_url = url[url.index("keywords=") + 9:]
+    keyword = keyword_url[0:keyword_url.index("&")]
+    location_url = url[url.index("location=") + 9:]
+    location = location_url[0:location_url.index("&")]
+    return [keyword, location]
 
 def writeResults(text: str):
     timeStr = time.strftime("%Y%m%d")
