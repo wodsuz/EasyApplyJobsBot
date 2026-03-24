@@ -109,9 +109,10 @@ class Linkedin:
         try:
             self.driver.find_element(By.XPATH,'//*[@id="ember14"]')
             return True
-        except Exception:
-            pass
-        return False 
+        except Exception as e:
+            if config.displayWarnings:
+                utils.prYellow(f"⚠️ Warning: Could not verify login status: {str(e)[0:50]}")
+            return False 
     
     def generateUrls(self):
         if not os.path.exists('data'):
@@ -224,9 +225,9 @@ class Linkedin:
                                 if continue_button.is_displayed():
                                     continue_button.click()
                                     time.sleep(random.uniform(1, constants.botSpeed))
-                            except Exception:
-                                # If button doesn't exist, continue normally
-                                pass
+                            except Exception as e:
+                                if config.displayWarnings:
+                                    utils.prYellow(f"⚠️ Warning: Continue button not found: {str(e)[0:50]}")
                             
                             try:
                                 self.chooseResume()
@@ -248,7 +249,7 @@ class Linkedin:
                                     if config.maxApplicationsPerRun and countApplied >= config.maxApplicationsPerRun:
                                         reachedCap = True
 
-                            except Exception:
+                            except Exception as e:
                                 try:
                                     # Fill phone number before continuing
                                     self.fillPhoneNumber()
@@ -271,11 +272,13 @@ class Linkedin:
                                         if config.maxApplicationsPerRun and countApplied >= config.maxApplicationsPerRun:
                                             reachedCap = True
                                 
-                                except Exception: 
+                                except Exception as e2: 
                                     countCannotApply += 1
                                     self.chooseResume()
                                     lineToWrite = jobProperties + " | " + "* 🥵 Cannot apply to this Job! " +str(offerPage)
                                     self.displayWriteResults(lineToWrite)
+                                    if config.displayWarnings:
+                                        utils.prYellow(f"⚠️ Warning: Error during multi-step application: {str(e2)[0:50]}")
                         else:
                             countAlreadyApplied += 1
                             lineToWrite = jobProperties + " | " + "* 🥳 Already applied! Job: " +str(offerPage)
@@ -312,8 +315,9 @@ class Linkedin:
             elif (type(len(resumes)) != int):
                 utils.prRed(
                     "❌ No resume has been selected please add at least one resume to your Linkedin account.")
-        except Exception:
-            pass
+        except Exception as e:
+            if config.displayWarnings:
+                utils.prYellow(f"⚠️ Warning in chooseResume: {str(e)[0:50]}")
 
     def getJobProperties(self, count):
         textToWrite = ""
@@ -361,7 +365,9 @@ class Linkedin:
             time.sleep(random.uniform(1, constants.botSpeed))
             button = self.driver.find_element(By.XPATH, "//div[contains(@class,'jobs-apply-button--top-card')]//button[contains(@class, 'jobs-apply-button')]")
             EasyApplyButton = button
-        except Exception:
+        except Exception as e:
+            if config.displayWarnings:
+                utils.prYellow(f"⚠️ Warning: Easy Apply button not found: {str(e)[0:50]}")
             EasyApplyButton = False
 
         return EasyApplyButton
@@ -486,8 +492,9 @@ class Linkedin:
         if config.followCompanies is False:
             try:
                 self.driver.find_element(By.CSS_SELECTOR, "label[for='follow-company-checkbox']").click()
-            except Exception:
-                pass
+            except Exception as e:
+                if config.displayWarnings:
+                    utils.prYellow(f"⚠️ Warning: Follow company checkbox not found: {str(e)[0:50]}")
 
         self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
         time.sleep(random.uniform(1, constants.botSpeed))
