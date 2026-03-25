@@ -305,11 +305,11 @@ class Linkedin:
                 By.CLASS_NAME, "jobs-document-upload__title--is-required")
             resumes = self.driver.find_elements(
                 By.XPATH, "//div[contains(@class, 'ui-attachment--pdf')]")
-            if (len(resumes) == 1 and resumes[0].get_attribute("aria-label") == "Select this resume"):
+            if len(resumes) == 1 and resumes[0].get_attribute("aria-label") == "Select this resume":
                 resumes[0].click()
-            elif (len(resumes) > 1 and resumes[config.preferredCv-1].get_attribute("aria-label") == "Select this resume"):
-                resumes[config.preferredCv-1].click()
-            elif (type(len(resumes)) != int):
+            elif len(resumes) > 1 and resumes[config.preferredCv - 1].get_attribute("aria-label") == "Select this resume":
+                resumes[config.preferredCv - 1].click()
+            elif len(resumes) == 0:
                 utils.prRed(
                     "❌ No resume has been selected please add at least one resume to your Linkedin account.")
         except Exception:
@@ -322,22 +322,22 @@ class Linkedin:
 
         try:
             jobTitle = self.driver.find_element(By.XPATH, "//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
-            res = [blItem for blItem in config.blackListTitles if (blItem.lower() in jobTitle.lower())]
-            if (len(res) > 0):
+            res = [blItem for blItem in config.blackListTitles if blItem.lower() in jobTitle.lower()]
+            if len(res) > 0:
                 jobTitle += "(blacklisted title: " + ' '.join(res) + ")"
         except Exception as e:
-            if (config.displayWarnings):
+            if config.displayWarnings:
                 utils.prYellow("⚠️ Warning in getting jobTitle: " + str(e)[0:50])
             jobTitle = ""
 
         try:
             time.sleep(5)
             jobDetail = self.driver.find_element(By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div").text.replace("·", "|")
-            res = [blItem for blItem in config.blacklistCompanies if (blItem.lower() in jobTitle.lower())]
-            if (len(res) > 0):
+            res = [blItem for blItem in config.blacklistCompanies if blItem.lower() in jobTitle.lower()]
+            if len(res) > 0:
                 jobDetail += "(blacklisted company: " + ' '.join(res) + ")"
         except Exception as e:
-            if (config.displayWarnings):
+            if config.displayWarnings:
                 print(e)
                 utils.prYellow("⚠️ Warning in getting jobDetail: " + str(e)[0:100])
             jobDetail = ""
@@ -348,7 +348,7 @@ class Linkedin:
                 jobLocation = jobLocation + " | " + span.text
 
         except Exception as e:
-            if (config.displayWarnings):
+            if config.displayWarnings:
                 print(e)
                 utils.prYellow("⚠️ Warning in getting jobLocation: " + str(e)[0:100])
             jobLocation = ""
