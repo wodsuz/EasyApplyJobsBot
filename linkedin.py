@@ -9,14 +9,12 @@ import time
 import config
 import constants
 import utils
-
-sys.stdout.reconfigure(encoding='utf-8')
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
+
+sys.stdout.reconfigure(encoding='utf-8')
 
 try:
     from selenium_stealth import stealth
@@ -76,10 +74,10 @@ class Linkedin:
             # start application
             self.linkJobApply()
 
-    def getHash(self, string):
+    def getHash(self, string: str) -> str:
         return hashlib.md5(string.encode('utf-8')).hexdigest()
 
-    def loadCookies(self):
+    def loadCookies(self) -> None:
         if os.path.exists(self.cookies_path):
             with open(self.cookies_path, "rb") as f:
                 cookies = pickle.load(f)
@@ -87,7 +85,7 @@ class Linkedin:
             for cookie in cookies:
                 self.driver.add_cookie(cookie)
 
-    def saveCookies(self):
+    def saveCookies(self) -> None:
         try:
             # Get the directory path for cookies
             cookies_dir = os.path.dirname(self.cookies_path)
@@ -104,7 +102,7 @@ class Linkedin:
                 utils.prYellow(f"⚠️ Warning: Could not save cookies: {str(e)[0:100]}")
             # Don't raise the exception - cookie saving is not critical for bot operation
     
-    def isLoggedIn(self):
+    def isLoggedIn(self) -> bool:
         self.driver.get('https://www.linkedin.com/feed')
         try:
             self.driver.find_element(By.XPATH,'//*[@id="ember14"]')
@@ -113,7 +111,7 @@ class Linkedin:
             pass
         return False 
     
-    def generateUrls(self):
+    def generateUrls(self) -> None:
         if not os.path.exists('data'):
             os.makedirs('data')
         try: 
@@ -125,7 +123,7 @@ class Linkedin:
         except Exception:
             utils.prRed("❌ Couldn't generate urls, make sure you have editted config file line 25-39")
 
-    def linkJobApply(self):
+    def linkJobApply(self) -> None:
         self.generateUrls()
         countApplied = 0
         countJobs = 0
@@ -299,7 +297,7 @@ class Linkedin:
         )
         utils.donate()
 
-    def chooseResume(self):
+    def chooseResume(self) -> None:
         try:
             self.driver.find_element(
                 By.CLASS_NAME, "jobs-document-upload__title--is-required")
@@ -315,7 +313,7 @@ class Linkedin:
         except Exception:
             pass
 
-    def getJobProperties(self, count):
+    def getJobProperties(self, count: int) -> str:
         textToWrite = ""
         jobTitle = ""
         jobLocation = ""
@@ -366,8 +364,7 @@ class Linkedin:
 
         return EasyApplyButton
 
-    def fillPhoneNumber(self):
-        """Fill phone number fields if they exist and are empty"""
+    def fillPhoneNumber(self) -> None:
         try:
             # Get phone number from config or additionalQuestions.yaml
             phone_number = ""
@@ -463,7 +460,7 @@ class Linkedin:
             if config.displayWarnings:
                 utils.prYellow(f"⚠️ Warning: Error in fillPhoneNumber: {str(e)[0:50]}")
 
-    def applyProcess(self, percentage, offerPage):
+    def applyProcess(self, percentage: int, offerPage: str) -> str:
         applyPages = math.floor(100 / percentage) - 2 
         result = ""
         for pages in range(applyPages):
@@ -496,14 +493,14 @@ class Linkedin:
 
         return result
 
-    def displayWriteResults(self,lineToWrite: str):
+    def displayWriteResults(self, lineToWrite: str) -> None:
         try:
             print(lineToWrite)
             utils.writeResults(lineToWrite)
         except Exception as e:
             utils.prRed("❌ Error in DisplayWriteResults: " +str(e))
 
-    def element_exists(self, parent, by, selector):
+    def element_exists(self, parent, by: By, selector: str) -> bool:
         return len(parent.find_elements(by, selector)) > 0
 
 start = time.time()
