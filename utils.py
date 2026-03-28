@@ -111,7 +111,7 @@ def writeResults(text: str):
                 f.write(line)
             f.write(text+ "\n")
             
-    except Exception:
+    except (FileNotFoundError, OSError):
         with open("data/" +fileName, 'w', encoding="utf-8") as f:
             f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )
             f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
@@ -157,7 +157,7 @@ def printSessionSummary(
         file_path = os.path.join(data_dir, file_name)
         with open(file_path, "a", encoding="utf-8") as f:
             f.write("\n".join(summary_lines) + "\n")
-    except Exception as e:
+    except (OSError, IOError) as e:
         prRed("❌ Could not write session summary to file: " + str(e)[:80])
 
 def donate():
