@@ -5,6 +5,7 @@ import pickle
 import random
 import sys
 import time
+from typing import Optional
 
 import config
 import constants
@@ -25,61 +26,59 @@ except ImportError:
     STEALTH_AVAILABLE = False
 
 class Linkedin:
-    def __init__(self):
-            utils.prYellow("🤖 Thanks for using Easy Apply Jobs bot, for more information you can visit our site - www.automated-bots.com")
-            utils.prYellow("🌐 Bot will run in Chrome browser and log in Linkedin for you.")
-            
-            # Fix for WinError 193: Explicitly construct chromedriver path
+    def __init__(self) -> None:
+        utils.prYellow("🤖 Thanks for using Easy Apply Jobs bot, for more information you can visit our site - www.automated-bots.com")
+        utils.prYellow("🌐 Bot will run in Chrome browser and log in Linkedin for you.")
+        
+        # Fix for WinError 193: Explicitly construct chromedriver path
+        try:
+            chrome_install = ChromeDriverManager().install()
+            folder = os.path.dirname(chrome_install)
+            chromedriver_path = os.path.join(folder, "chromedriver.exe")
+            service = ChromeService(chromedriver_path)
+            self.driver = webdriver.Chrome(service=service, options=utils.chromeBrowserOptions())
+        except Exception as e:
+            # Fallback to original method if explicit path fails
+            if config.displayWarnings:
+                utils.prYellow(f"⚠️ Warning: Could not use explicit chromedriver path, using default: {str(e)[0:50]}")
+            self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=utils.chromeBrowserOptions())
+        
+        # Apply stealth mode if available
+        if STEALTH_AVAILABLE:
             try:
-                chrome_install = ChromeDriverManager().install()
-                folder = os.path.dirname(chrome_install)
-                chromedriver_path = os.path.join(folder, "chromedriver.exe")
-                service = ChromeService(chromedriver_path)
-                self.driver = webdriver.Chrome(service=service, options=utils.chromeBrowserOptions())
+                stealth(self.driver,
+                        languages=["en-US", "en"],
+                        vendor="Google Inc.",
+                        platform="Win32",
+                        webgl_vendor="Intel Inc.",
+                        renderer="Intel Iris OpenGL Engine",
+                        fix_hairline=True)
             except Exception as e:
-                # Fallback to original method if explicit path fails
-                if config.displayWarnings:
-                    utils.prYellow(f"⚠️ Warning: Could not use explicit chromedriver path, using default: {str(e)[0:50]}")
-                self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=utils.chromeBrowserOptions())
-            
-            # Apply stealth mode if available
-            if STEALTH_AVAILABLE:
-                try:
-                    stealth(self.driver,
-                            languages=["en-US", "en"],
-                            vendor="Google Inc.",
-                            platform="Win32",
-                            webgl_vendor="Intel Inc.",
-                            renderer="Intel Iris OpenGL Engine",
-                            fix_hairline=True)
-                except Exception as e:
-                    utils.prYellow(f"⚠️ Warning: Could not apply stealth mode: {str(e)}")
-            
-            self.cookies_path = f"{os.path.join(os.getcwd(),'cookies')}/{self.getHash(config.email)}.pkl"
-            self.driver.get('https://www.linkedin.com')
-            self.loadCookies()
+                utils.prYellow(f"⚠️ Warning: Could not apply stealth mode: {str(e)}")
+        
+        self.cookies_path = f"{os.path.join(os.getcwd(),'cookies')}/{self.getHash(config.email)}.pkl"
+        self.driver.get('https://www.linkedin.com')
+        self.loadCookies()
 
-            if not self.isLoggedIn():
-                self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
-                utils.prYellow("🔄 Trying to log in Linkedin...")
-                try:    
-                    self.driver.find_element("id","username").send_keys(config.email)
-                    time.sleep(2)
-                    self.driver.find_element("id","password").send_keys(config.password)
-                    time.sleep(2)
-                    self.driver.find_element("xpath",'//button[@type="submit"]').click()
-                    time.sleep(30)
-                except Exception:
-                    utils.prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8.")
+        if not self.isLoggedIn():
+            self.driver.get("https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin")
+            utils.prYellow("🔄 Trying to log in Linkedin...")
+            try:    
+                self.driver.find_element("id","username").send_keys(config.email)
+                time.sleep(2)
+                self.driver.find_element("id","password").send_keys(config.password)
+                time.sleep(2)
+                self.driver.find_element("xpath",'//button[@type="submit"]').click()
+                time.sleep(30)
+            except Exception:
+                utils.prRed("❌ Couldn't log in Linkedin by using Chrome. Please check your Linkedin credentials on config files line 7 and 8.")
 
-                self.saveCookies()
-            # start application
-            self.linkJobApply()
+            self.saveCookies()
 
-    def getHash(self, string):
+    def getHash(self, string: str) -> str:
         return hashlib.md5(string.encode('utf-8')).hexdigest()
 
-    def loadCookies(self):
+    def loadCookies(self) -> None:
         if os.path.exists(self.cookies_path):
             with open(self.cookies_path, "rb") as f:
                 cookies = pickle.load(f)
@@ -87,7 +86,7 @@ class Linkedin:
             for cookie in cookies:
                 self.driver.add_cookie(cookie)
 
-    def saveCookies(self):
+    def saveCookies(self) -> None:
         try:
             # Get the directory path for cookies
             cookies_dir = os.path.dirname(self.cookies_path)
@@ -104,7 +103,7 @@ class Linkedin:
                 utils.prYellow(f"⚠️ Warning: Could not save cookies: {str(e)[0:100]}")
             # Don't raise the exception - cookie saving is not critical for bot operation
     
-    def isLoggedIn(self):
+    def isLoggedIn(self) -> bool:
         self.driver.get('https://www.linkedin.com/feed')
         try:
             self.driver.find_element(By.XPATH,'//*[@id="ember14"]')
@@ -113,7 +112,7 @@ class Linkedin:
             pass
         return False 
     
-    def generateUrls(self):
+    def generateUrls(self) -> None:
         if not os.path.exists('data'):
             os.makedirs('data')
         try: 
@@ -125,7 +124,7 @@ class Linkedin:
         except Exception:
             utils.prRed("❌ Couldn't generate urls, make sure you have editted config file line 25-39")
 
-    def linkJobApply(self):
+    def linkJobApply(self) -> None:
         self.generateUrls()
         countApplied = 0
         countJobs = 0
@@ -214,7 +213,7 @@ class Linkedin:
                     else :                    
                         easyApplybutton = self.easyApplyButton()
 
-                        if easyApplybutton is not False:
+                        if easyApplybutton is not None:
                             easyApplybutton.click()
                             time.sleep(random.uniform(1, constants.botSpeed))
                             
@@ -299,7 +298,7 @@ class Linkedin:
         )
         utils.donate()
 
-    def chooseResume(self):
+    def chooseResume(self) -> None:
         try:
             self.driver.find_element(
                 By.CLASS_NAME, "jobs-document-upload__title--is-required")
@@ -315,7 +314,7 @@ class Linkedin:
         except Exception:
             pass
 
-    def getJobProperties(self, count):
+    def getJobProperties(self, count: int) -> str:
         textToWrite = ""
         jobTitle = ""
         jobLocation = ""
@@ -356,17 +355,17 @@ class Linkedin:
         textToWrite = str(count) + " | " + jobTitle +" | " + jobDetail + jobLocation
         return textToWrite
 
-    def easyApplyButton(self):
+    def easyApplyButton(self) -> Optional[webdriver.remote.webelement.WebElement]:
         try:
             time.sleep(random.uniform(1, constants.botSpeed))
             button = self.driver.find_element(By.XPATH, "//div[contains(@class,'jobs-apply-button--top-card')]//button[contains(@class, 'jobs-apply-button')]")
             EasyApplyButton = button
         except Exception:
-            EasyApplyButton = False
+            EasyApplyButton = None
 
         return EasyApplyButton
 
-    def fillPhoneNumber(self):
+    def fillPhoneNumber(self) -> None:
         """Fill phone number fields if they exist and are empty"""
         try:
             # Get phone number from config or additionalQuestions.yaml
@@ -463,7 +462,7 @@ class Linkedin:
             if config.displayWarnings:
                 utils.prYellow(f"⚠️ Warning: Error in fillPhoneNumber: {str(e)[0:50]}")
 
-    def applyProcess(self, percentage, offerPage):
+    def applyProcess(self, percentage: int, offerPage: str) -> str:
         applyPages = math.floor(100 / percentage) - 2 
         result = ""
         for pages in range(applyPages):
@@ -496,17 +495,24 @@ class Linkedin:
 
         return result
 
-    def displayWriteResults(self,lineToWrite: str):
+    def displayWriteResults(self, lineToWrite: str) -> None:
         try:
             print(lineToWrite)
             utils.writeResults(lineToWrite)
         except Exception as e:
             utils.prRed("❌ Error in DisplayWriteResults: " +str(e))
 
-    def element_exists(self, parent, by, selector):
+    def element_exists(self, parent: webdriver.remote.webelement.WebElement, by: str, selector: str) -> bool:
         return len(parent.find_elements(by, selector)) > 0
 
-start = time.time()
-Linkedin().linkJobApply()
-end = time.time()
-utils.prYellow("---Took: " + str(round((time.time() - start)/60)) + " minute(s).")
+
+def main() -> None:
+    start = time.time()
+    bot = Linkedin()
+    bot.linkJobApply()
+    end = time.time()
+    utils.prYellow("---Took: " + str(round((time.time() - start)/60)) + " minute(s).")
+
+
+if __name__ == "__main__":
+    main()

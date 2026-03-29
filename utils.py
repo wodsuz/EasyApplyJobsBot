@@ -48,13 +48,13 @@ def chromeBrowserOptions():
         options.add_argument("--incognito")
     return options
 
-def prRed(prt):
+def prRed(prt: str) -> None:
     print(f"\033[91m{prt}\033[00m")
 
-def prGreen(prt):
+def prGreen(prt: str) -> None:
     print(f"\033[92m{prt}\033[00m")
 
-def prYellow(prt):
+def prYellow(prt: str) -> None:
     print(f"\033[93m{prt}\033[00m")
 
 def getUrlDataFile() -> List[str]:
@@ -92,9 +92,9 @@ def urlToKeywords(url: str) -> List[str]:
     keyword = keywordUrl[0:keywordUrl.index("&") ] 
     locationUrl =  url[url.index("location=")+9:]
     location = locationUrl[0:locationUrl.index("&") ] 
-    return [keyword,location]
+    return [keyword, location]
 
-def writeResults(text: str):
+def writeResults(text: str) -> None:
     timeStr = time.strftime("%Y%m%d")
     fileName = "Applied Jobs DATA - " +timeStr + ".txt"
     try:
@@ -118,7 +118,7 @@ def writeResults(text: str):
 
             f.write(text+ "\n")
 
-def printInfoMes(bot:str):
+def printInfoMes(bot: str) -> None:
     prYellow("ℹ️ " +bot+ " is starting soon... ")
 
 
@@ -160,19 +160,19 @@ def printSessionSummary(
     except Exception as e:
         prRed("❌ Could not write session summary to file: " + str(e)[:80])
 
-def donate():
+def donate() -> None:
     prYellow('If you like the project, please support me so that i can make more such projects, thanks!')
 
 class LinkedinUrlGenerate:
-    def generateUrlLinks(self):
-        path = []
+    def generateUrlLinks(self) -> List[str]:
+        path: List[str] = []
         for location in config.location:
             for keyword in config.keywords:
                     url = constants.linkJobUrl + "?f_AL=true&keywords=" +keyword+self.jobType()+self.remote()+self.checkJobLocation(location)+self.jobExp()+self.datePosted()+self.salary()+self.sortBy()
                     path.append(url)
         return path
 
-    def checkJobLocation(self,job):
+    def checkJobLocation(self, job: str) -> str:
         jobLoc = "&location=" +job
         match job.casefold():
             case "asia":
@@ -190,7 +190,7 @@ class LinkedinUrlGenerate:
 
         return jobLoc
 
-    def jobExp(self):
+    def jobExp(self) -> str:
         jobtExpArray = config.experienceLevels
         firstJobExp = jobtExpArray[0]
         jobExp = ""
@@ -224,7 +224,7 @@ class LinkedinUrlGenerate:
 
         return jobExp
 
-    def datePosted(self):
+    def datePosted(self) -> str:
         datePosted = ""
         match config.datePosted[0]:
             case "Any Time":
@@ -237,7 +237,7 @@ class LinkedinUrlGenerate:
                 datePosted = "&f_TPR=r86400&"
         return datePosted
 
-    def jobType(self):
+    def jobType(self) -> str:
         jobTypeArray = config.jobType
         firstjobType = jobTypeArray[0]
         jobType = ""
@@ -275,7 +275,7 @@ class LinkedinUrlGenerate:
         jobType += "&"
         return jobType
 
-    def remote(self):
+    def remote(self) -> str:
         remoteArray = config.remote
         firstJobRemote = remoteArray[0]
         jobRemote = ""
@@ -297,7 +297,7 @@ class LinkedinUrlGenerate:
 
         return jobRemote
 
-    def salary(self):
+    def salary(self) -> str:
         salary = ""
         match config.salary[0]:
             case "$40,000+":
@@ -320,7 +320,7 @@ class LinkedinUrlGenerate:
                 salary = "f_SB2=9&"                  
         return salary
 
-    def sortBy(self):
+    def sortBy(self) -> str:
         sortBy = ""
         match config.sort[0]:
             case "Recent":
