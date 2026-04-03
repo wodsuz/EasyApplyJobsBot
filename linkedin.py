@@ -332,7 +332,7 @@ class Linkedin:
         try:
             time.sleep(5)
             jobDetail = self.driver.find_element(By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div").text.replace("·", "|")
-            res = [blItem for blItem in config.blacklistCompanies if (blItem.lower() in jobTitle.lower())]
+            res = [blItem for blItem in config.blacklistCompanies if (blItem.lower() in jobDetail.lower())]
             if (len(res) > 0):
                 jobDetail += "(blacklisted company: " + ' '.join(res) + ")"
         except Exception as e:
