@@ -62,8 +62,8 @@ onlyApplyMinApplications = []
 onlyApplyJobDescription = []
 #PRO FEATURE! - Do not apply the jobs having these keywords in the job description
 blockJobDescription = []
-#PRO FEATURE! - Apply companies having equal or more than employes - ex: ["100"]
-onlyAppyMimEmployee = []
+#PRO FEATURE! - Apply companies having equal or more than employees - ex: ["100"]
+onlyApplyMinEmployee = []
 #PRO FEATURE - Apply the ones linkedin is saying "you may be a goodfit"
 onlyApplyLinkedinRecommending = False
 #PRO FEATURE - Only apply the ones you have skilled badge
