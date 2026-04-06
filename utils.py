@@ -11,7 +11,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 from selenium import webdriver
 
-def chromeBrowserOptions():
+def chromeBrowserOptions() -> webdriver.ChromeOptions:
     options = webdriver.ChromeOptions()
     options.add_argument('--no-sandbox')
     options.add_argument("--ignore-certificate-errors")
