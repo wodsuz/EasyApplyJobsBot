@@ -6,10 +6,9 @@ from typing import List
 
 import config
 import constants
+from selenium import webdriver
 
 sys.stdout.reconfigure(encoding='utf-8')
-
-from selenium import webdriver
 
 def chromeBrowserOptions():
     options = webdriver.ChromeOptions()
