@@ -10,12 +10,8 @@ from typing import Optional
 import config
 import constants
 import utils
-
-sys.stdout.reconfigure(encoding='utf-8')
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service as ChromeService
 
@@ -24,6 +20,8 @@ try:
     STEALTH_AVAILABLE = True
 except ImportError:
     STEALTH_AVAILABLE = False
+
+sys.stdout.reconfigure(encoding='utf-8')
 
 class Linkedin:
     def __init__(self) -> None:
