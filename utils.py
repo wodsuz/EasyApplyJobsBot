@@ -18,14 +18,14 @@ def chromeBrowserOptions():
     options.add_argument("--disable-extensions")
     options.add_argument('--disable-gpu')
     options.add_argument('--disable-dev-shm-usage')
-    if(config.headless):
+    if config.headless:
         options.add_argument("--headless")
     options.add_argument("--start-maximized")
     options.add_argument("--disable-blink-features")
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_experimental_option('useAutomationExtension', False)
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    if(len(config.chromeProfilePath)>0):
+    if len(config.chromeProfilePath) > 0:
         # Handle both Windows (\) and Unix (/) path separators
         # Normalize path separators to handle mixed separators
         normalized_path = config.chromeProfilePath.replace('\\', os.sep).replace('/', os.sep)
@@ -42,8 +42,8 @@ def chromeBrowserOptions():
             initialPath = os.path.dirname(normalized_path)
             profileDir = os.path.basename(normalized_path)
         
-        options.add_argument('--user-data-dir=' + initialPath)
-        options.add_argument("--profile-directory=" + profileDir)
+        options.add_argument(f'--user-data-dir={initialPath}')
+        options.add_argument(f"--profile-directory={profileDir}")
     else:
         options.add_argument("--incognito")
     return options
@@ -73,53 +73,52 @@ def getUrlDataFile() -> List[str]:
     return urlData
 
 def jobsToPages(numOfJobs: str) -> int:
-  number_of_pages = 1
+    number_of_pages = 1
 
-  if (' ' in numOfJobs):
-    spaceIndex = numOfJobs.index(' ')
-    totalJobs = (numOfJobs[0:spaceIndex])
-    totalJobs_int = int(totalJobs.replace(',', ''))
-    number_of_pages = math.ceil(totalJobs_int/constants.jobsPerPage)
-    if (number_of_pages > 40 ): number_of_pages = 40
+    if ' ' in numOfJobs:
+        spaceIndex = numOfJobs.index(' ')
+        totalJobs = numOfJobs[0:spaceIndex]
+        totalJobs_int = int(totalJobs.replace(',', ''))
+        number_of_pages = math.ceil(totalJobs_int / constants.jobsPerPage)
+        if number_of_pages > 40:
+            number_of_pages = 40
+    else:
+        number_of_pages = int(numOfJobs)
 
-  else:
-      number_of_pages = int(numOfJobs)
-
-  return number_of_pages
+    return number_of_pages
 
 def urlToKeywords(url: str) -> List[str]:
-    keywordUrl = url[url.index("keywords=")+9:]
-    keyword = keywordUrl[0:keywordUrl.index("&") ] 
-    locationUrl =  url[url.index("location=")+9:]
-    location = locationUrl[0:locationUrl.index("&") ] 
+    keywordUrl = url[url.index("keywords=") + 9:]
+    keyword = keywordUrl[0:keywordUrl.index("&")]
+    locationUrl = url[url.index("location=") + 9:]
+    location = locationUrl[0:locationUrl.index("&")]
     return [keyword, location]
 
 def writeResults(text: str) -> None:
     timeStr = time.strftime("%Y%m%d")
-    fileName = "Applied Jobs DATA - " +timeStr + ".txt"
+    fileName = f"Applied Jobs DATA - {timeStr}.txt"
     try:
-        with open("data/" +fileName, encoding="utf-8" ) as file:
+        with open(f"data/{fileName}", encoding="utf-8") as file:
             lines = []
             for line in file:
                 if "----" not in line:
                     lines.append(line)
                 
-        with open("data/" +fileName, 'w' ,encoding="utf-8") as f:
-            f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )
-            f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
+        with open(f"data/{fileName}", 'w', encoding="utf-8") as f:
+            f.write(f"---- Applied Jobs Data ---- created at: {timeStr}\n")
+            f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result \n")
             for line in lines: 
                 f.write(line)
-            f.write(text+ "\n")
+            f.write(f"{text}\n")
             
     except Exception:
-        with open("data/" +fileName, 'w', encoding="utf-8") as f:
-            f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )
-            f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
-
-            f.write(text+ "\n")
+        with open(f"data/{fileName}", 'w', encoding="utf-8") as f:
+            f.write(f"---- Applied Jobs Data ---- created at: {timeStr}\n")
+            f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result \n")
+            f.write(f"{text}\n")
 
 def printInfoMes(bot: str) -> None:
-    prYellow("ℹ️ " +bot+ " is starting soon... ")
+    prYellow(f"ℹ️ {bot} is starting soon... ")
 
 
 def printSessionSummary(
