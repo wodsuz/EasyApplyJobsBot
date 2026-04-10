@@ -18,14 +18,14 @@ def chromeBrowserOptions():
     options.add_argument("--disable-extensions")
     options.add_argument('--disable-gpu')
     options.add_argument('--disable-dev-shm-usage')
-    if(config.headless):
+    if config.headless:
         options.add_argument("--headless")
     options.add_argument("--start-maximized")
     options.add_argument("--disable-blink-features")
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_experimental_option('useAutomationExtension', False)
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    if(len(config.chromeProfilePath)>0):
+    if len(config.chromeProfilePath) > 0:
         # Handle both Windows (\) and Unix (/) path separators
         # Normalize path separators to handle mixed separators
         normalized_path = config.chromeProfilePath.replace('\\', os.sep).replace('/', os.sep)
@@ -75,12 +75,13 @@ def getUrlDataFile() -> List[str]:
 def jobsToPages(numOfJobs: str) -> int:
   number_of_pages = 1
 
-  if (' ' in numOfJobs):
+  if ' ' in numOfJobs:
     spaceIndex = numOfJobs.index(' ')
-    totalJobs = (numOfJobs[0:spaceIndex])
+    totalJobs = numOfJobs[0:spaceIndex]
     totalJobs_int = int(totalJobs.replace(',', ''))
     number_of_pages = math.ceil(totalJobs_int/constants.jobsPerPage)
-    if (number_of_pages > 40 ): number_of_pages = 40
+    if number_of_pages > 40:
+        number_of_pages = 40
 
   else:
       number_of_pages = int(numOfJobs)
