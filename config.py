@@ -35,14 +35,14 @@ salary = [ "$80,000+"]
 sort = ["Recent"]
 #Blacklist companies you dont want to apply - ex: ["Apple","Google"]
 blacklistCompanies = []
-#Blaclist keywords in title - ex:["manager", ".Net"]
+#Blacklist keywords in title - ex:["manager", ".Net"]
 blackListTitles = []
-#Follow companies after sucessfull application True - yes, False - no
+#Follow companies after successful application True - yes, False - no
 followCompanies = False
 #Below settings are for linkedin bot Pro, you can purchase monthly or yearly subscription to use them from me.
 #PRO FEATURE! - If you have multiple CV's you can choose which one you want the bot to use. (1- the first one on the list, 2 - second , etc)
 preferredCv = 1
-#PRO FEAUTRE! - Output unaswered questions into a seperate text file, will output radio box, dropdown and input field questions into seperate .yaml file
+#PRO FEATURE! - Output unanswered questions into a separate text file, will output radio box, dropdown and input field questions into separate .yaml file
 outputSkippedQuestions = True
 #PRO FEATURE! - Use AI to fill and answer skipped questions. Will cost 5 credits per answer cause of computational power.
 useAiAutocomplete = False
