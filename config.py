@@ -33,7 +33,7 @@ remote = ["On-site" , "Remote" , "Hybrid"]
 salary = [ "$80,000+"]
 #sort - ex:["Recent"] or ["Relevent"] - select only one
 sort = ["Recent"]
-#Blacklist companies you dont want to apply - ex: ["Apple","Google"]
+#Blacklist companies you don't want to apply - ex: ["Apple","Google"]
 blacklistCompanies = []
 #Blacklist keywords in title - ex:["manager", ".Net"]
 blackListTitles = []
@@ -50,7 +50,7 @@ useAiAutocomplete = False
 onlyApplyCompanies = []
 #PRO FEATURE! - Only Apply titles having these keywords -  ex:["web", "remote"] - leave empty for all companies 
 onlyApplyTitles = [] 
-#PRO FEATURE! - Dont apply the job posted by the Hiring member contains this in his/her name - ex: ["adam","Sarah"]
+#PRO FEATURE! - Don't apply the job posted by the Hiring member contains this in his/her name - ex: ["adam","Sarah"]
 blockHiringMember = [] 
 #PRO FEATURE! - Only apply the job sposted by the Hiring member contains this in his/her name - ex: ["adam","Sarah"]
 onlyApplyHiringMember = [] 
@@ -74,9 +74,9 @@ saveBeforeApply = False
 messageToHiringManager = ""
 #PRO FEATURE! - List and output non Easy Apply jobs links
 listNonEasyApplyJobsUrl = False
-#PRO FEATURE! - Select radio button for unsawered questions. If the bot cannot find an answer for a radio button, it will automatically select first or second option. Default radio button answer, 1 for Yes, 2 for No. Leave empty if you dont want this option.
+#PRO FEATURE! - Select radio button for unanswered questions. If the bot cannot find an answer for a radio button, it will automatically select first or second option. Default radio button answer, 1 for Yes, 2 for No. Leave empty if you don't want this option.
 defaultRadioOption = 1
-#PRO FEATURE! - Check yes or no to all checkbox questions (True - yes, False - no), leave empty if you dont want this option
+#PRO FEATURE! - Check yes or no to all checkbox questions (True - yes, False - no), leave empty if you don't want this option
 answerAllCheckboxes = ""
 #PRO FEAUTRE! - Output file type. Can be .txt or .csv (excel) 
 outputFileType = [".txt"]
