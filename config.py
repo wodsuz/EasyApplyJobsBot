@@ -33,16 +33,16 @@ remote = ["On-site" , "Remote" , "Hybrid"]
 salary = [ "$80,000+"]
 #sort - ex:["Recent"] or ["Relevent"] - select only one
 sort = ["Recent"]
-#Blacklist companies you dont want to apply - ex: ["Apple","Google"]
+#Blacklist companies you don't want to apply - ex: ["Apple","Google"]
 blacklistCompanies = []
-#Blaclist keywords in title - ex:["manager", ".Net"]
+#Blacklist keywords in title - ex:["manager", ".Net"]
 blackListTitles = []
-#Follow companies after sucessfull application True - yes, False - no
+#Follow companies after successful application True - yes, False - no
 followCompanies = False
 #Below settings are for linkedin bot Pro, you can purchase monthly or yearly subscription to use them from me.
 #PRO FEATURE! - If you have multiple CV's you can choose which one you want the bot to use. (1- the first one on the list, 2 - second , etc)
 preferredCv = 1
-#PRO FEAUTRE! - Output unaswered questions into a seperate text file, will output radio box, dropdown and input field questions into seperate .yaml file
+#PRO FEATURE! - Output unanswered questions into a separate text file, will output radio box, dropdown and input field questions into separate .yaml file
 outputSkippedQuestions = True
 #PRO FEATURE! - Use AI to fill and answer skipped questions. Will cost 5 credits per answer cause of computational power.
 useAiAutocomplete = False
@@ -50,7 +50,7 @@ useAiAutocomplete = False
 onlyApplyCompanies = []
 #PRO FEATURE! - Only Apply titles having these keywords -  ex:["web", "remote"] - leave empty for all companies 
 onlyApplyTitles = [] 
-#PRO FEATURE! - Dont apply the job posted by the Hiring member contains this in his/her name - ex: ["adam","Sarah"]
+#PRO FEATURE! - Don't apply the job posted by the Hiring member contains this in his/her name - ex: ["adam","Sarah"]
 blockHiringMember = [] 
 #PRO FEATURE! - Only apply the job sposted by the Hiring member contains this in his/her name - ex: ["adam","Sarah"]
 onlyApplyHiringMember = [] 
@@ -74,9 +74,9 @@ saveBeforeApply = False
 messageToHiringManager = ""
 #PRO FEATURE! - List and output non Easy Apply jobs links
 listNonEasyApplyJobsUrl = False
-#PRO FEATURE! - Select radio button for unsawered questions. If the bot cannot find an answer for a radio button, it will automatically select first or second option. Default radio button answer, 1 for Yes, 2 for No. Leave empty if you dont want this option.
+#PRO FEATURE! - Select radio button for unanswered questions. If the bot cannot find an answer for a radio button, it will automatically select first or second option. Default radio button answer, 1 for Yes, 2 for No. Leave empty if you don't want this option.
 defaultRadioOption = 1
-#PRO FEATURE! - Check yes or no to all checkbox questions (True - yes, False - no), leave empty if you dont want this option
+#PRO FEATURE! - Check yes or no to all checkbox questions (True - yes, False - no), leave empty if you don't want this option
 answerAllCheckboxes = ""
 #PRO FEAUTRE! - Output file type. Can be .txt or .csv (excel) 
 outputFileType = [".txt"]
