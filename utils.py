@@ -49,12 +49,15 @@ def chromeBrowserOptions():
     return options
 
 def prRed(prt: str) -> None:
+    """Print text in red color."""
     print(f"\033[91m{prt}\033[00m")
 
 def prGreen(prt: str) -> None:
+    """Print text in green color."""
     print(f"\033[92m{prt}\033[00m")
 
 def prYellow(prt: str) -> None:
+    """Print text in yellow color."""
     print(f"\033[93m{prt}\033[00m")
 
 def getUrlDataFile() -> List[str]:
@@ -73,6 +76,15 @@ def getUrlDataFile() -> List[str]:
     return urlData
 
 def jobsToPages(numOfJobs: str) -> int:
+  """Convert job count string to number of pages.
+  
+  Args:
+      numOfJobs: Either a number string (e.g., "25") or a formatted string 
+                 with count and text (e.g., "100+ jobs").
+  
+  Returns:
+      Number of pages, capped at 40.
+  """
   number_of_pages = 1
 
   if (' ' in numOfJobs):
@@ -88,6 +100,14 @@ def jobsToPages(numOfJobs: str) -> int:
   return number_of_pages
 
 def urlToKeywords(url: str) -> List[str]:
+    """Extract keyword and location from a LinkedIn job search URL.
+    
+    Args:
+        url: A LinkedIn job search URL containing keywords and location parameters.
+    
+    Returns:
+        A list containing [keyword, location].
+    """
     keywordUrl = url[url.index("keywords=")+9:]
     keyword = keywordUrl[0:keywordUrl.index("&") ] 
     locationUrl =  url[url.index("location=")+9:]
@@ -95,6 +115,13 @@ def urlToKeywords(url: str) -> List[str]:
     return [keyword, location]
 
 def writeResults(text: str) -> None:
+    """Append job application result to the daily data file.
+    
+    Creates or updates the data file for the current day with job results.
+    
+    Args:
+        text: The result text to append to the file.
+    """
     timeStr = time.strftime("%Y%m%d")
     fileName = "Applied Jobs DATA - " +timeStr + ".txt"
     try:
@@ -119,6 +146,11 @@ def writeResults(text: str) -> None:
             f.write(text+ "\n")
 
 def printInfoMes(bot: str) -> None:
+    """Print an information message that a bot is starting.
+    
+    Args:
+        bot: The name of the bot starting.
+    """
     prYellow("ℹ️ " +bot+ " is starting soon... ")
 
 
@@ -161,10 +193,18 @@ def printSessionSummary(
         prRed("❌ Could not write session summary to file: " + str(e)[:80])
 
 def donate() -> None:
+    """Display a donation support message."""
     prYellow('If you like the project, please support me so that i can make more such projects, thanks!')
 
 class LinkedinUrlGenerate:
+    """Generate LinkedIn job search URLs based on configured filters."""
+    
     def generateUrlLinks(self) -> List[str]:
+        """Generate URL links for all configured location and keyword combinations.
+        
+        Returns:
+            A list of LinkedIn job search URLs with applied filters.
+        """
         path: List[str] = []
         for location in config.location:
             for keyword in config.keywords:
@@ -173,6 +213,14 @@ class LinkedinUrlGenerate:
         return path
 
     def checkJobLocation(self, job: str) -> str:
+        """Convert job location to LinkedIn geoId parameter.
+        
+        Args:
+            job: The job location name (e.g., "Europe", "NorthAmerica").
+        
+        Returns:
+            LinkedIn location URL parameter with geoId if available.
+        """
         jobLoc = "&location=" +job
         match job.casefold():
             case "asia":
@@ -191,6 +239,11 @@ class LinkedinUrlGenerate:
         return jobLoc
 
     def jobExp(self) -> str:
+        """Generate LinkedIn experience level filter parameter.
+        
+        Returns:
+            URL parameter string for job experience levels.
+        """
         jobtExpArray = config.experienceLevels
         firstJobExp = jobtExpArray[0]
         jobExp = ""
@@ -225,6 +278,11 @@ class LinkedinUrlGenerate:
         return jobExp
 
     def datePosted(self) -> str:
+        """Generate LinkedIn date posted filter parameter.
+        
+        Returns:
+            URL parameter string for date posted filter.
+        """
         datePosted = ""
         match config.datePosted[0]:
             case "Any Time":
@@ -238,6 +296,11 @@ class LinkedinUrlGenerate:
         return datePosted
 
     def jobType(self) -> str:
+        """Generate LinkedIn job type filter parameter.
+        
+        Returns:
+            URL parameter string for job types.
+        """
         jobTypeArray = config.jobType
         firstjobType = jobTypeArray[0]
         jobType = ""
@@ -276,6 +339,11 @@ class LinkedinUrlGenerate:
         return jobType
 
     def remote(self) -> str:
+        """Generate LinkedIn work arrangement filter parameter.
+        
+        Returns:
+            URL parameter string for remote/hybrid work options.
+        """
         remoteArray = config.remote
         firstJobRemote = remoteArray[0]
         jobRemote = ""
@@ -298,6 +366,11 @@ class LinkedinUrlGenerate:
         return jobRemote
 
     def salary(self) -> str:
+        """Generate LinkedIn salary filter parameter.
+        
+        Returns:
+            URL parameter string for salary requirements.
+        """
         salary = ""
         match config.salary[0]:
             case "$40,000+":
@@ -321,6 +394,11 @@ class LinkedinUrlGenerate:
         return salary
 
     def sortBy(self) -> str:
+        """Generate LinkedIn sort order parameter.
+        
+        Returns:
+            URL parameter string for sorting results.
+        """
         sortBy = ""
         match config.sort[0]:
             case "Recent":
