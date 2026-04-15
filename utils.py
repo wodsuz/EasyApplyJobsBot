@@ -43,7 +43,7 @@ def chromeBrowserOptions():
             profileDir = os.path.basename(normalized_path)
         
         options.add_argument('--user-data-dir=' + initialPath)
-        options.add_argument("--profile-directory=" + profileDir)
+        options.add_argument(f"--profile-directory={profileDir}")
     else:
         options.add_argument("--incognito")
     return options
@@ -96,30 +96,30 @@ def urlToKeywords(url: str) -> List[str]:
 
 def writeResults(text: str) -> None:
     timeStr = time.strftime("%Y%m%d")
-    fileName = "Applied Jobs DATA - " +timeStr + ".txt"
+    fileName = f"Applied Jobs DATA - {timeStr}.txt"
     try:
-        with open("data/" +fileName, encoding="utf-8" ) as file:
+        with open(f"data/{fileName}", encoding="utf-8" ) as file:
             lines = []
             for line in file:
                 if "----" not in line:
                     lines.append(line)
                 
-        with open("data/" +fileName, 'w' ,encoding="utf-8") as f:
-            f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )
+        with open(f"data/{fileName}", 'w' ,encoding="utf-8") as f:
+            f.write(f"---- Applied Jobs Data ---- created at: {timeStr}\n" )
             f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
             for line in lines: 
                 f.write(line)
-            f.write(text+ "\n")
+            f.write(f"{text}\n")
             
     except Exception:
-        with open("data/" +fileName, 'w', encoding="utf-8") as f:
-            f.write("---- Applied Jobs Data ---- created at: " +timeStr+ "\n" )
+        with open(f"data/{fileName}", 'w', encoding="utf-8") as f:
+            f.write(f"---- Applied Jobs Data ---- created at: {timeStr}\n" )
             f.write("---- Number | Job Title | Company | Location | Work Place | Posted Date | Applications | Result "   +"\n" )
 
-            f.write(text+ "\n")
+            f.write(f"{text}\n")
 
 def printInfoMes(bot: str) -> None:
-    prYellow("ℹ️ " +bot+ " is starting soon... ")
+    prYellow(f"ℹ️ {bot} is starting soon... ")
 
 
 def printSessionSummary(
@@ -158,7 +158,7 @@ def printSessionSummary(
         with open(file_path, "a", encoding="utf-8") as f:
             f.write("\n".join(summary_lines) + "\n")
     except Exception as e:
-        prRed("❌ Could not write session summary to file: " + str(e)[:80])
+        prRed(f"❌ Could not write session summary to file: {str(e)[:80]}")
 
 def donate() -> None:
     prYellow('If you like the project, please support me so that i can make more such projects, thanks!')
@@ -168,12 +168,12 @@ class LinkedinUrlGenerate:
         path: List[str] = []
         for location in config.location:
             for keyword in config.keywords:
-                    url = constants.linkJobUrl + "?f_AL=true&keywords=" +keyword+self.jobType()+self.remote()+self.checkJobLocation(location)+self.jobExp()+self.datePosted()+self.salary()+self.sortBy()
+                    url = f"{constants.linkJobUrl}?f_AL=true&keywords={keyword}{self.jobType()}{self.remote()}{self.checkJobLocation(location)}{self.jobExp()}{self.datePosted()}{self.salary()}{self.sortBy()}"
                     path.append(url)
         return path
 
     def checkJobLocation(self, job: str) -> str:
-        jobLoc = "&location=" +job
+        jobLoc = f"&location={job}"
         match job.casefold():
             case "asia":
                 jobLoc += "&geoId=102393603"
