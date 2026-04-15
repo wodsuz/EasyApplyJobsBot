@@ -145,7 +145,7 @@ class Linkedin:
                 totalJobs = self.driver.find_element(By.XPATH,'//small').text 
             except Exception as e:
                 urlWords = utils.urlToKeywords(url)
-                lineToWrite = "\n Category: " + urlWords[0] + ", Location: " + urlWords[1] + ", No jobs found for this search criteria. Skipping..."
+                lineToWrite = f"\n Category: {urlWords[0]}, Location: {urlWords[1]}, No jobs found for this search criteria. Skipping..."
                 self.displayWriteResults(lineToWrite)
                 if config.displayWarnings:
                     utils.prYellow(f"⚠️ Warning: No jobs found for {urlWords[0]} in {urlWords[1]}. The //small element was not found.")
@@ -154,12 +154,12 @@ class Linkedin:
             totalPages = utils.jobsToPages(totalJobs)
 
             urlWords =  utils.urlToKeywords(url)
-            lineToWrite = "\n Category: " + urlWords[0] + ", Location: " +urlWords[1] + ", Applying " +str(totalJobs)+ " jobs."
+            lineToWrite = f"\n Category: {urlWords[0]}, Location: {urlWords[1]}, Applying {totalJobs} jobs."
             self.displayWriteResults(lineToWrite)
 
             for page in range(totalPages):
                 currentPageJobs = constants.jobsPerPage * page
-                url = url +"&start="+ str(currentPageJobs)
+                url = f"{url}&start={currentPageJobs}"
                 self.driver.get(url)
                 time.sleep(random.uniform(1, constants.botSpeed))
 
@@ -207,7 +207,7 @@ class Linkedin:
                     jobProperties = self.getJobProperties(countJobs)
                     if "blacklisted" in jobProperties: 
                         countBlacklisted += 1
-                        lineToWrite = jobProperties + " | " + "* 🤬 Blacklisted Job, skipped!: " +str(offerPage)
+                        lineToWrite = f"{jobProperties} | * 🤬 Blacklisted Job, skipped!: {offerPage}"
                         self.displayWriteResults(lineToWrite)
                     
                     else :                    
@@ -235,13 +235,13 @@ class Linkedin:
                                 if config.dryRun:
                                     # In dry-run mode, do not submit the application,
                                     # just log that we would have applied.
-                                    lineToWrite = jobProperties + " | " + "* 🧪 DRY RUN - Would apply to this job: "  + str(offerPage)
+                                    lineToWrite = f"{jobProperties} | * 🧪 DRY RUN - Would apply to this job: {offerPage}"
                                     self.displayWriteResults(lineToWrite)
                                 else:
                                     self.driver.find_element(By.CSS_SELECTOR, "button[aria-label='Submit application']").click()
                                     time.sleep(random.uniform(1, constants.botSpeed))
 
-                                    lineToWrite = jobProperties + " | " + "* 🥳 Just Applied to this job: "  + str(offerPage)
+                                    lineToWrite = f"{jobProperties} | * 🥳 Just Applied to this job: {offerPage}"
                                     self.displayWriteResults(lineToWrite)
                                     countApplied += 1
                                     if config.maxApplicationsPerRun and countApplied >= config.maxApplicationsPerRun:
@@ -259,7 +259,7 @@ class Linkedin:
                                     
                                     # For multi-step forms, respect dry-run as well.
                                     if config.dryRun:
-                                        result = "* 🧪 DRY RUN - Would go through multi-step application: " + str(offerPage)
+                                        result = f"* 🧪 DRY RUN - Would go through multi-step application: {offerPage}"
                                     else:
                                         result = self.applyProcess(percenNumber,offerPage)
 
@@ -273,11 +273,11 @@ class Linkedin:
                                 except Exception: 
                                     countCannotApply += 1
                                     self.chooseResume()
-                                    lineToWrite = jobProperties + " | " + "* 🥵 Cannot apply to this Job! " +str(offerPage)
+                                    lineToWrite = f"{jobProperties} | * 🥵 Cannot apply to this Job! {offerPage}"
                                     self.displayWriteResults(lineToWrite)
                         else:
                             countAlreadyApplied += 1
-                            lineToWrite = jobProperties + " | " + "* 🥳 Already applied! Job: " +str(offerPage)
+                            lineToWrite = f"{jobProperties} | * 🥳 Already applied! Job: {offerPage}"
                             self.displayWriteResults(lineToWrite)
 
                     if reachedCap:
@@ -287,11 +287,10 @@ class Linkedin:
             if reachedCap:
                 break
 
-            utils.prYellow("Category: " + urlWords[0] + "," +urlWords[1]+ " applied: " + str(countApplied) +
-                  " jobs out of " + str(countJobs) + ".")
+            utils.prYellow(f"Category: {urlWords[0]},{urlWords[1]} applied: {countApplied} jobs out of {countJobs}.")
         
         if reachedCap:
-            utils.prYellow("🛑 Reached max applications per run limit (" + str(config.maxApplicationsPerRun) + "). Stopping.")
+            utils.prYellow(f"🛑 Reached max applications per run limit ({config.maxApplicationsPerRun}). Stopping.")
         durationSec = time.time() - startTime
         utils.printSessionSummary(
             countJobs, countApplied, countBlacklisted, countAlreadyApplied, countCannotApply, durationSec
@@ -326,7 +325,7 @@ class Linkedin:
                 jobTitle += "(blacklisted title: " + ' '.join(res) + ")"
         except Exception as e:
             if (config.displayWarnings):
-                utils.prYellow("⚠️ Warning in getting jobTitle: " + str(e)[0:50])
+                utils.prYellow(f"⚠️ Warning in getting jobTitle: {str(e)[0:50]}")
             jobTitle = ""
 
         try:
@@ -338,7 +337,7 @@ class Linkedin:
         except Exception as e:
             if (config.displayWarnings):
                 print(e)
-                utils.prYellow("⚠️ Warning in getting jobDetail: " + str(e)[0:100])
+                utils.prYellow(f"⚠️ Warning in getting jobDetail: {str(e)[0:100]}")
             jobDetail = ""
 
         try:
@@ -349,7 +348,7 @@ class Linkedin:
         except Exception as e:
             if (config.displayWarnings):
                 print(e)
-                utils.prYellow("⚠️ Warning in getting jobLocation: " + str(e)[0:100])
+                utils.prYellow(f"⚠️ Warning in getting jobLocation: {str(e)[0:100]}")
             jobLocation = ""
 
         textToWrite = str(count) + " | " + jobTitle +" | " + jobDetail + jobLocation
