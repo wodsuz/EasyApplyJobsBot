@@ -11,7 +11,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 from selenium import webdriver
 
-def chromeBrowserOptions():
+def chromeBrowserOptions() -> webdriver.ChromeOptions:
     options = webdriver.ChromeOptions()
     options.add_argument('--no-sandbox')
     options.add_argument("--ignore-certificate-errors")
@@ -68,7 +68,7 @@ def getUrlDataFile() -> List[str]:
         with open('data/urlData.txt', 'r') as file:
             urlData = [line.strip() for line in file if line.strip()]
     except FileNotFoundError:
-        text = "FileNotFound:urlData.txt file is not found. Please run ./data folder exists and check config.py values of yours. Then run the bot again"
+        text = "FileNotFound: data/urlData.txt file not found. Ensure the ./data folder exists and check your config.py settings. Then run the bot again."
         prRed(text)
     return urlData
 

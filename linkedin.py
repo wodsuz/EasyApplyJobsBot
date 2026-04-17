@@ -30,11 +30,13 @@ class Linkedin:
         utils.prYellow("🤖 Thanks for using Easy Apply Jobs bot, for more information you can visit our site - www.automated-bots.com")
         utils.prYellow("🌐 Bot will run in Chrome browser and log in Linkedin for you.")
         
-        # Fix for WinError 193: Explicitly construct chromedriver path
+        # Fix for WinError 193: Explicitly construct chromedriver path with cross-platform support
         try:
             chrome_install = ChromeDriverManager().install()
             folder = os.path.dirname(chrome_install)
-            chromedriver_path = os.path.join(folder, "chromedriver.exe")
+            # Use platform-appropriate executable name (chromedriver.exe on Windows, chromedriver on others)
+            chromedriver_name = "chromedriver.exe" if sys.platform == "win32" else "chromedriver"
+            chromedriver_path = os.path.join(folder, chromedriver_name)
             service = ChromeService(chromedriver_path)
             self.driver = webdriver.Chrome(service=service, options=utils.chromeBrowserOptions())
         except Exception as e:
@@ -308,7 +310,7 @@ class Linkedin:
                 resumes[0].click()
             elif (len(resumes) > 1 and resumes[config.preferredCv-1].get_attribute("aria-label") == "Select this resume"):
                 resumes[config.preferredCv-1].click()
-            elif (type(len(resumes)) != int):
+            elif (len(resumes) == 0):
                 utils.prRed(
                     "❌ No resume has been selected please add at least one resume to your Linkedin account.")
         except Exception:
@@ -502,7 +504,7 @@ class Linkedin:
         except Exception as e:
             utils.prRed("❌ Error in DisplayWriteResults: " +str(e))
 
-    def element_exists(self, parent: webdriver.remote.webelement.WebElement, by: str, selector: str) -> bool:
+    def element_exists(self, parent: webdriver.remote.webelement.WebElement, by: By, selector: str) -> bool:
         return len(parent.find_elements(by, selector)) > 0
 
 
@@ -510,7 +512,6 @@ def main() -> None:
     start = time.time()
     bot = Linkedin()
     bot.linkJobApply()
-    end = time.time()
     utils.prYellow("---Took: " + str(round((time.time() - start)/60)) + " minute(s).")
 
 
