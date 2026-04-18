@@ -158,7 +158,7 @@ def printSessionSummary(
         with open(file_path, "a", encoding="utf-8") as f:
             f.write("\n".join(summary_lines) + "\n")
     except Exception as e:
-        prRed("❌ Could not write session summary to file: " + str(e)[:80])
+        prRed(f"❌ Could not write session summary to file: {str(e)[:80]}")
 
 def donate() -> None:
     prYellow('If you like the project, please support me so that i can make more such projects, thanks!')
