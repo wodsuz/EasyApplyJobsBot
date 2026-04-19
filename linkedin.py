@@ -511,7 +511,7 @@ def main() -> None:
     bot = Linkedin()
     bot.linkJobApply()
     end = time.time()
-    utils.prYellow("---Took: " + str(round((time.time() - start)/60)) + " minute(s).")
+    utils.prYellow("---Took: " + str(round((end - start)/60)) + " minute(s).")
 
 
 if __name__ == "__main__":
