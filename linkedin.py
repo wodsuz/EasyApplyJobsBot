@@ -7,6 +7,8 @@ import sys
 import time
 from typing import Optional
 
+import yaml
+
 import config
 import constants
 import utils
@@ -377,7 +379,6 @@ class Linkedin:
             else:
                 # Try to read from additionalQuestions.yaml if available
                 try:
-                    import yaml
                     if os.path.exists('additionalQuestions.yaml'):
                         with open('additionalQuestions.yaml', 'r', encoding='utf-8') as f:
                             questions = yaml.safe_load(f)
