@@ -25,6 +25,12 @@ try:
 except ImportError:
     STEALTH_AVAILABLE = False
 
+try:
+    import yaml
+    YAML_AVAILABLE = True
+except ImportError:
+    YAML_AVAILABLE = False
+
 class Linkedin:
     def __init__(self) -> None:
         utils.prYellow("🤖 Thanks for using Easy Apply Jobs bot, for more information you can visit our site - www.automated-bots.com")
@@ -376,15 +382,14 @@ class Linkedin:
                 phone_number = config.Phone.strip()
             else:
                 # Try to read from additionalQuestions.yaml if available
-                try:
-                    import yaml
-                    if os.path.exists('additionalQuestions.yaml'):
+                if YAML_AVAILABLE and os.path.exists('additionalQuestions.yaml'):
+                    try:
                         with open('additionalQuestions.yaml', 'r', encoding='utf-8') as f:
                             questions = yaml.safe_load(f)
                             if questions and 'inputField' in questions:
                                 phone_number = questions['inputField'].get('Phone Number', '').strip()
-                except Exception:
-                    pass
+                    except Exception:
+                        pass
             
             if not phone_number:
                 return  # No phone number configured, skip filling
