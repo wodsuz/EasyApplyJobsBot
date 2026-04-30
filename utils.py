@@ -11,7 +11,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 from selenium import webdriver
 
-def chromeBrowserOptions():
+def chromeBrowserOptions() -> webdriver.ChromeOptions:
     options = webdriver.ChromeOptions()
     options.add_argument('--no-sandbox')
     options.add_argument("--ignore-certificate-errors")
@@ -129,7 +129,7 @@ def printSessionSummary(
     count_already_applied: int,
     count_cannot_apply: int,
     duration_sec: float,
-):
+) -> None:
     """Print and write a session summary to the data file."""
     duration_min = round(duration_sec / 60, 1)
     prGreen("\n" + "=" * 60)
@@ -207,7 +207,7 @@ class LinkedinUrlGenerate:
                 jobExp = "&f_E=5"
             case "Executive":
                 jobExp = "&f_E=6"
-        for index in range (1,len(jobtExpArray)):
+        for index in range(1, len(jobtExpArray)):
             match jobtExpArray[index]:
                 case "Internship":
                     jobExp += "%2C1"
@@ -256,7 +256,7 @@ class LinkedinUrlGenerate:
                 jobType = "&f_JT=I"
             case "Other":
                 jobType = "&f_JT=O"
-        for index in range (1,len(jobTypeArray)):
+        for index in range(1, len(jobTypeArray)):
             match jobTypeArray[index]:
                 case "Full-time":
                     jobType += "%2CF"
@@ -286,7 +286,7 @@ class LinkedinUrlGenerate:
                 jobRemote = "f_WT=2"
             case "Hybrid":
                 jobRemote = "f_WT=3"
-        for index in range (1,len(remoteArray)):
+        for index in range(1, len(remoteArray)):
             match remoteArray[index]:
                 case "On-site":
                     jobRemote += "%2C1"

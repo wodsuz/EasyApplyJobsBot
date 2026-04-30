@@ -304,13 +304,10 @@ class Linkedin:
                 By.CLASS_NAME, "jobs-document-upload__title--is-required")
             resumes = self.driver.find_elements(
                 By.XPATH, "//div[contains(@class, 'ui-attachment--pdf')]")
-            if (len(resumes) == 1 and resumes[0].get_attribute("aria-label") == "Select this resume"):
+            if len(resumes) == 1 and resumes[0].get_attribute("aria-label") == "Select this resume":
                 resumes[0].click()
-            elif (len(resumes) > 1 and resumes[config.preferredCv-1].get_attribute("aria-label") == "Select this resume"):
-                resumes[config.preferredCv-1].click()
-            elif (type(len(resumes)) != int):
-                utils.prRed(
-                    "❌ No resume has been selected please add at least one resume to your Linkedin account.")
+            elif len(resumes) > 1 and resumes[config.preferredCv - 1].get_attribute("aria-label") == "Select this resume":
+                resumes[config.preferredCv - 1].click()
         except Exception:
             pass
 
@@ -321,8 +318,8 @@ class Linkedin:
 
         try:
             jobTitle = self.driver.find_element(By.XPATH, "//h1[contains(@class, 'job-title')]").get_attribute("innerHTML").strip()
-            res = [blItem for blItem in config.blackListTitles if (blItem.lower() in jobTitle.lower())]
-            if (len(res) > 0):
+            res = [blItem for blItem in config.blackListTitles if blItem.lower() in jobTitle.lower()]
+            if res:
                 jobTitle += "(blacklisted title: " + ' '.join(res) + ")"
         except Exception as e:
             if (config.displayWarnings):
@@ -332,8 +329,8 @@ class Linkedin:
         try:
             time.sleep(5)
             jobDetail = self.driver.find_element(By.XPATH, "//div[contains(@class, 'job-details-jobs')]//div").text.replace("·", "|")
-            res = [blItem for blItem in config.blacklistCompanies if (blItem.lower() in jobTitle.lower())]
-            if (len(res) > 0):
+            res = [blItem for blItem in config.blacklistCompanies if blItem.lower() in jobTitle.lower()]
+            if res:
                 jobDetail += "(blacklisted company: " + ' '.join(res) + ")"
         except Exception as e:
             if (config.displayWarnings):
