@@ -7,23 +7,22 @@ import sys
 import time
 from typing import Optional
 
-import config
-import constants
-import utils
-
-sys.stdout.reconfigure(encoding='utf-8')
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 
 try:
     from selenium_stealth import stealth
     STEALTH_AVAILABLE = True
 except ImportError:
     STEALTH_AVAILABLE = False
+
+import config
+import constants
+import utils
+
+sys.stdout.reconfigure(encoding='utf-8')
 
 class Linkedin:
     def __init__(self) -> None:

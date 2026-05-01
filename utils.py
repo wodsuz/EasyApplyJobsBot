@@ -48,14 +48,21 @@ def chromeBrowserOptions():
         options.add_argument("--incognito")
     return options
 
+def _print_color(text: str, color_code: str) -> None:
+    """Print colored text to console using ANSI color codes."""
+    print(f"\033[{color_code}m{text}\033[00m")
+
 def prRed(prt: str) -> None:
-    print(f"\033[91m{prt}\033[00m")
+    """Print text in red."""
+    _print_color(prt, "91")
 
 def prGreen(prt: str) -> None:
-    print(f"\033[92m{prt}\033[00m")
+    """Print text in green."""
+    _print_color(prt, "92")
 
 def prYellow(prt: str) -> None:
-    print(f"\033[93m{prt}\033[00m")
+    """Print text in yellow."""
+    _print_color(prt, "93")
 
 def getUrlDataFile() -> List[str]:
     """Read generated job search URLs from the data file.
