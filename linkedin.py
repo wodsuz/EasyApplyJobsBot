@@ -358,12 +358,9 @@ class Linkedin:
     def easyApplyButton(self) -> Optional[webdriver.remote.webelement.WebElement]:
         try:
             time.sleep(random.uniform(1, constants.botSpeed))
-            button = self.driver.find_element(By.XPATH, "//div[contains(@class,'jobs-apply-button--top-card')]//button[contains(@class, 'jobs-apply-button')]")
-            EasyApplyButton = button
+            return self.driver.find_element(By.XPATH, "//div[contains(@class,'jobs-apply-button--top-card')]//button[contains(@class, 'jobs-apply-button')]")
         except Exception:
-            EasyApplyButton = None
-
-        return EasyApplyButton
+            return None
 
     def fillPhoneNumber(self) -> None:
         """Fill phone number fields if they exist and are empty"""
