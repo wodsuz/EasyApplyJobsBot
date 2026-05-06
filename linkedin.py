@@ -358,12 +358,9 @@ class Linkedin:
     def easyApplyButton(self) -> Optional[webdriver.remote.webelement.WebElement]:
         try:
             time.sleep(random.uniform(1, constants.botSpeed))
-            button = self.driver.find_element(By.XPATH, "//div[contains(@class,'jobs-apply-button--top-card')]//button[contains(@class, 'jobs-apply-button')]")
-            EasyApplyButton = button
+            return self.driver.find_element(By.XPATH, "//div[contains(@class,'jobs-apply-button--top-card')]//button[contains(@class, 'jobs-apply-button')]")
         except Exception:
-            EasyApplyButton = None
-
-        return EasyApplyButton
+            return None
 
     def fillPhoneNumber(self) -> None:
         """Fill phone number fields if they exist and are empty"""
@@ -502,7 +499,7 @@ class Linkedin:
         except Exception as e:
             utils.prRed("❌ Error in DisplayWriteResults: " +str(e))
 
-    def element_exists(self, parent: webdriver.remote.webelement.WebElement, by: str, selector: str) -> bool:
+    def element_exists(self, parent: webdriver.remote.webelement.WebElement, by: By, selector: str) -> bool:
         return len(parent.find_elements(by, selector)) > 0
 
 
