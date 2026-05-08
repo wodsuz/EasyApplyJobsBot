@@ -11,21 +11,21 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 from selenium import webdriver
 
-def chromeBrowserOptions():
+def chromeBrowserOptions() -> webdriver.ChromeOptions:
     options = webdriver.ChromeOptions()
     options.add_argument('--no-sandbox')
     options.add_argument("--ignore-certificate-errors")
     options.add_argument("--disable-extensions")
     options.add_argument('--disable-gpu')
     options.add_argument('--disable-dev-shm-usage')
-    if(config.headless):
+    if config.headless:
         options.add_argument("--headless")
     options.add_argument("--start-maximized")
     options.add_argument("--disable-blink-features")
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_experimental_option('useAutomationExtension', False)
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    if(len(config.chromeProfilePath)>0):
+    if len(config.chromeProfilePath) > 0:
         # Handle both Windows (\) and Unix (/) path separators
         # Normalize path separators to handle mixed separators
         normalized_path = config.chromeProfilePath.replace('\\', os.sep).replace('/', os.sep)
