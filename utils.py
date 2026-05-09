@@ -2,7 +2,6 @@ import math
 import os
 import sys
 import time
-from typing import List
 
 import config
 import constants
@@ -57,13 +56,13 @@ def prGreen(prt: str) -> None:
 def prYellow(prt: str) -> None:
     print(f"\033[93m{prt}\033[00m")
 
-def getUrlDataFile() -> List[str]:
+def getUrlDataFile() -> list[str]:
     """Read generated job search URLs from the data file.
 
     Returns a list of URL strings with whitespace stripped.
     Returns an empty list if the file is missing.
     """
-    urlData: List[str] = []
+    urlData: list[str] = []
     try:
         with open('data/urlData.txt', 'r') as file:
             urlData = [line.strip() for line in file if line.strip()]
@@ -87,7 +86,7 @@ def jobsToPages(numOfJobs: str) -> int:
 
   return number_of_pages
 
-def urlToKeywords(url: str) -> List[str]:
+def urlToKeywords(url: str) -> list[str]:
     keywordUrl = url[url.index("keywords=")+9:]
     keyword = keywordUrl[0:keywordUrl.index("&") ] 
     locationUrl =  url[url.index("location=")+9:]
@@ -164,8 +163,8 @@ def donate() -> None:
     prYellow('If you like the project, please support me so that i can make more such projects, thanks!')
 
 class LinkedinUrlGenerate:
-    def generateUrlLinks(self) -> List[str]:
-        path: List[str] = []
+    def generateUrlLinks(self) -> list[str]:
+        path: list[str] = []
         for location in config.location:
             for keyword in config.keywords:
                     url = constants.linkJobUrl + "?f_AL=true&keywords=" +keyword+self.jobType()+self.remote()+self.checkJobLocation(location)+self.jobExp()+self.datePosted()+self.salary()+self.sortBy()

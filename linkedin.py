@@ -5,7 +5,6 @@ import pickle
 import random
 import sys
 import time
-from typing import Optional
 
 import config
 import constants
@@ -355,7 +354,7 @@ class Linkedin:
         textToWrite = str(count) + " | " + jobTitle +" | " + jobDetail + jobLocation
         return textToWrite
 
-    def easyApplyButton(self) -> Optional[webdriver.remote.webelement.WebElement]:
+    def easyApplyButton(self) -> webdriver.remote.webelement.WebElement | None:
         try:
             time.sleep(random.uniform(1, constants.botSpeed))
             button = self.driver.find_element(By.XPATH, "//div[contains(@class,'jobs-apply-button--top-card')]//button[contains(@class, 'jobs-apply-button')]")
