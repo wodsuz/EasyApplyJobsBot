@@ -11,7 +11,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 from selenium import webdriver
 
-def chromeBrowserOptions():
+def chromeBrowserOptions() -> webdriver.ChromeOptions:
     options = webdriver.ChromeOptions()
     options.add_argument('--no-sandbox')
     options.add_argument("--ignore-certificate-errors")
@@ -129,7 +129,7 @@ def printSessionSummary(
     count_already_applied: int,
     count_cannot_apply: int,
     duration_sec: float,
-):
+) -> None:
     """Print and write a session summary to the data file."""
     duration_min = round(duration_sec / 60, 1)
     prGreen("\n" + "=" * 60)
