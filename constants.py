@@ -1,5 +1,5 @@
-websiteUrl = "www.automated-bots.com"
-contactUrl = "https://www.automated-bots.com/contact"
+websiteUrl = "www.apllie.com"
+contactUrl = "https://www.apllie.com/contact"
 
 linkJobUrl = "https://www.linkedin.com/jobs/search/"
 angelCoUrl = "https://angel.co/login"

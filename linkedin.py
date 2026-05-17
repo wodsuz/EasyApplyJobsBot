@@ -27,7 +27,7 @@ except ImportError:
 
 class Linkedin:
     def __init__(self) -> None:
-        utils.prYellow("🤖 Thanks for using Easy Apply Jobs bot, for more information you can visit our site - www.automated-bots.com")
+        utils.prYellow("🤖 Thanks for using Easy Apply Jobs bot, for more information you can visit our site - www.apllie.com")
         utils.prYellow("🌐 Bot will run in Chrome browser and log in Linkedin for you.")
         
         # Fix for WinError 193: Explicitly construct chromedriver path
