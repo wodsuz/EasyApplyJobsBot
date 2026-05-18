@@ -30,11 +30,12 @@ class Linkedin:
         utils.prYellow("🤖 Thanks for using Easy Apply Jobs bot, for more information you can visit our site - www.automated-bots.com")
         utils.prYellow("🌐 Bot will run in Chrome browser and log in Linkedin for you.")
         
-        # Fix for WinError 193: Explicitly construct chromedriver path
+        # Use platform-appropriate chromedriver filename
+        chromedriver_name = "chromedriver.exe" if sys.platform == "win32" else "chromedriver"
         try:
             chrome_install = ChromeDriverManager().install()
             folder = os.path.dirname(chrome_install)
-            chromedriver_path = os.path.join(folder, "chromedriver.exe")
+            chromedriver_path = os.path.join(folder, chromedriver_name)
             service = ChromeService(chromedriver_path)
             self.driver = webdriver.Chrome(service=service, options=utils.chromeBrowserOptions())
         except Exception as e:
